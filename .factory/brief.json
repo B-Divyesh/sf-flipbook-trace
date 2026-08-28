@@ -1,0 +1,8 @@
+{
+  "slug": "flipbook-trace",
+  "title": "Flipbook Trace",
+  "summary": "Turn your video into printable tracing frames.",
+  "artifact_class": "pwa-offline",
+  "smallest_useful_product": "Choose a local video, trim 1–5 seconds, set frame rate and a trace filter, then export numbered PNGs and a PDF contact sheet.",
+  "monetization": "one-time"
+}
