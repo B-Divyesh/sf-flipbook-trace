@@ -82,7 +82,18 @@ The demo entry point is `/demo`. Its reset restores the 12 bundled bird frames a
 
 ## Deployment and live identity
 
-Deployment and post-deploy byte/header checks are recorded below after the static work-order deployment completes.
+Pushed repair commits `161dab1` and `e4b7f8e` to `origin/main`. The work-order command `/opt/fleet/lib/deploy-static.sh flipbook-trace dist` completed Azure deployment `aabe9527-d7b3-4783-a50f-5bc1f7b124f3` to the existing Static Web App and `https://flipbook-trace.sociobot.in` returned 200 over managed TLS.
+
+Post-deploy evidence:
+
+- Local `dist/` and live SHA-256 matched for `index.html`, `sw.js`, `manifest.webmanifest`, `robots.txt`, `sitemap.xml`, `assets/index-BPjdrI3x.js`, and `assets/index-Ct4sh6jS.css`.
+- Live JS/CSS return `Cache-Control: public, max-age=31536000, immutable`.
+- Live `sw.js` returns `Cache-Control: no-cache, no-store, must-revalidate`; the manifest revalidates after one hour.
+- `/`, `/demo`, `/privacy`, `/terms`, the styled 404 route, the manifest, and the worker each return HTTP 200.
+- Live CSP, `X-Content-Type-Options: nosniff`, and the existing referrer/permissions policies are active.
+- Production Studio checkout returns HTTP 303 to a Dodo hosted session.
+- Live `verify-url.sh`: HTTP 200, 1,039 ms load, correct title/language/H1/main/alt labels, and zero console or page errors at desktop and 390 px capture sizes.
+- Live Lighthouse 12.8.2: performance 100, accessibility 100, best practices 100, SEO 100, FCP 0.9 s, LCP 1.8 s, TBT 10 ms, CLS 0, 189 KiB transfer.
 
 ## Known limits
 
