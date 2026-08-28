@@ -1,37 +1,44 @@
-# Flipbook Trace polish 2 handoff
+# Flipbook Trace review 3 handoff
 
-Work order: `flipbook-trace-polish-2`
-Repair commit: `64088d32b77a9b9b0261e4b6b889944d2bbe8c55`
+Work order: `flipbook-trace-review-3`
+
+Role: reviewer
+
+Base reviewed: `b03f88d91e8a33347701f04833a34e51d57cddf5`
+
 Date: 2026-08-28
 
 ## Done
 
-- Closed all 25 review-1 findings and all 10 review-2 findings. The exact finding-to-change-to-evidence matrix is in `.factory/polish-2.md`.
-- Made the offline, isolated `?demo=1` paper-bird sample functional: the selected 1–5 second section and frame rate regenerate the requested frame count; Reset demo returns the 12-frame default; Start for real returns to real storage.
-- Added independent rendered-PDF verification with `jpeg-js`, storage-surface assertions for localStorage and sessionStorage, and the registered 960px free-export claim.
-- Completed the mobile hero fold, copy terminology, static 404 metadata/navigation/footer, and route validation fixes without changing the risograph worktable identity.
-- Deployed `dist/` with `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. Azure deployment `6c3b2b0b-d45a-40cc-ab8e-8232e0c447d4` succeeded to `https://flipbook-trace.sociobot.in`.
+- Performed a fresh adversarial mobile and desktop read of the deployed product.
+- Audited every landing-page and README sentence plus headings, actions, labels, terminology, and claim-like copy.
+- Exercised the one-click demo, regeneration, reset, real-storage isolation, Start for real, offline reload, and a live local-video import/export with request interception.
+- Ran all 18 exact `.factory/claims.json` commands independently from a clean clone.
+- Rechecked every finding from review 1 and review 2 against the live site and current source/tests.
+- Checked routes, metadata, 404 behavior, links, history focus, axe results, reduced motion, responsive overflow, security/privacy behavior, and visual identity.
+- Wrote `.factory/review-3.md`. No product code was changed.
+
+## Verdict
+
+**FAIL** with one finding: F-3-1. At 390 px, the hero's real-video link, Studio policy links, privacy/terms email links, and static-404 skip link have targets shorter than the required 44 px. The current regression checks only selected controls and misses them.
+
+All 35 earlier review findings remain fixed. All 18 registered claims pass and no unlisted product claim was found.
 
 ## Verification
 
-- Clean clone: `/tmp/flipbook-polish2-clean` at repair commit `64088d32b77a9b9b0261e4b6b889944d2bbe8c55`.
-- `npm ci`: PASS, 141 packages, zero reported vulnerabilities.
-- Every exact command in `.factory/claims.json`: PASS independently from that clone. Full command output: `/tmp/flipbook-polish2-claims.log`.
-- `npm run test:unit`: PASS, 3/3.
+- Clean clone: `/tmp/flipbook-review3-clean.lt2KXm/repo`.
+- Claim log: `/tmp/flipbook-review3-claims.log`; 18/18 commands exited 0.
+- `npm ci`: PASS; 141 packages, zero vulnerabilities.
+- `npm run test:unit`: PASS; 3/3.
 - `npm run lint`: PASS.
 - `npm run typecheck`: PASS.
-- `npm run build`: PASS; JS 31.29 KB (11.05 KB gzip), CSS 15.68 KB (4.33 KB gzip), both within budget.
-- `npm test`: PASS, 39/39. This covers browser, axe serious/critical, keyboard, 390px layout, privacy, offline reload, PWA, update, routing, titles, and console checks.
-- `/opt/fleet/lib/verify-url.sh https://flipbook-trace.sociobot.in test-results/live-polish-2`: PASS; 737 ms, no page errors, one H1/main, `lang=en`, no missing image alt or unlabeled button.
-- Live Playwright axe at 390px: zero serious/critical violations on `/`, `/?demo=1`, `/demo`, `/privacy`, `/terms`, and `/missing-page`. The static 404 emits only the browser's expected failed-resource diagnostic for its HTTP 404 response; it has no page errors or axe violations.
-- Cold live demo: one landing click reached `?demo=1`, banner visible, first sample-frame bottom at 520.44px in a 390×844 viewport, 12 initial frames, 60 after 5 seconds at 12 fps, and 12 after Reset demo. Screenshot evidence: `test-results/live-polish-2/demo-390.png` and `test-results/live-polish-2/demo-1440.png`.
-- Live unknown route: `/missing-page` returns HTTP 404; its title, canonical, Open Graph URL, Apple icon, shared navigation, footer, and build id are correct. Screenshot: `test-results/live-polish-2/404-390.png`.
-- Live page asset is `/assets/index-B_1V5UKt.js`, matching this deployment.
+- `npm test`: PASS; 39/39.
+- `npm run build`: PASS; `dist/` produced with 10,944-byte gzip JS and 4,334-byte gzip CSS.
+- `/opt/fleet/lib/verify-url.sh https://flipbook-trace.sociobot.in /tmp/review3-verify-url`: PASS.
+- Live axe: zero violations on `/`, `/?demo=1`, `/demo`, `/privacy`, `/terms`, and `/missing-page`.
+- Live route/link crawl: all valid product routes and external links resolve; unknown route returns designed HTTP 404.
+- Live screenshots: `/tmp/review3-mobile-cold.png` and `/tmp/review3-desktop-cold.png`.
 
-## Known gaps
+## Left to do
 
-None in the product or acceptance findings. Lighthouse 12.8.2 was attempted against the live site with the supplied Playwright Chrome but could not connect to that Chrome-for-Testing binary; the successful browser, axe, response, and bundle-budget evidence above remains recorded.
-
-## Run and deploy
-
-Run `npm ci`, `npm test`, and `npm run build`. Deploy the generated `dist/` with the work-order static deployment command shown above. The demo entry is `/?demo=1`.
+Fix F-3-1 as specified in `.factory/review-3.md`, broaden the touch-target regression to all visible actionable elements, and rerun review 4 from scratch. No deployment was performed under this review work order.
