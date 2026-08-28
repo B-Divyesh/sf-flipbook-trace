@@ -171,19 +171,14 @@
       "degree": 10
     },
     {
-      "id": "src_core_makepngzip",
-      "label": "makePngZip()",
-      "degree": 8
-    },
-    {
       "id": "src_main_loadvideo",
       "label": "loadVideo()",
       "degree": 8
     },
     {
-      "id": "src_core_makepdf",
-      "label": "makePdf()",
-      "degree": 7
+      "id": "src_core_makepngzip",
+      "label": "makePngZip()",
+      "degree": 8
     },
     {
       "id": "src_main_shell",
@@ -191,20 +186,25 @@
       "degree": 7
     },
     {
-      "id": "src_main_value",
-      "label": "value()",
+      "id": "src_main_setstatus",
+      "label": "setStatus()",
       "degree": 7
     },
     {
-      "id": "src_main_setstatus",
-      "label": "setStatus()",
+      "id": "src_main_showerror",
+      "label": "showError()",
+      "degree": 7
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
       "degree": 7
     }
   ],
   "surprises": [
     {
-      "source": "rebuildOutputFrames()",
-      "target": "applyTraceFilter()",
+      "source": "exportPdf()",
+      "target": "makePdf()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -225,8 +225,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "exportPdf()",
-      "target": "makePdf()",
+      "source": "rebuildOutputFrames()",
+      "target": "applyTraceFilter()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -247,8 +247,8 @@
       "why": "cross-file semantic connection"
     },
     {
-      "source": "bindWorkspace()",
-      "target": "downloadBlob()",
+      "source": "render()",
+      "target": "loadPreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
