@@ -28,6 +28,18 @@
       "source_location": "L3"
     },
     {
+      "id": "tests_site_spec_targetbox",
+      "label": "TargetBox",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "file_type": "code",
+      "norm_label": "targetbox",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L23"
+    },
+    {
       "id": "src_core_applytracefilter",
       "label": "applyTraceFilter()",
       "_callable": true,
@@ -307,7 +319,7 @@
       "label": ".getItem()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
+      "community": 13,
       "file_type": "code",
       "norm_label": ".getitem()",
       "source_file": "tests/claims.spec.ts",
@@ -677,6 +689,17 @@
       "source_location": "L25"
     },
     {
+      "id": "tests_site_spec_visibleactiontargets",
+      "label": "visibleActionTargets()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "file_type": "code",
+      "norm_label": "visibleactiontargets()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L25"
+    },
+    {
       "id": "src_main",
       "label": "main.ts",
       "_origin": "ast",
@@ -947,10 +970,20 @@
       "source_location": "L18"
     },
     {
+      "id": "eslint_config",
+      "label": "eslint.config.mjs",
+      "_origin": "ast",
+      "community": 10,
+      "file_type": "code",
+      "norm_label": "eslint.config.mjs",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1"
+    },
+    {
       "id": "playwright_config",
       "label": "playwright.config.ts",
       "_origin": "ast",
-      "community": 10,
+      "community": 11,
       "file_type": "code",
       "norm_label": "playwright.config.ts",
       "source_file": "playwright.config.ts",
@@ -960,20 +993,10 @@
       "id": "src_vite_env_d",
       "label": "vite-env.d.ts",
       "_origin": "ast",
-      "community": 11,
+      "community": 12,
       "file_type": "code",
       "norm_label": "vite-env.d.ts",
       "source_file": "src/vite-env.d.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_site_spec",
-      "label": "site.spec.ts",
-      "_origin": "ast",
-      "community": 13,
-      "file_type": "code",
-      "norm_label": "site.spec.ts",
-      "source_file": "tests/site.spec.ts",
       "source_location": "L1"
     },
     {
@@ -1417,10 +1440,30 @@
       "source_location": "L5"
     },
     {
+      "id": "test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 8,
+      "confidence": "EXTRACTED",
+      "file_type": "code",
+      "norm_label": "@playwright/test",
+      "source_file": "@playwright/test"
+    },
+    {
+      "id": "tests_site_spec",
+      "label": "site.spec.ts",
+      "_origin": "ast",
+      "community": 8,
+      "file_type": "code",
+      "norm_label": "site.spec.ts",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "public_sw",
       "label": "sw.js",
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
       "norm_label": "sw.js",
       "source_file": "public/sw.js",
@@ -1430,21 +1473,11 @@
       "id": "public_sw_precache",
       "label": "PRECACHE",
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
       "norm_label": "precache",
       "source_file": "public/sw.js",
       "source_location": "L4"
-    },
-    {
-      "id": "eslint_config",
-      "label": "eslint.config.mjs",
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "eslint.config.mjs",
-      "source_file": "eslint.config.mjs",
-      "source_location": "L1"
     }
   ],
   "links": [
@@ -3924,6 +3957,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_site_spec",
+      "target": "tests_site_spec_targetbox",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_site_spec",
+      "target": "tests_site_spec_visibleactiontargets",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
       "source": "tsconfig",
       "target": "tsconfig_include",
       "relation": "contains",
@@ -4100,6 +4155,15 @@
       "weight": 1.0
     },
     {
+      "source": "tests_site_spec",
+      "target": "test",
+      "relation": "dynamic_import",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/site.spec.ts"
+    },
+    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -4125,5 +4189,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "caace7c8a75f040d5414b553f1ef897e73762a30"
+  "built_at_commit": "12192a425ce758b4309f38542791758c1dcbe78c"
 }
