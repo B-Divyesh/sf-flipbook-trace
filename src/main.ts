@@ -31,8 +31,9 @@ let outputFrames: HTMLCanvasElement[] = [];
 let loadedVideo: HTMLVideoElement | null = null;
 let loadedVideoUrl = '';
 
-function routePath(): string {
-  return window.location.pathname.replace(/\/+$/, '') || '/';
+function routePath(url = new URL(window.location.href)): string {
+  const pathname = url.pathname.replace(/\/+$/, '') || '/';
+  return pathname === '/demo' || url.searchParams.get('demo') === '1' ? '/demo' : pathname;
 }
 
 function navLink(path: string, label: string): string {
@@ -45,7 +46,7 @@ function shell(content: string): string {
     <header class="site-header">
       <a class="wordmark" href="/" data-route aria-label="Flipbook Trace home"><span aria-hidden="true">FT</span> Flipbook Trace</a>
       <nav aria-label="Main navigation">
-        ${navLink('/demo', 'Demo')}
+        ${navLink('/?demo=1', 'Demo')}
         <a href="/#how">How it works</a>
         ${navLink('/privacy', 'Privacy')}
       </nav>
@@ -66,7 +67,7 @@ function workspaceTemplate(demo: boolean): string {
       <div class="workspace-heading-row">
         <div>
           <h2 id="workspace-heading">Make the tracing frames</h2>
-          <p>${demo ? 'The sample motion is ready. Change a control or export it.' : 'Choose a video you own. The clip and frames disappear on reload.'}</p>
+          <p>${demo ? 'The sample video is ready. Change a control or export it.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
         </div>
         <output id="work-status" class="status-stamp" aria-live="polite">${demo ? '12 frames ready' : 'Waiting for a video'}</output>
       </div>
@@ -75,7 +76,7 @@ function workspaceTemplate(demo: boolean): string {
           <div class="field file-field">
             <label for="video-file">Your video</label>
             <input id="video-file" type="file" accept="video/*" />
-            <span class="field-note">MP4, WebM, or another format your browser can play.</span>
+            <span class="field-note">Choose a video this browser can play.</span>
           </div>
           <div class="time-pair">
             <div class="field"><label for="trim-start">Start time</label><div class="unit-field"><input id="trim-start" type="number" value="0" min="0" max="4" step="0.1" /><span>s</span></div></div>
@@ -92,17 +93,18 @@ function workspaceTemplate(demo: boolean): string {
             <label class="radio"><input type="radio" name="mode" value="gray" /> Grayscale</label>
           </fieldset>
           <div class="field">
-            <div class="label-row"><label for="threshold">Line threshold</label><output id="threshold-value">142</output></div>
+            <div class="label-row"><label for="threshold">Line detail</label><output id="threshold-value">142</output></div>
             <input id="threshold" type="range" min="70" max="220" value="142" />
+            <span class="field-note">Move right to keep more dark areas.</span>
           </div>
           <label class="check"><input id="onion" type="checkbox" /> Show the previous frame in red</label>
           <div class="field">
             <label for="quality">Export width</label>
-            <select id="quality"><option value="960">960 px — free</option><option value="1920">1920 px — Studio</option><option value="0">Source width — Studio</option></select>
+            <select id="quality"><option value="960">960 px — free</option><option value="1920">1920 px — Studio</option><option value="0">Original video width — Studio</option></select>
             <span id="quality-note" class="field-note">Studio controls need a license.</span>
           </div>
           <div class="field">
-            <label for="columns">PDF sheet columns</label>
+            <label for="columns">PDF trace sheet columns</label>
             <select id="columns"><option value="4">4 columns — free</option><option value="6">6 columns — Studio</option></select>
           </div>
           <button class="button button-dark" id="make-frames" type="button" ${demo ? '' : 'disabled'}>Make tracing frames</button>
@@ -120,7 +122,7 @@ function workspaceTemplate(demo: boolean): string {
           <div id="export-bar" class="export-bar" ${demo ? '' : 'hidden'}>
             <div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div>
             <button class="button button-blue" id="export-png" type="button">Export PNG pack</button>
-            <button class="button button-paper" id="export-pdf" type="button">Export PDF sheet</button>
+            <button class="button button-paper" id="export-pdf" type="button">Export PDF trace sheet</button>
           </div>
         </div>
       </div>
@@ -136,18 +138,18 @@ function homePage(): string {
     <main id="main">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Local video → paper study</p>
+          <p class="eyebrow">Local video → printable trace sheet</p>
           <h1 tabindex="-1">Turn your video into tracing frames</h1>
-          <p class="lede">For short-form creators who want a hand-drawn study without uploading their clip.</p>
+          <p class="lede">For short-form creators who want a hand-drawn study without uploading their video.</p>
           <div class="hero-actions">
-            <a class="button button-blue" href="/demo" data-route>Try it with sample data</a>
+            <a class="button button-blue" href="/?demo=1" data-route>Try it with sample data</a>
             <span>It opens a ready 12-frame motion study.</span>
           </div>
           <label class="text-action" for="video-file">Or choose your own video ↓</label>
           <ul class="fact-list" aria-label="Product facts">
             <li>Video stays in this browser.</li>
             <li>Works offline after the first visit.</li>
-            <li>Free: PNG pack and PDF sheet.</li>
+            <li>Free: PNG pack and PDF trace sheet.</li>
           </ul>
         </div>
         <figure class="hero-art">
@@ -166,12 +168,12 @@ function homePage(): string {
         <ol>
           <li><span>1</span><div><h3>Choose and trim</h3><p>Pick a 1–5 second section from a video you own.</p></div></li>
           <li><span>2</span><div><h3>Set the lines</h3><p>Choose the frame rate and adjust the trace preview.</p></div></li>
-          <li><span>3</span><div><h3>Print or draw</h3><p>Export numbered PNGs or one PDF contact sheet.</p></div></li>
+          <li><span>3</span><div><h3>Print or draw</h3><p>Export numbered PNGs or one PDF trace sheet.</p></div></li>
         </ol>
       </section>
       <section class="privacy-panel" aria-labelledby="limits-heading">
         <div class="torn-note"><span aria-hidden="true">NO CLOUD</span></div>
-        <div><div class="section-kicker">03 / Boundaries</div><h2 id="limits-heading">A preparation tool, not a video editor</h2><p>Flipbook Trace does not publish, host, or generate video. It does not retain your clip. Use footage you own or have permission to trace.</p><p>Large or long videos may use more memory. Trim the source before loading it if your device slows down.</p></div>
+        <div><div class="section-kicker">03 / Boundaries</div><h2 id="limits-heading">A preparation tool, not a video editor</h2><p>Flipbook Trace does not publish, host, or generate video. It does not retain your video. Use a video you own or have permission to trace.</p><p>Large or long videos may use more memory. Trim the video before loading it if your device slows down.</p></div>
       </section>
       ${paidSection()}
     </main>`);
@@ -180,7 +182,7 @@ function homePage(): string {
 function paidSection(): string {
   return `<section class="paid" aria-labelledby="paid-heading">
     <div class="paid-mark" aria-hidden="true">STUDIO<br />PASS</div>
-    <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF exports. Studio adds 1920 px, source-width exports, and a six-column sheet.</p><p class="legal-note">Sociobot/Dodo is the merchant of record. Refunds are handled there.</p></div>
+    <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF trace sheet exports. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo opens checkout for Sociobot.</p></div>
     <div class="license-actions">
       <a class="button button-red" href="${BILLING_BASE}/api/v1/products/${PRODUCT}/checkout">Buy Studio for $9</a>
       <p id="license-status" class="license-status" aria-live="polite">${isPro ? 'Studio is active on this device.' : ''}</p>
@@ -191,15 +193,15 @@ function paidSection(): string {
 }
 
 function demoPage(): string {
-  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sample motion study</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p></section>${workspaceTemplate(true)}</main>`);
+  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sample motion study</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · adjust the controls below</p></div></section>${workspaceTemplate(true)}</main>`);
 }
 
 function privacyPage(): string {
-  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Plain-language policy</p><h1 tabindex="-1">Privacy without an upload</h1><p class="lede">Your video stays in your browser while you work.</p><h2>What stays on your device</h2><p>Video decoding, frame selection, filtering, and exports run in your browser. The clip and generated frames disappear on reload. Your control settings use browser storage.</p><h2>When the network is used</h2><p>The installed app checks its own site for updates. If you buy or verify Studio, your browser contacts the Sociobot billing service. The service receives the license token and normal request details.</p><h2>Delete local data</h2><p>Clear this site's browser data to remove settings and a saved license. Demo mode does not read or change real settings or licenses.</p><h2>Contact</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with privacy questions.</p></main>`);
+  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Plain-language policy</p><h1 tabindex="-1">Privacy without an upload</h1><p class="lede">Your video stays in your browser while you work.</p><h2>What stays on your device</h2><p>Video decoding, frame selection, filtering, and exports run in your browser. The video and generated frames disappear on reload. Your control settings use browser storage.</p><h2>When the network is used</h2><p>The installed app checks this site for updates. If you verify Studio, your browser sends the license token to Sociobot for that check.</p><h2>Delete local data</h2><p>Clear this site's browser data to remove settings and a saved license. Demo mode does not read or change real settings or licenses.</p><h2>Contact</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with privacy questions.</p></main>`);
 }
 
 function termsPage(): string {
-  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with footage you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy footage without permission.</p><h2>The service</h2><p>The app is provided as-is. Browser video support varies by device and format. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Sociobot/Dodo is the merchant of record. A refund revokes the related license.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`);
+  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with a video you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy a video without permission.</p><h2>The service</h2><p>The app is provided as-is. Video support varies by browser. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Dodo opens checkout for Sociobot. Studio enables the larger export choices.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`);
 }
 
 function notFoundPage(): string {
@@ -208,15 +210,21 @@ function notFoundPage(): string {
 
 function updateMeta(path: string): void {
   const details: Record<string, [string, string]> = {
-    '/': ['Flipbook Trace — Turn video into tracing frames', 'Choose a local video, pick frames, and export numbered PNGs or a printable tracing sheet.'],
-    '/demo': ['Demo — Flipbook Trace', 'Try a ready twelve-frame paper bird motion study.'],
+    '/': ['Flipbook Trace — Turn video into tracing frames', 'Choose a local video, pick frames, and export numbered PNGs or a printable PDF trace sheet.'],
+    '/demo': ['Demo — Flipbook Trace', 'Try twelve ready paper-bird tracing frames.'],
     '/privacy': ['Privacy — Flipbook Trace', 'How Flipbook Trace handles local video, settings, and licenses.'],
     '/terms': ['Terms — Flipbook Trace', 'Terms for using Flipbook Trace and buying Studio.'],
   };
   const [title, description] = details[path] || ['Page not found — Flipbook Trace', 'Return to the Flipbook Trace worktable.'];
+  const canonical = `https://flipbook-trace.sociobot.in${path}`;
   document.title = title;
   document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', description);
-  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', `https://flipbook-trace.sociobot.in${path}`);
+  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', canonical);
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute('content', title);
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute('content', description);
+  document.querySelector<HTMLMetaElement>('meta[property="og:url"]')?.setAttribute('content', canonical);
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')?.setAttribute('content', title);
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')?.setAttribute('content', description);
 }
 
 async function render(path = routePath(), focus = false): Promise<void> {
@@ -254,7 +262,7 @@ function bindNavigation(): void {
       if (url.origin !== window.location.origin) return;
       event.preventDefault();
       history.pushState({}, '', url.pathname + url.search + url.hash);
-      void render(url.pathname, true);
+      void render(routePath(url), true);
     });
   });
 }
@@ -348,13 +356,29 @@ function loadDemoFrames(): void {
     return canvas;
   });
   rebuildOutputFrames();
+  paintDemoPeek();
+}
+
+function paintDemoPeek(): void {
+  const strip = document.querySelector<HTMLDivElement>('#demo-strip');
+  if (!strip) return;
+  strip.replaceChildren();
+  outputFrames.forEach((frame, index) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = frame.width;
+    canvas.height = frame.height;
+    canvas.getContext('2d')?.drawImage(frame, 0, 0);
+    canvas.setAttribute('role', 'img');
+    canvas.setAttribute('aria-label', `Sample tracing frame ${index + 1} of ${outputFrames.length}`);
+    strip.append(canvas);
+  });
 }
 
 async function loadVideo(file?: File): Promise<void> {
   clearError();
   if (!file) return;
   if (!file.type.startsWith('video/')) {
-    showError('That file is not a video. Choose an MP4, WebM, or another playable video.');
+    showError('That file is not a video. Choose a video this browser can play.');
     return;
   }
   if (file.size > 500 * 1024 * 1024) {
@@ -415,8 +439,8 @@ async function makeFramesFromVideo(): Promise<void> {
     return;
   }
   const count = Math.max(2, Math.floor((end - start) * settings.fps));
-  const desiredWidth = settings.quality === 0 ? loadedVideo.videoWidth : Math.min(settings.quality, loadedVideo.videoWidth);
-  const width = Math.max(320, desiredWidth);
+  const desiredWidth = settings.quality === 0 ? loadedVideo.videoWidth : settings.quality;
+  const width = Math.max(1, desiredWidth);
   const height = Math.round(width * loadedVideo.videoHeight / loadedVideo.videoWidth);
   sourceFrames = [];
   setStatus(`Making 0 of ${count} frames…`);
@@ -494,12 +518,12 @@ async function exportPng(): Promise<void> {
 
 async function exportPdf(): Promise<void> {
   if (!outputFrames.length) return;
-  setStatus('Laying out the PDF sheet…');
+  setStatus('Laying out the PDF trace sheet…');
   try {
     downloadBlob(await makePdf(outputFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
-    setStatus('PDF sheet exported');
+    setStatus('PDF trace sheet exported');
   } catch {
-    showError('The PDF sheet could not be made. Try fewer frames.');
+    showError('The PDF trace sheet could not be made. Try fewer frames.');
   }
 }
 

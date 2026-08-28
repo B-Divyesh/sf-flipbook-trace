@@ -79,7 +79,7 @@ test('build output uses hashed immutable assets and a revalidated service worker
   expect(config.routes.find((route) => route.route === '/sw.js')?.headers['Cache-Control']).toContain('no-cache');
 });
 
-test('a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
+test('@claim:app-update-check a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
   const distRoot = join(process.cwd(), 'dist');
   const originalWorker = await readFile(join(distRoot, 'sw.js'), 'utf8');
   let serveUpdate = false;
@@ -133,3 +133,57 @@ test('internal navigation uses real URLs and restores page focus', async ({ page
   await page.goBack();
   await expect(page).toHaveURL('/');
 });
+
+for (const [route, title] of [['/', 'Flipbook Trace — Turn video into tracing frames'], ['/?demo=1', 'Demo — Flipbook Trace'], ['/privacy', 'Privacy — Flipbook Trace'], ['/terms', 'Terms — Flipbook Trace'], ['/missing-page', 'Page not found — Flipbook Trace']] as const) {
+  test(`${route} updates Open Graph and Twitter route metadata`, async ({ page }) => {
+    await page.goto(route);
+    const canonicalPath = route === '/?demo=1' ? '/demo' : route;
+    expect(await page.locator('meta[property="og:title"]').getAttribute('content')).toBe(title);
+    expect(await page.locator('meta[name="twitter:title"]').getAttribute('content')).toBe(title);
+    expect(await page.locator('meta[property="og:url"]').getAttribute('content')).toBe(`https://flipbook-trace.sociobot.in${canonicalPath}`);
+  });
+}
+
+test('the deployment configuration returns the designed 404 artifact for unknown URLs', async () => {
+  const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf8')) as { responseOverrides?: { '404'?: { rewrite?: string } } };
+  expect(config.responseOverrides?.['404']?.rewrite).toBe('/404.html');
+  const page404 = await readFile('public/404.html', 'utf8');
+  expect(page404).toContain('<title>Page not found — Flipbook Trace</title>');
+  expect(page404).toContain('This page fell out of the stack');
+  expect(page404).toContain('href="/privacy"');
+  expect(page404).toContain('href="/terms"');
+});
+
+test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {
+  const page404 = await readFile('dist/404.html');
+  const server = createServer((incoming, response) => {
+    if (incoming.url === '/missing-page') {
+      response.writeHead(404, { 'Content-Type': 'text/html' });
+      response.end(page404);
+      return;
+    }
+    response.writeHead(200).end();
+  });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('404 test server did not start.');
+  try {
+    const response = await request.get(`http://127.0.0.1:${address.port}/missing-page`);
+    expect(response.status()).toBe(404);
+    expect(await response.text()).toContain('This page fell out of the stack');
+  } finally {
+    await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+  }
+});
+
+for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+  test(`the one-click demo shows a sample frame in the ${viewport.width}px first viewport`, async ({ browser }) => {
+    const page = await browser.newPage({ viewport });
+    await page.goto('/');
+    await page.getByRole('link', { name: 'Try it with sample data' }).click();
+    const frame = await page.locator('#demo-strip canvas').first().boundingBox();
+    expect(frame).toBeTruthy();
+    expect(frame!.y + frame!.height).toBeLessThanOrEqual(viewport.height);
+    await page.close();
+  });
+}

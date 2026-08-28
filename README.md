@@ -2,30 +2,30 @@
 
 Turn your video into printable tracing frames.
 
-Flipbook Trace is a local browser tool for short-form video creators. Choose a 1–5 second section, set the frame rate and trace style, then export numbered PNGs or a PDF contact sheet.
+Flipbook Trace is a local browser tool for short-form video creators. Choose a 1–5 second section, set the frame rate and trace style, then export numbered PNGs or a PDF trace sheet.
 
-The app decodes and processes video in the browser. The clip and frames disappear on reload. After the first visit, the app and its built-in demo work offline.
+The app decodes and processes video in the browser. The video and frames disappear on reload. After the first visit, the app and its built-in demo work offline.
 
 Live site: <https://flipbook-trace.sociobot.in>
 
-Demo: <https://flipbook-trace.sociobot.in/demo>
+Demo: <https://flipbook-trace.sociobot.in/?demo=1>
 
 ## What it includes
 
-- Video formats supported by the current browser
+- Choose a video this browser can play
 - 2, 4, 6, 8, or 12 frames each second
 - Pencil edge, high contrast, and grayscale trace styles
-- Optional previous-frame onion skin
-- Numbered PNG pack and printable PDF contact sheet
+- Optionally show the previous frame in red
+- Numbered PNG pack and printable PDF trace sheet
 - A twelve-frame paper bird demo that does not read or change real saved data
-- Installable PWA shell and offline reload
+- Install the app and reopen the demo offline
 - Settings export and import
 
-The free version includes 960 px PNG and PDF exports. Studio costs $9 once and adds 1920 px, source-width exports, and six-column sheets. Purchases and license checks use the Sociobot billing API.
+The free version includes 960 px PNG and PDF trace sheet exports. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens checkout for Sociobot.
 
 ## Who it is for
 
-This tool is for creators preparing a hand-drawn flipbook study from footage they own. It replaces manual frame extraction. It is not a video editor, publishing service, or style-transfer tool.
+This tool is for creators preparing a hand-drawn flipbook study from a video they own. It replaces manual frame extraction. It is not a video editor, publishing service, or style-transfer tool.
 
 ## Run locally
 
@@ -36,7 +36,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. Use `/demo` to open the bundled sample.
+Open the local URL printed by Vite. Use `/?demo=1` to open the bundled sample.
 
 ## Test and build
 
@@ -54,11 +54,11 @@ Each published product claim and its exact test command is recorded in [`.factor
 
 ## Privacy and file handling
 
-Video frames live only in page memory and disappear when the page reloads or closes. IndexedDB stores control settings. Local storage holds a Studio license and its latest verification result when a buyer adds one. Demo mode does not read or change either real-data store. `/privacy` and `/terms` contain the user-facing policies.
+Video frames live only in page memory and disappear when the page reloads or closes. This site's browser data stores your control settings, Studio license, and latest license check. Demo mode does not read or change those real-data stores. Technically, settings use IndexedDB and a license uses localStorage. `/privacy` and `/terms` contain the user-facing policies.
 
 ## Deploy
 
-Deploy the contents of `dist/` as a static site. Keep the SPA navigation fallback and response headers from `public/staticwebapp.config.json`. The factory handles infrastructure, DNS, and billing registration.
+Deploy the contents of `dist/` as a static site. Keep the host rules that send valid app routes to `index.html`, return the designed 404 for unknown routes, and set the listed security headers. The factory handles infrastructure, DNS, and billing registration.
 
 Set `VITE_BILLING_BASE` only when the factory needs a non-production billing endpoint. It defaults to `https://api.sociobot.in`.
 

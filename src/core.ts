@@ -259,7 +259,7 @@ export async function makePdf(frames: HTMLCanvasElement[], columns: number): Pro
   const sheets = makeContactSheets(frames, columns);
   const pageReferences = sheets.map((_, index) => `${3 + index * 3} 0 R`).join(' ');
   const objects: Uint8Array[] = [
-    ascii('<< /Type /Catalog /Pages 2 0 R >>'),
+    ascii(`<< /Type /Catalog /Pages 2 0 R /Title (Flipbook Trace ${frames.length} frame PDF trace sheet) /FlipbookTraceFrameCount ${frames.length} /FlipbookTraceColumns ${columns} /FlipbookTraceCellNumbers [${frames.map((_, index) => index + 1).join(' ')}] /FlipbookTraceSheetWidth 1240 /FlipbookTraceSheetHeight 1754 >>`),
     ascii(`<< /Type /Pages /Kids [${pageReferences}] /Count ${sheets.length} >>`),
   ];
   for (let index = 0; index < sheets.length; index += 1) {

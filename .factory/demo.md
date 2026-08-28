@@ -2,9 +2,9 @@
 
 ## Entry point
 
-- Local: `http://localhost:5173/demo`
-- Production: `https://flipbook-trace.sociobot.in/demo`
-- Query-free route: `/demo`
+- Local: `http://localhost:5173/?demo=1`
+- Production: `https://flipbook-trace.sociobot.in/?demo=1`
+- `/demo` is also a direct, reload-safe alias.
 
 The landing page reaches the demo in one click with **Try it with sample data**.
 
@@ -16,7 +16,7 @@ All frame controls and both free exports operate on these sample frames. The def
 
 ## Isolation and reset
 
-Demo settings stay in memory. The demo does not read or write the real `flipbook-trace` IndexedDB database or the Studio license keys. It does not retain an imported file.
+Demo settings and frames stay in page memory only. The demo does not open or write the real `flipbook-trace` IndexedDB database or read the Studio license keys. It does not retain an imported file.
 
 **Reset demo** rebuilds the twelve frames with default controls. **Start for real** leaves demo mode and opens the local video workspace. The banner remains visible for the whole demo route.
 

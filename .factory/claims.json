@@ -1,93 +1,18 @@
 [
-  {
-    "id": "clip-workflow",
-    "claim": "Turns a 1–5 second section of a local video into tracing frames.",
-    "where": "landing workflow and README",
-    "test": "npm test -- --grep @claim:clip-workflow",
-    "sandbox": "fresh browser context; create a local WebM, import it, assert rendered frames, then assert the trim limit"
-  },
-  {
-    "id": "demo-ready",
-    "claim": "Try a ready twelve-frame motion study with one click.",
-    "where": "landing action and demo",
-    "test": "npm test -- --grep @claim:demo-ready",
-    "sandbox": "fresh browser context at /demo; assert twelve rendered sample frames"
-  },
-  {
-    "id": "demo-isolation",
-    "claim": "Demo sample data is not saved and demo mode does not read or change real settings or licenses.",
-    "where": "demo banner, demo contract, and README",
-    "test": "npm test -- --grep @claim:demo-isolation",
-    "sandbox": "preload a real license and preferences; open /demo; assert license keys were not read, paid controls stay locked, reset works, and real storage is unchanged"
-  },
-  {
-    "id": "png-export",
-    "claim": "Exports numbered PNGs as a ZIP pack.",
-    "where": "workspace and README",
-    "test": "npm test -- --grep @claim:png-export",
-    "sandbox": "demo frames; inspect ZIP signature and twelfth numbered filename"
-  },
-  {
-    "id": "pdf-export",
-    "claim": "Exports a printable PDF contact sheet.",
-    "where": "workspace and README",
-    "test": "npm test -- --grep @claim:pdf-export",
-    "sandbox": "demo frames; inspect downloaded PDF signature and content size"
-  },
-  {
-    "id": "local-processing",
-    "claim": "Video and frame processing stay in the browser.",
-    "where": "landing facts, privacy, and README",
-    "test": "npm test -- --grep @claim:local-processing",
-    "sandbox": "fresh real workspace; generate and import a playable local WebM, monitor the full frame and export flow, and assert no cross-origin requests"
-  },
-  {
-    "id": "ephemeral-project",
-    "claim": "The source clip and generated frames stay in page memory and disappear on reload.",
-    "where": "workspace, privacy page, and README",
-    "test": "npm test -- --grep @claim:ephemeral-project",
-    "sandbox": "fresh real workspace; create and load a playable WebM, reload, assert the file and frames are gone and no clip identifier entered IndexedDB"
-  },
-  {
-    "id": "trace-controls",
-    "claim": "Offers five frame rates, three trace styles, and an optional previous-frame onion skin.",
-    "where": "workspace and README",
-    "test": "npm test -- --grep @claim:trace-controls",
-    "sandbox": "fresh demo; assert all frame rates and compare rendered Canvas output after each trace style and onion-skin change"
-  },
-  {
-    "id": "settings-portability",
-    "claim": "Exports and imports settings as JSON and keeps imported settings after reload.",
-    "where": "workspace and README",
-    "test": "npm test -- --grep @claim:settings-portability",
-    "sandbox": "fresh real workspace; change settings, export JSON, change controls, import the download, then assert restored values before and after reload"
-  },
-  {
-    "id": "offline-reload",
-    "claim": "Works offline after the first visit.",
-    "where": "landing facts and README",
-    "test": "npm test -- --grep @claim:offline-reload",
-    "sandbox": "fresh browser context at /demo; wait for service worker, set offline, reload, and assert all frames"
-  },
-  {
-    "id": "pwa-installable",
-    "claim": "Installs as a standalone PWA.",
-    "where": "README",
-    "test": "npm test -- --grep @claim:pwa-installable",
-    "sandbox": "fresh browser context; validate standalone manifest, required icons, maskable icon, start URL, and a controlling service worker"
-  },
-  {
-    "id": "studio-quality",
-    "claim": "Studio adds 1920 px, source-width exports, and six-column sheets.",
-    "where": "paid section and README",
-    "test": "npm test -- --grep @claim:studio-quality",
-    "sandbox": "fresh context with a valid one-day cached verdict; select 1920 px and six columns"
-  },
-  {
-    "id": "studio-purchase",
-    "claim": "Studio costs $9 once and opens the registered Sociobot hosted checkout.",
-    "where": "paid section, terms, and README",
-    "test": "npm test -- --grep @claim:studio-purchase",
-    "sandbox": "fresh page; assert the visible $9 link targets the production product and the endpoint redirects to a Dodo hosted checkout session"
-  }
+  {"id":"clip-workflow","claim":"Turns a 1–5 second section of a local video into tracing frames.","where":"landing workflow and README","test":"npm test -- --grep @claim:clip-workflow","sandbox":"fresh browser; create a six-second local WebM; prove 1.0 and 5.0 seconds render frames and 0.5 and 5.1 seconds show the recovery message"},
+  {"id":"demo-ready","claim":"Try a ready twelve-frame motion study with one click.","where":"landing action and demo","test":"npm test -- --grep @claim:demo-ready","sandbox":"fresh 390 px browser at landing; click the named action once; assert ?demo=1, banner, twelve frames, and a visible sample frame"},
+  {"id":"demo-isolation","claim":"Demo sample data is not saved and demo mode does not read or change real settings or licenses.","where":"demo banner, demo contract, README, and privacy","test":"npm test -- --grep @claim:demo-isolation","sandbox":"preseed real IndexedDB preferences and license keys before demo navigation; instrument reads and opens; reset demo; start for real; compare all real storage"},
+  {"id":"png-export","claim":"Exports numbered PNGs as a ZIP pack.","where":"workspace and README","test":"npm test -- --grep @claim:png-export","sandbox":"demo frames; inspect ZIP signature and final numbered filename"},
+  {"id":"pdf-export","claim":"Exports a printable PDF trace sheet.","where":"workspace, landing workflow, and README","test":"npm test -- --grep @claim:pdf-export","sandbox":"demo frames; parse PDF page tree, 12-frame/4-column layout metadata, page image dimensions, JPEG image object, and non-blank size"},
+  {"id":"local-processing","claim":"Video and frame processing stay in the browser.","where":"landing facts, privacy, and README","test":"npm test -- --grep @claim:local-processing","sandbox":"after the shell loads, import and export a generated local WebM; reject every non-GET/HEAD or request body and every off-origin request"},
+  {"id":"ephemeral-project","claim":"The source video and generated frames stay in page memory and disappear on reload.","where":"workspace, privacy page, and README","test":"npm test -- --grep @claim:ephemeral-project","sandbox":"import a named local WebM; inspect every IndexedDB value, Cache Storage key, and OPFS entry for file data; reload and assert cleared UI"},
+  {"id":"trace-controls","claim":"Offers five frame rates, three trace styles, and an optional previous-frame overlay.","where":"workspace and README","test":"npm test -- --grep @claim:trace-controls","sandbox":"demo; assert all rates and compare Canvas output after each style and overlay change"},
+  {"id":"settings-portability","claim":"Exports and imports settings as JSON and keeps imported settings after reload.","where":"workspace and README","test":"npm test -- --grep @claim:settings-portability","sandbox":"real workspace; export changed settings, import them, and assert restored controls before and after reload"},
+  {"id":"offline-reload","claim":"Works offline after the first visit.","where":"landing facts and README","test":"npm test -- --grep @claim:offline-reload","sandbox":"fresh demo visit; wait for the controlling service worker, disable network, reload, and assert all sample frames"},
+  {"id":"pwa-installable","claim":"Installs as a standalone PWA.","where":"README","test":"npm test -- --grep @claim:pwa-installable","sandbox":"fresh demo; validate manifest display, icons, start URL, and controlling service worker"},
+  {"id":"studio-quality","claim":"Studio adds 1920 px, original-video-width exports, and six-column PDF trace sheets.","where":"paid section, terms, and README","test":"npm test -- --grep @claim:studio-quality","sandbox":"valid cached license; use a 320 px local video; inspect PNG headers at 1920 and original width and parse six-column PDF metadata"},
+  {"id":"studio-purchase","claim":"Studio costs USD 9 once and opens Flipbook Trace Studio in Sociobot's hosted checkout.","where":"paid section, terms, and README","test":"npm test -- --grep @claim:studio-purchase","sandbox":"follow the registered checkout redirect and assert Dodo session, product name, USD $9.00 total, and One-time text"},
+  {"id":"studio-license-check","claim":"A pasted Studio license is sent to Sociobot only to verify that license.","where":"privacy","test":"npm test -- --grep @claim:studio-license-check","sandbox":"intercept the verification fixture; paste a token; assert the single Sociobot verification URL and active result"},
+  {"id":"browser-data-deletion","claim":"Clearing this site's browser data removes settings and a saved license.","where":"privacy","test":"npm test -- --grep @claim:browser-data-deletion","sandbox":"seed changed settings and a license; clear all browser data through the protocol; reload and assert defaults and no license"},
+  {"id":"app-update-check","claim":"The installed app checks this site for updates.","where":"privacy","test":"npm test -- --grep @claim:app-update-check","sandbox":"serve a changed worker; request an update; assert a new shell cache and the update-ready notice"}
 ]
