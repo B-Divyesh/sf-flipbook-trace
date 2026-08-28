@@ -17,6 +17,7 @@
       "src_main_notfoundpage",
       "src_main_outputframes",
       "src_main_paidsection",
+      "src_main_paintdemopeek",
       "src_main_privacypage",
       "src_main_render",
       "src_main_routepath",
@@ -134,20 +135,23 @@
       "scripts_finalize_build_workerpath"
     ],
     "7": [
+      "tests_claims_spec",
+      "tests_claims_spec_idbvalue",
+      "tests_claims_spec_loadrecordedvideo",
+      "tests_claims_spec_pngdimensionsinzip"
+    ],
+    "8": [
       "public_sw",
       "public_sw_precache"
     ],
-    "8": [
+    "9": [
       "eslint_config"
     ],
-    "9": [
+    "10": [
       "playwright_config"
     ],
-    "10": [
-      "src_vite_env_d"
-    ],
     "11": [
-      "tests_claims_spec"
+      "src_vite_env_d"
     ],
     "12": [
       "tests_claims_spec_storage_getitem"
@@ -163,14 +167,14 @@
     ]
   },
   "cohesion": {
-    "0": 0.150997150997151,
+    "0": 0.14814814814814814,
     "1": 0.09090909090909091,
     "2": 0.17543859649122806,
     "3": 0.11764705882352941,
     "4": 0.3,
     "5": 0.15384615384615385,
     "6": 0.4,
-    "7": 1.0,
+    "7": 0.5,
     "8": 1.0,
     "9": 1.0,
     "10": 1.0,
@@ -202,6 +206,11 @@
       "degree": 10
     },
     {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
+    },
+    {
       "id": "src_core_makepngzip",
       "label": "makePngZip()",
       "degree": 8
@@ -217,25 +226,20 @@
       "degree": 8
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
+      "id": "src_core_makepdf",
+      "label": "makePdf()",
+      "degree": 7
     },
     {
       "id": "src_main_shell",
       "label": "shell()",
       "degree": 7
-    },
-    {
-      "id": "src_core_makepdf",
-      "label": "makePdf()",
-      "degree": 7
     }
   ],
   "surprises": [
     {
-      "source": "rebuildOutputFrames()",
-      "target": "applyTraceFilter()",
+      "source": "importSettings()",
+      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -245,8 +249,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "exportPdf()",
-      "target": "makePdf()",
+      "source": "rebuildOutputFrames()",
+      "target": "applyTraceFilter()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -267,8 +271,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "importSettings()",
-      "target": "normalizeSettings()",
+      "source": "exportPdf()",
+      "target": "makePdf()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
