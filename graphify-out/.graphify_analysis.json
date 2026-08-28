@@ -206,11 +206,6 @@
       "degree": 10
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
-    },
-    {
       "id": "src_core_makepngzip",
       "label": "makePngZip()",
       "degree": 8
@@ -226,20 +221,25 @@
       "degree": 8
     },
     {
-      "id": "src_core_makepdf",
-      "label": "makePdf()",
-      "degree": 7
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
     },
     {
       "id": "src_main_shell",
       "label": "shell()",
       "degree": 7
+    },
+    {
+      "id": "src_core_makepdf",
+      "label": "makePdf()",
+      "degree": 7
     }
   ],
   "surprises": [
     {
-      "source": "importSettings()",
-      "target": "normalizeSettings()",
+      "source": "rebuildOutputFrames()",
+      "target": "applyTraceFilter()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -249,8 +249,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "rebuildOutputFrames()",
-      "target": "applyTraceFilter()",
+      "source": "exportPdf()",
+      "target": "makePdf()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -271,8 +271,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "exportPdf()",
-      "target": "makePdf()",
+      "source": "importSettings()",
+      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
