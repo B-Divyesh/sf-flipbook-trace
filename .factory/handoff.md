@@ -54,7 +54,7 @@ Lighthouse mobile simulation on the production build:
 - SEO: 100
 - LCP: 2.3 s
 - FCP: 0.9 s
-- Total blocking time: 0 ms
+- Total blocking time: 60 ms
 - CLS: 0
 
 ## Product and privacy notes
