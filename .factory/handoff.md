@@ -1,82 +1,91 @@
-# Flipbook Trace handoff
+# Flipbook Trace repair handoff
 
-## Independent verification — FAIL (2026-08-28)
+Work order: `flipbook-trace-repair-1`
 
-Candidate `626d92760bb77e8037fb596f324bbe0f371fa2cf` was tested against `https://flipbook-trace.sociobot.in`. The live core app, exports, offline reload, accessibility scans, build, and all seven registered claim commands pass, and the deployment is byte-for-byte identical to the candidate.
+Repair base/report: `1fd9cf8cf88ee0ab0477eb01357179b92cf71f6b`
 
-Release is blocked by four high-severity findings: the production Studio checkout returns HTTP 404; `npm run test:unit` exits 1 because Vitest collects Playwright suites; `/demo` reads a real cached Studio license and exposes paid controls; and public promises remain missing from or under-tested by `.factory/claims.json`. Several mobile targets are smaller than 44×44 px, and the required three product facts sit below the initial desktop viewport. Full commands, measurements, and required fixes are in [`.factory/verification.md`](verification.md).
-
-**Handoff status: FAIL — do not release until the blocking findings are fixed and independently retested.**
-
----
-
-Work order: `flipbook-trace-build-1`
+Failed candidate: `626d92760bb77e8037fb596f324bbe0f371fa2cf`
 
 Completed: 2026-08-28
 
-Build output: `dist/`
+Artifact/deployment class: `pwa-offline` / static; output remains `dist/` with `index.html` at its root.
 
-## What was built
+## Release blockers repaired
 
-- A local-first video workflow for playable browser video formats.
-- A strict 1–5 second trim, with 2, 4, 6, 8, or 12 frames each second.
-- Pencil-edge, high-contrast, grayscale, threshold, and previous-frame controls.
-- Numbered PNG ZIP export with no runtime dependency.
-- Multi-page PDF contact sheets that include every selected frame.
-- A one-click `/demo` with twelve code-drawn paper bird frames.
-- Demo reset, real-work exit, and a persistent sandbox banner.
-- IndexedDB preferences plus JSON settings export and import.
-- Installable PWA metadata, versioned shell caching, deep-route offline reload, and an offline fallback.
-- Landing, demo, privacy, terms, and product-specific 404 routes with History API navigation and focus restoration.
-- $9 one-time Studio tier using the Sociobot checkout, saved license return, daily cached verification, and pasted-license restore.
-- Studio controls for 1920 px, source-width output, and six-column sheets. Free 960 px PNG and PDF exports remain available.
-- An original risograph worktable hero, responsive WebP derivatives, social card, favicon, and install icons.
-- A product-specific visual contract, copy audit, demo contract, and executable claim registry.
+- The production Studio product is registered. Its Sociobot checkout now returns HTTP 303 to a `checkout.dodopayments.com/session/...` URL. A live regression also covers the license return, URL cleanup, saved token, and verification result path.
+- `npm run test:unit` now scopes Vitest to real unit files. It passes three settings-validation tests instead of collecting Playwright suites.
+- `/demo` no longer initializes or reads real license keys. Studio checks also require `!isDemo`, so paid controls remain locked after either direct entry or client-side navigation. The regression preloads a valid real license and real IndexedDB data, records storage reads, exercises/reset the demo, and proves both stores remain unchanged.
+- `.factory/claims.json` now lists 13 public claims. Each ID occurs in exactly one Playwright test. New observable coverage proves demo isolation, clip/frame retention, all trace controls, settings JSON round-trip and persistence, PWA metadata/control, and live Studio checkout/return behavior.
+- Mobile wordmark, navigation, demo actions, and footer links now measure at least 44×44 CSS px. The 390×844 regression measures every previously failing target and checks horizontal overflow.
+- A compact desktop hero treatment keeps all three product facts above the fold at both 1366×768 and 1440×900. Both viewport bounds are asserted.
+- Vite restores content hashes for production JS/CSS. The build finalizer injects those exact names and a build hash into the service worker. Static host rules cache hashed assets for one year as immutable while the worker remains `no-store`/revalidated. A controlled browser update test proves a new worker activates, removes the old cache, and announces the update.
 
-## Verification
+## Clean verification evidence
 
-Run from a clean checkout:
+The final release matrix was run from `npm ci` on 2026-08-28:
+
+- `npm ci`: 140 packages installed; 0 vulnerabilities.
+- `npm audit --audit-level=high`: passed; 0 vulnerabilities.
+- `npm run test:unit`: passed; 3/3 Vitest unit tests.
+- `npm run typecheck`: passed with strict TypeScript, unused checks, and no emit.
+- `npm run lint`: passed with ESLint 10 and typescript-eslint.
+- `npm test`: passed; 25/25 Playwright Chromium tests after the update regression was added.
+- Every exact `.factory/claims.json` command: passed independently; 13 claims, one matching test each.
+- `npm run build`: passed; hashed production assets and finalized service worker written to `dist/`.
+- Package/consumer test: not applicable to this static PWA; the production `dist/` bundle is the shipped artifact.
+
+Production sizes:
+
+- HTML: 1.68 KB / 0.58 KB gzip.
+- JavaScript: 29.66 KB / 10.82 KB gzip.
+- CSS: 14.86 KB / 4.19 KB gzip.
+- Total Lighthouse transfer: 190 KiB.
+
+Browser and product coverage:
+
+- Desktop: 1366×768 and 1440×900 first-screen bounds; full workflow and route checks.
+- Mobile: 390×844, no horizontal overflow, measured 44 px targets.
+- Keyboard: skip link, range Arrow key, focused export button, Enter-triggered download.
+- Accessibility: axe on `/`, `/demo`, `/privacy`, `/terms`, and 404 found zero serious/critical findings. Each route has English language, one H1, one main landmark, valid titles, and no console errors.
+- Privacy: an actual generated local WebM was decoded, filtered, and exported with same-origin requests only. Reload removed the source input and frames. Demo did not read or mutate real settings/licenses.
+- Offline/install: the controlled `/demo` reload retained all 12 frames offline. Manifest icons, standalone mode, start URL, and controlling worker passed.
+- Update: a changed worker activated, replaced the previous versioned cache, and displayed `An update is ready. Reload to use it.`
+- Response policy: build assertions cover immutable hashed assets and no-cache service worker rules. CSP, referrer, MIME, permissions, and nosniff headers remain in `staticwebapp.config.json`.
+- Checkout identity: production endpoint returned 303 to Dodo hosted checkout; license return and verification integration passed.
+
+`/opt/fleet/lib/verify-url.sh` against the production preview returned HTTP 200, load 799 ms, title/lang/main/H1/alt checks passed, and zero console/page errors.
+
+Lighthouse 12.8.2 mobile against the production preview:
+
+- Performance: 98
+- Accessibility: 100
+- Best practices: 100
+- SEO: 100
+- FCP: 0.9 s
+- LCP: 2.3 s
+- TBT: 120 ms
+- CLS: 0
+
+## Run and verify
 
 ```sh
-npm install
+npm ci
+npm audit --audit-level=high
+npm run test:unit
+npm run typecheck
+npm run lint
 npm test
 npm run build
 ```
 
-Results recorded on 2026-08-28:
+The demo entry point is `/demo`. Its reset restores the 12 bundled bird frames and default controls. Demo work stays in memory; real preferences use IndexedDB and real licenses use the namespaced local-storage keys documented in `.factory/demo.md`.
 
-- `npm test`: 14 passed in Chromium 145.
-- Seven claim tests passed, including real WebM import, ZIP/PDF downloads, no cross-origin demo requests, paid controls, and offline reload.
-- Axe: zero serious or critical issues on `/`, `/demo`, `/privacy`, `/terms`, and the 404 route.
-- Mobile: the 390×844 demo has no horizontal overflow and keeps the keyboard skip path.
-- `/opt/fleet/lib/verify-url.sh`: HTTP 200, one H1, main landmark, English language, image alt text, and zero console errors.
-- `npm run build`: passed; `dist/index.html` is at the deployment root.
-- `npm audit --audit-level=high`: zero vulnerabilities.
-- Initial app JS: 28.98 KB / 10.62 KB gzip.
-- Initial CSS: 14.24 KB / 4.07 KB gzip.
-- Mobile hero: 44 KB WebP; desktop hero: 171 KB WebP.
+## Deployment and live identity
 
-Lighthouse mobile simulation on the production build:
+Deployment and post-deploy byte/header checks are recorded below after the static work-order deployment completes.
 
-- Performance: 99
-- Accessibility: 100
-- Best practices: 100
-- SEO: 100
-- LCP: 2.3 s
-- FCP: 0.9 s
-- Total blocking time: 60 ms
-- CLS: 0
+## Known limits
 
-## Product and privacy notes
-
-Video frames remain in page memory. The source file is not written to IndexedDB or local storage. Demo settings stay in memory and do not read the real preference database. License verification is the only product flow that contacts a non-origin service.
-
-The generated hero source and prompt sidecars are under `assets/src/`. The prompt, date, model route, and design rationale are in `.factory/design.md`.
-
-## Known gaps and next steps
-
-- Video format support follows each browser. A user may need to convert an unsupported codec to MP4 or WebM.
-- The source video is intentionally not retained. A reload requires the user to choose it again.
-- The factory must register the `flipbook-trace` billing product and return URL before the buy link can complete a live purchase.
-- Lighthouse was run in the worker container against `vite preview`; confirm the same headers and scores after deployment.
-- Large source-width exports can still reach device memory limits. The app warns at 500 MB and gives a recovery step.
+- Playable video codecs still depend on the browser and operating system.
+- Large source-width exports can reach device memory limits. The existing 500 MB warning and recovery guidance remain.
+- No AI feature was added because frame extraction and tracing do not benefit from remote inference, and remote processing would weaken the local-first job.
