@@ -14,6 +14,13 @@
     "sandbox": "fresh browser context at /demo; assert twelve rendered sample frames"
   },
   {
+    "id": "demo-isolation",
+    "claim": "Demo sample data is not saved and demo mode does not read or change real settings or licenses.",
+    "where": "demo banner, demo contract, and README",
+    "test": "npm test -- --grep @claim:demo-isolation",
+    "sandbox": "preload a real license and preferences; open /demo; assert license keys were not read, paid controls stay locked, reset works, and real storage is unchanged"
+  },
+  {
     "id": "png-export",
     "claim": "Exports numbered PNGs as a ZIP pack.",
     "where": "workspace and README",
@@ -32,7 +39,28 @@
     "claim": "Video and frame processing stay in the browser.",
     "where": "landing facts, privacy, and README",
     "test": "npm test -- --grep @claim:local-processing",
-    "sandbox": "fresh demo context; monitor the full export flow and assert no cross-origin requests"
+    "sandbox": "fresh real workspace; generate and import a playable local WebM, monitor the full frame and export flow, and assert no cross-origin requests"
+  },
+  {
+    "id": "ephemeral-project",
+    "claim": "The source clip and generated frames stay in page memory and disappear on reload.",
+    "where": "workspace, privacy page, and README",
+    "test": "npm test -- --grep @claim:ephemeral-project",
+    "sandbox": "fresh real workspace; create and load a playable WebM, reload, assert the file and frames are gone and no clip identifier entered IndexedDB"
+  },
+  {
+    "id": "trace-controls",
+    "claim": "Offers five frame rates, three trace styles, and an optional previous-frame onion skin.",
+    "where": "workspace and README",
+    "test": "npm test -- --grep @claim:trace-controls",
+    "sandbox": "fresh demo; assert all frame rates and compare rendered Canvas output after each trace style and onion-skin change"
+  },
+  {
+    "id": "settings-portability",
+    "claim": "Exports and imports settings as JSON and keeps imported settings after reload.",
+    "where": "workspace and README",
+    "test": "npm test -- --grep @claim:settings-portability",
+    "sandbox": "fresh real workspace; change settings, export JSON, change controls, import the download, then assert restored values before and after reload"
   },
   {
     "id": "offline-reload",
@@ -42,10 +70,24 @@
     "sandbox": "fresh browser context at /demo; wait for service worker, set offline, reload, and assert all frames"
   },
   {
+    "id": "pwa-installable",
+    "claim": "Installs as a standalone PWA.",
+    "where": "README",
+    "test": "npm test -- --grep @claim:pwa-installable",
+    "sandbox": "fresh browser context; validate standalone manifest, required icons, maskable icon, start URL, and a controlling service worker"
+  },
+  {
     "id": "studio-quality",
-    "claim": "Studio adds 1920 px, source-width exports, and six-column sheets for $9 once.",
+    "claim": "Studio adds 1920 px, source-width exports, and six-column sheets.",
     "where": "paid section and README",
     "test": "npm test -- --grep @claim:studio-quality",
     "sandbox": "fresh context with a valid one-day cached verdict; select 1920 px and six columns"
+  },
+  {
+    "id": "studio-purchase",
+    "claim": "Studio costs $9 once and opens the registered Sociobot hosted checkout.",
+    "where": "paid section, terms, and README",
+    "test": "npm test -- --grep @claim:studio-purchase",
+    "sandbox": "fresh page; assert the visible $9 link targets the production product and the endpoint redirects to a Dodo hosted checkout session"
   }
 ]

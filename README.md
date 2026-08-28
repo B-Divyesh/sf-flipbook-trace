@@ -4,7 +4,7 @@ Turn your video into printable tracing frames.
 
 Flipbook Trace is a local browser tool for short-form video creators. Choose a 1–5 second section, set the frame rate and trace style, then export numbered PNGs or a PDF contact sheet.
 
-The app decodes and processes video in the browser. It does not upload or retain the clip. After the first visit, the app and its built-in demo work offline.
+The app decodes and processes video in the browser. The clip and frames disappear on reload. After the first visit, the app and its built-in demo work offline.
 
 Live site: <https://flipbook-trace.sociobot.in>
 
@@ -12,12 +12,12 @@ Demo: <https://flipbook-trace.sociobot.in/demo>
 
 ## What it includes
 
-- MP4, WebM, and other formats supported by the current browser
+- Video formats supported by the current browser
 - 2, 4, 6, 8, or 12 frames each second
 - Pencil edge, high contrast, and grayscale trace styles
 - Optional previous-frame onion skin
 - Numbered PNG pack and printable PDF contact sheet
-- A twelve-frame paper bird demo with no setup
+- A twelve-frame paper bird demo that does not read or change real saved data
 - Installable PWA shell and offline reload
 - Settings export and import
 
@@ -41,6 +41,9 @@ Open the local URL printed by Vite. Use `/demo` to open the bundled sample.
 ## Test and build
 
 ```sh
+npm ci
+npm run test:unit
+npm run lint
 npm test
 npm run build
 ```
@@ -51,7 +54,7 @@ Each published product claim and its exact test command is recorded in [`.factor
 
 ## Privacy and file handling
 
-Video frames live only in page memory and disappear when the page closes or a new clip opens. IndexedDB stores control settings. Local storage holds a Studio license and its latest verification result when a buyer adds one. `/privacy` and `/terms` contain the user-facing policies.
+Video frames live only in page memory and disappear when the page reloads or closes. IndexedDB stores control settings. Local storage holds a Studio license and its latest verification result when a buyer adds one. Demo mode does not read or change either real-data store. `/privacy` and `/terms` contain the user-facing policies.
 
 ## Deploy
 

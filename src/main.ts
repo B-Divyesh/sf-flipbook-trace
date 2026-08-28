@@ -7,6 +7,7 @@ import {
   loadPreferences,
   makePdf,
   makePngZip,
+  normalizeSettings,
   savePreferences,
   type FrameSettings,
 } from './core';
@@ -19,10 +20,11 @@ const PRODUCT = 'flipbook-trace';
 const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.in';
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
-const BUILD_ID = 'v1.0.0';
+const BUILD_ID = 'v1.0.2';
 
 let isDemo = false;
 let isPro = false;
+let licenseInitialized = false;
 let settings: FrameSettings = { ...defaultSettings };
 let sourceFrames: HTMLCanvasElement[] = [];
 let outputFrames: HTMLCanvasElement[] = [];
@@ -64,7 +66,7 @@ function workspaceTemplate(demo: boolean): string {
       <div class="workspace-heading-row">
         <div>
           <h2 id="workspace-heading">Make the tracing frames</h2>
-          <p>${demo ? 'The sample motion is ready. Change a control or export it.' : 'Choose a video you own. The file is not retained.'}</p>
+          <p>${demo ? 'The sample motion is ready. Change a control or export it.' : 'Choose a video you own. The clip and frames disappear on reload.'}</p>
         </div>
         <output id="work-status" class="status-stamp" aria-live="polite">${demo ? '12 frames ready' : 'Waiting for a video'}</output>
       </div>
@@ -193,7 +195,7 @@ function demoPage(): string {
 }
 
 function privacyPage(): string {
-  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Plain-language policy</p><h1 tabindex="-1">Privacy without an upload</h1><p class="lede">Your video stays in your browser while you work.</p><h2>What stays on your device</h2><p>Video decoding, frame selection, filtering, and exports run in your browser. We do not retain your video or exported files. Your control settings use browser storage.</p><h2>When the network is used</h2><p>The installed app checks its own site for updates. If you buy or verify Studio, your browser contacts the Sociobot billing service. The service receives the license token and normal request details.</p><h2>Delete local data</h2><p>Clear this site's browser data to remove settings and a saved license. Demo mode uses no saved project data.</p><h2>Contact</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with privacy questions.</p></main>`);
+  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Plain-language policy</p><h1 tabindex="-1">Privacy without an upload</h1><p class="lede">Your video stays in your browser while you work.</p><h2>What stays on your device</h2><p>Video decoding, frame selection, filtering, and exports run in your browser. The clip and generated frames disappear on reload. Your control settings use browser storage.</p><h2>When the network is used</h2><p>The installed app checks its own site for updates. If you buy or verify Studio, your browser contacts the Sociobot billing service. The service receives the license token and normal request details.</p><h2>Delete local data</h2><p>Clear this site's browser data to remove settings and a saved license. Demo mode does not read or change real settings or licenses.</p><h2>Contact</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with privacy questions.</p></main>`);
 }
 
 function termsPage(): string {
@@ -220,6 +222,7 @@ function updateMeta(path: string): void {
 async function render(path = routePath(), focus = false): Promise<void> {
   cleanupVideo();
   isDemo = path === '/demo';
+  if (path === '/') await initLicense();
   settings = isDemo ? { ...defaultSettings } : await loadPreferences();
   sourceFrames = [];
   outputFrames = [];
@@ -289,7 +292,7 @@ function bindWorkspace(): void {
   value<HTMLSelectElement>('fps').addEventListener('change', updateSettings);
   value<HTMLSelectElement>('quality').addEventListener('change', (event) => {
     const select = event.currentTarget as HTMLSelectElement;
-    if (!isPro && select.value !== '960') {
+    if (!hasStudioAccess() && select.value !== '960') {
       select.value = '960';
       showError('That export width needs Studio. Buy or restore a license below.');
     }
@@ -297,7 +300,7 @@ function bindWorkspace(): void {
   });
   value<HTMLSelectElement>('columns').addEventListener('change', (event) => {
     const select = event.currentTarget as HTMLSelectElement;
-    if (!isPro && select.value !== '4') {
+    if (!hasStudioAccess() && select.value !== '4') {
       select.value = '4';
       showError('The six-column sheet needs Studio. Buy or restore a license below.');
     }
@@ -328,10 +331,7 @@ function updateSettings(): void {
 async function importSettings(file?: File): Promise<void> {
   if (!file) return;
   try {
-    const incoming = JSON.parse(await file.text()) as Partial<FrameSettings>;
-    const validMode = ['edges', 'threshold', 'gray'].includes(incoming.mode || '');
-    if (!validMode || ![2, 4, 6, 8, 12].includes(incoming.fps || 0)) throw new Error();
-    settings = { ...defaultSettings, ...incoming, quality: isPro ? (incoming.quality ?? 960) : 960, columns: isPro ? (incoming.columns ?? 4) : 4 };
+    settings = normalizeSettings(JSON.parse(await file.text()), hasStudioAccess());
     if (!isDemo) await savePreferences(settings);
     await render(routePath());
   } catch {
@@ -496,7 +496,7 @@ async function exportPdf(): Promise<void> {
   if (!outputFrames.length) return;
   setStatus('Laying out the PDF sheet…');
   try {
-    downloadBlob(await makePdf(outputFrames, isPro ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
+    downloadBlob(await makePdf(outputFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
     setStatus('PDF sheet exported');
   } catch {
     showError('The PDF sheet could not be made. Try fewer frames.');
@@ -524,6 +524,10 @@ function cleanupVideo(): void {
   if (loadedVideoUrl) URL.revokeObjectURL(loadedVideoUrl);
   loadedVideo = null;
   loadedVideoUrl = '';
+}
+
+function hasStudioAccess(): boolean {
+  return !isDemo && isPro;
 }
 
 async function verifyLicense(token: string, force = false): Promise<void> {
@@ -562,6 +566,8 @@ function bindLicense(): void {
 }
 
 async function initLicense(): Promise<void> {
+  if (routePath() !== '/' || licenseInitialized) return;
+  licenseInitialized = true;
   const params = new URLSearchParams(location.search);
   const returned = params.get('license');
   if (returned) {
@@ -578,7 +584,6 @@ window.addEventListener('online', () => setStatus('Back online. Your local work 
 window.addEventListener('offline', () => setStatus('Offline. Local video and exports still work.'));
 
 async function start(): Promise<void> {
-  await initLicense();
   await render();
   if ('serviceWorker' in navigator) {
     try {

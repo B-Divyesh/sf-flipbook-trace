@@ -18,6 +18,23 @@ export const defaultSettings: FrameSettings = {
   columns: 4,
 };
 
+export function normalizeSettings(input: unknown, studio: boolean): FrameSettings {
+  if (!input || typeof input !== 'object') throw new Error('Invalid settings');
+  const incoming = input as Partial<FrameSettings>;
+  if (![2, 4, 6, 8, 12].includes(incoming.fps ?? 0)) throw new Error('Invalid frame rate');
+  if (!['edges', 'threshold', 'gray'].includes(incoming.mode ?? '')) throw new Error('Invalid trace style');
+  if (typeof incoming.threshold !== 'number' || incoming.threshold < 70 || incoming.threshold > 220) throw new Error('Invalid threshold');
+  if (typeof incoming.onion !== 'boolean') throw new Error('Invalid onion setting');
+  if (incoming.quality !== undefined && ![0, 960, 1920].includes(incoming.quality)) throw new Error('Invalid export width');
+  if (incoming.columns !== undefined && ![4, 6].includes(incoming.columns)) throw new Error('Invalid column count');
+  return {
+    ...defaultSettings,
+    ...incoming,
+    quality: studio ? (incoming.quality ?? defaultSettings.quality) : defaultSettings.quality,
+    columns: studio ? (incoming.columns ?? defaultSettings.columns) : defaultSettings.columns,
+  };
+}
+
 export function applyTraceFilter(canvas: HTMLCanvasElement, mode: FilterMode, threshold: number): void {
   const context = canvas.getContext('2d', { willReadFrequently: true });
   if (!context) return;

@@ -14,7 +14,7 @@ Audited 2026-08-28. Counts treat hyphenated ranges and contractions as one word.
 | Free: PNG pack and PDF sheet. | 6 | Pass |
 | Make the tracing frames | 4 | Pass |
 | Choose a video you own. | 5 | Pass |
-| The file is not retained. | 5 | Pass |
+| The clip and frames disappear on reload. | 7 | Pass |
 | Your frames will appear here | 5 | Pass |
 | Choose a video, then set a 1–5 second section. | 9 | Pass |
 | Numbered and ready to trace | 5 | Pass |

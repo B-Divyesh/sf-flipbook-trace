@@ -1,9 +1,9 @@
-const VERSION = 'flipbook-trace-v1.0.1';
+const VERSION = 'flipbook-trace-v1.0.2-__BUILD_HASH__';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const PRECACHE = [
   '/', '/demo', '/privacy', '/terms', '/offline.html', '/manifest.webmanifest',
-  '/favicon.svg', '/assets/app.js', '/assets/index.css',
+  '/favicon.svg', '__APP_JS__', '__APP_CSS__',
   '/assets/hero-worktable-640.webp', '/assets/hero-worktable.webp',
   '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon-maskable-512.png'
 ];
