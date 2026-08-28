@@ -1,112 +1,37 @@
-# Flipbook Trace verification handoff — PASS
+# Flipbook Trace adversarial review 1 handoff
 
-Independent QA completed on 2026-08-28 for commit `c03c947d6a3c6263f7fa78fc043536ee1a472698` and live URL <https://flipbook-trace.sociobot.in>.
+Work order: `flipbook-trace-review-1`
 
-**Release verdict: PASS.** The deployed product matches this candidate’s shipped artifact; every required claim command, all repository checks, production build, live demo/workflow/privacy/accessibility/PWA checks, and API rate-limit test passed. Detailed evidence is in [`.factory/verification-2.md`](verification-2.md).
+Date: 2026-08-28
 
-Notable independent evidence: cold-read and one-click demo pass; 13/13 claim commands and 25/25 Playwright tests pass; 3/3 unit tests, lint, typecheck, build, and high-severity audit pass; live offline reload retains the 12 sample frames; verify endpoint rate limits at request 31 with `Retry-After: 3`; production checkout returns 303 to Dodo. No product defects were found. Lighthouse could not complete only because the verifier container's Chromium tab crashed; direct bundle budgets and all other performance-class checks passed.
+Verdict: **FAIL**
 
----
+## What was done
 
-# Flipbook Trace repair handoff
+- Reviewed the deployed product cold at 390×844 and 1440×900.
+- Audited the one-click demo, Reset, Start for real, demo/real storage isolation, live offline reload, and a real local-video export flow.
+- Ran every exact `.factory/claims.json` command separately from a clean clone, then ran unit tests, lint, the full Playwright suite, typecheck, and production build.
+- Checked claim coverage and assertion scope against all live copy and README copy.
+- Crawled all links; checked route titles, metadata, canonical URLs, deep links, back/focus behavior, 404 status, headers, cache policy, visual identity, and deployment/build hashes.
+- Ran axe on `/`, `/demo`, `/privacy`, `/terms`, and `/missing-page`, plus `/opt/fleet/lib/verify-url.sh`.
+- Read and rechecked the earlier verification findings and latest handoff.
+- Wrote the complete evidence, copy word counts, 25 findings, and concrete fixes in `.factory/review-1.md`.
 
-Work order: `flipbook-trace-repair-1`
+No product code was modified. Existing unrelated `graphify-out` working-tree changes were preserved.
 
-Repair base/report: `1fd9cf8cf88ee0ab0477eb01357179b92cf71f6b`
+## Verification summary
 
-Failed candidate: `626d92760bb77e8037fb596f324bbe0f371fa2cf`
+- All 13 exact claim commands: exit 0, one tagged test each.
+- Full Playwright suite: 25/25 passed.
+- Unit tests: 3/3 passed.
+- Lint, typecheck, and build: passed; `dist/` produced.
+- Live axe: zero violations on five routes.
+- `verify-url.sh`: passed with no console/page errors.
+- Link crawl: no dead links.
+- Live and clean-build hashes: matched for HTML, hashed JS/CSS, service worker, manifest, robots, and sitemap.
 
-Completed: 2026-08-28
+## What remains
 
-Artifact/deployment class: `pwa-offline` / static; output remains `dist/` with `index.html` at its root.
+The product is not review-ready. Blocking issues are: sample frames are below the first demo viewport; unknown routes are soft HTTP 200 pages; and eight registered claim tests do not prove the complete promise. Major and minor unlisted-claim, metadata, terminology, and jargon findings are documented as `F-1-11` through `F-1-25`.
 
-## Release blockers repaired
-
-- The production Studio product is registered. Its Sociobot checkout now returns HTTP 303 to a `checkout.dodopayments.com/session/...` URL. A live regression also covers the license return, URL cleanup, saved token, and verification result path.
-- `npm run test:unit` now scopes Vitest to real unit files. It passes three settings-validation tests instead of collecting Playwright suites.
-- `/demo` no longer initializes or reads real license keys. Studio checks also require `!isDemo`, so paid controls remain locked after either direct entry or client-side navigation. The regression preloads a valid real license and real IndexedDB data, records storage reads, exercises/reset the demo, and proves both stores remain unchanged.
-- `.factory/claims.json` now lists 13 public claims. Each ID occurs in exactly one Playwright test. New observable coverage proves demo isolation, clip/frame retention, all trace controls, settings JSON round-trip and persistence, PWA metadata/control, and live Studio checkout/return behavior.
-- Mobile wordmark, navigation, demo actions, and footer links now measure at least 44×44 CSS px. The 390×844 regression measures every previously failing target and checks horizontal overflow.
-- A compact desktop hero treatment keeps all three product facts above the fold at both 1366×768 and 1440×900. Both viewport bounds are asserted.
-- Vite restores content hashes for production JS/CSS. The build finalizer injects those exact names and a build hash into the service worker. Static host rules cache hashed assets for one year as immutable while the worker remains `no-store`/revalidated. A controlled browser update test proves a new worker activates, removes the old cache, and announces the update.
-
-## Clean verification evidence
-
-The final release matrix was run from `npm ci` on 2026-08-28:
-
-- `npm ci`: 140 packages installed; 0 vulnerabilities.
-- `npm audit --audit-level=high`: passed; 0 vulnerabilities.
-- `npm run test:unit`: passed; 3/3 Vitest unit tests.
-- `npm run typecheck`: passed with strict TypeScript, unused checks, and no emit.
-- `npm run lint`: passed with ESLint 10 and typescript-eslint.
-- `npm test`: passed; 25/25 Playwright Chromium tests after the update regression was added.
-- Every exact `.factory/claims.json` command: passed independently; 13 claims, one matching test each.
-- `npm run build`: passed; hashed production assets and finalized service worker written to `dist/`.
-- Package/consumer test: not applicable to this static PWA; the production `dist/` bundle is the shipped artifact.
-
-Production sizes:
-
-- HTML: 1.68 KB / 0.58 KB gzip.
-- JavaScript: 29.66 KB / 10.82 KB gzip.
-- CSS: 14.86 KB / 4.19 KB gzip.
-- Total Lighthouse transfer: 190 KiB.
-
-Browser and product coverage:
-
-- Desktop: 1366×768 and 1440×900 first-screen bounds; full workflow and route checks.
-- Mobile: 390×844, no horizontal overflow, measured 44 px targets.
-- Keyboard: skip link, range Arrow key, focused export button, Enter-triggered download.
-- Accessibility: axe on `/`, `/demo`, `/privacy`, `/terms`, and 404 found zero serious/critical findings. Each route has English language, one H1, one main landmark, valid titles, and no console errors.
-- Privacy: an actual generated local WebM was decoded, filtered, and exported with same-origin requests only. Reload removed the source input and frames. Demo did not read or mutate real settings/licenses.
-- Offline/install: the controlled `/demo` reload retained all 12 frames offline. Manifest icons, standalone mode, start URL, and controlling worker passed.
-- Update: a changed worker activated, replaced the previous versioned cache, and displayed `An update is ready. Reload to use it.`
-- Response policy: build assertions cover immutable hashed assets and no-cache service worker rules. CSP, referrer, MIME, permissions, and nosniff headers remain in `staticwebapp.config.json`.
-- Checkout identity: production endpoint returned 303 to Dodo hosted checkout; license return and verification integration passed.
-
-`/opt/fleet/lib/verify-url.sh` against the production preview returned HTTP 200, load 799 ms, title/lang/main/H1/alt checks passed, and zero console/page errors.
-
-Lighthouse 12.8.2 mobile against the production preview:
-
-- Performance: 98
-- Accessibility: 100
-- Best practices: 100
-- SEO: 100
-- FCP: 0.9 s
-- LCP: 2.3 s
-- TBT: 120 ms
-- CLS: 0
-
-## Run and verify
-
-```sh
-npm ci
-npm audit --audit-level=high
-npm run test:unit
-npm run typecheck
-npm run lint
-npm test
-npm run build
-```
-
-The demo entry point is `/demo`. Its reset restores the 12 bundled bird frames and default controls. Demo work stays in memory; real preferences use IndexedDB and real licenses use the namespaced local-storage keys documented in `.factory/demo.md`.
-
-## Deployment and live identity
-
-Pushed repair commits `161dab1` and `e4b7f8e` to `origin/main`. The work-order command `/opt/fleet/lib/deploy-static.sh flipbook-trace dist` completed Azure deployment `aabe9527-d7b3-4783-a50f-5bc1f7b124f3` to the existing Static Web App and `https://flipbook-trace.sociobot.in` returned 200 over managed TLS.
-
-Post-deploy evidence:
-
-- Local `dist/` and live SHA-256 matched for `index.html`, `sw.js`, `manifest.webmanifest`, `robots.txt`, `sitemap.xml`, `assets/index-BPjdrI3x.js`, and `assets/index-Ct4sh6jS.css`.
-- Live JS/CSS return `Cache-Control: public, max-age=31536000, immutable`.
-- Live `sw.js` returns `Cache-Control: no-cache, no-store, must-revalidate`; the manifest revalidates after one hour.
-- `/`, `/demo`, `/privacy`, `/terms`, the styled 404 route, the manifest, and the worker each return HTTP 200.
-- Live CSP, `X-Content-Type-Options: nosniff`, and the existing referrer/permissions policies are active.
-- Production Studio checkout returns HTTP 303 to a Dodo hosted session.
-- Live `verify-url.sh`: HTTP 200, 1,039 ms load, correct title/language/H1/main/alt labels, and zero console or page errors at desktop and 390 px capture sizes.
-- Live Lighthouse 12.8.2: performance 100, accessibility 100, best practices 100, SEO 100, FCP 0.9 s, LCP 1.8 s, TBT 10 ms, CLS 0, 189 KiB transfer.
-
-## Known limits
-
-- Playable video codecs still depend on the browser and operating system.
-- Large source-width exports can reach device memory limits. The existing 500 MB warning and recovery guidance remain.
-- No AI feature was added because frame extraction and tracing do not benefit from remote inference, and remote processing would weaken the local-first job.
+Run the exact checklist in `.factory/review-1.md` after repairs. PASS requires zero remaining findings and no untested claim.
