@@ -1,0 +1,51 @@
+[
+  {
+    "id": "clip-workflow",
+    "claim": "Turns a 1–5 second section of a local video into tracing frames.",
+    "where": "landing workflow and README",
+    "test": "npm test -- --grep @claim:clip-workflow",
+    "sandbox": "fresh browser context; create a local WebM, import it, assert rendered frames, then assert the trim limit"
+  },
+  {
+    "id": "demo-ready",
+    "claim": "Try a ready twelve-frame motion study with one click.",
+    "where": "landing action and demo",
+    "test": "npm test -- --grep @claim:demo-ready",
+    "sandbox": "fresh browser context at /demo; assert twelve rendered sample frames"
+  },
+  {
+    "id": "png-export",
+    "claim": "Exports numbered PNGs as a ZIP pack.",
+    "where": "workspace and README",
+    "test": "npm test -- --grep @claim:png-export",
+    "sandbox": "demo frames; inspect ZIP signature and twelfth numbered filename"
+  },
+  {
+    "id": "pdf-export",
+    "claim": "Exports a printable PDF contact sheet.",
+    "where": "workspace and README",
+    "test": "npm test -- --grep @claim:pdf-export",
+    "sandbox": "demo frames; inspect downloaded PDF signature and content size"
+  },
+  {
+    "id": "local-processing",
+    "claim": "Video and frame processing stay in the browser.",
+    "where": "landing facts, privacy, and README",
+    "test": "npm test -- --grep @claim:local-processing",
+    "sandbox": "fresh demo context; monitor the full export flow and assert no cross-origin requests"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "Works offline after the first visit.",
+    "where": "landing facts and README",
+    "test": "npm test -- --grep @claim:offline-reload",
+    "sandbox": "fresh browser context at /demo; wait for service worker, set offline, reload, and assert all frames"
+  },
+  {
+    "id": "studio-quality",
+    "claim": "Studio adds 1920 px, source-width exports, and six-column sheets for $9 once.",
+    "where": "paid section and README",
+    "test": "npm test -- --grep @claim:studio-quality",
+    "sandbox": "fresh context with a valid one-day cached verdict; select 1920 px and six columns"
+  }
+]
