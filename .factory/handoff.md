@@ -1,3 +1,13 @@
+# Flipbook Trace verification handoff — PASS
+
+Independent QA completed on 2026-08-28 for commit `c03c947d6a3c6263f7fa78fc043536ee1a472698` and live URL <https://flipbook-trace.sociobot.in>.
+
+**Release verdict: PASS.** The deployed product matches this candidate’s shipped artifact; every required claim command, all repository checks, production build, live demo/workflow/privacy/accessibility/PWA checks, and API rate-limit test passed. Detailed evidence is in [`.factory/verification-2.md`](verification-2.md).
+
+Notable independent evidence: cold-read and one-click demo pass; 13/13 claim commands and 25/25 Playwright tests pass; 3/3 unit tests, lint, typecheck, build, and high-severity audit pass; live offline reload retains the 12 sample frames; verify endpoint rate limits at request 31 with `Retry-After: 3`; production checkout returns 303 to Dodo. No product defects were found. Lighthouse could not complete only because the verifier container's Chromium tab crashed; direct bundle budgets and all other performance-class checks passed.
+
+---
+
 # Flipbook Trace repair handoff
 
 Work order: `flipbook-trace-repair-1`
