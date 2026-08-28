@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-28 for polish round 2. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
+Audited 2026-08-28 for polish round 3. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -46,4 +46,4 @@ No customer-facing sentence exceeds 22 words. No sentence uses a banned marketin
 | Paid tier | Studio |
 | Sample workspace | paper-bird sample |
 
-Catalog description: **Turn local videos into printable tracing frames in your browser.** (10 words, 61 characters)
+Catalog description: **Turn a local video into printable tracing frames without uploading it.** (11 words, 67 characters)

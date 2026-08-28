@@ -20,26 +20,72 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
   });
 }
 
-test('the 390 px layout keeps actions inside the viewport', async ({ browser }) => {
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await page.goto('/demo');
-  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
-  const width = await page.evaluate(() => document.documentElement.scrollWidth);
-  expect(width).toBeLessThanOrEqual(390);
-  await page.keyboard.press('Tab');
-  await expect(page.locator('.skip-link')).toBeFocused();
-  for (const selector of ['.wordmark', '.site-header nav a', '#reset-demo', '.demo-banner a', '.site-footer a']) {
-    for (const box of await page.locator(selector).evaluateAll((elements) => elements.filter((element) => {
-      const style = getComputedStyle(element);
-      return style.visibility !== 'hidden' && style.display !== 'none';
-    }).map((element) => {
-      const rect = element.getBoundingClientRect();
-      return { width: rect.width, height: rect.height, text: element.textContent };
-    }))) {
-      expect(box.width, `${selector} (${box.text}) width`).toBeGreaterThanOrEqual(44);
-      expect(box.height, `${selector} (${box.text}) height`).toBeGreaterThanOrEqual(44);
+type TargetBox = { height: number; label: string; tag: string; width: number };
+
+async function visibleActionTargets(page: import('@playwright/test').Page): Promise<TargetBox[]> {
+  return page.locator('a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), summary, .text-action, label.button').evaluateAll((elements) => {
+    const targets = new Set<HTMLElement>();
+    for (const candidate of elements) {
+      if (!(candidate instanceof HTMLElement)) continue;
+      const input = candidate instanceof HTMLInputElement ? candidate : null;
+      const target = input && ['checkbox', 'radio'].includes(input.type)
+        ? input.closest('label') || document.querySelector<HTMLElement>(`label[for="${CSS.escape(input.id)}"]`)
+        : candidate;
+      if (!target) continue;
+      const style = getComputedStyle(target);
+      const rect = target.getBoundingClientRect();
+      if (style.display === 'none' || style.visibility === 'hidden' || rect.width === 0 || rect.height === 0) continue;
+      targets.add(target);
     }
+    return [...targets].map((target) => {
+      const rect = target.getBoundingClientRect();
+      const input = target instanceof HTMLInputElement;
+      return {
+        height: rect.height,
+        label: (target.getAttribute('aria-label') || (input ? target.labels?.[0]?.textContent : target.textContent) || target.id || target.tagName).trim(),
+        tag: `${target.tagName.toLowerCase()}${target.id ? `#${target.id}` : ''}${target.className ? `.${String(target.className).trim().replace(/\s+/g, '.')}` : ''}`,
+        width: rect.width,
+      };
+    });
+  });
+}
+
+for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
+  test(`${route} keeps every visible action at least 44 by 44 px at 390 px`, async ({ browser }) => {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await page.goto(route);
+    if (route === '/demo') await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    await page.keyboard.press('Tab');
+    await expect(page.locator('.skip-link')).toBeFocused();
+    const skip = await page.locator('.skip-link').boundingBox();
+    expect(skip, `${route} skip link`).toBeTruthy();
+    expect(skip!.width, `${route} skip link width`).toBeGreaterThanOrEqual(44);
+    expect(skip!.height, `${route} skip link height`).toBeGreaterThanOrEqual(44);
+    for (const box of await visibleActionTargets(page)) {
+      expect(box.width, `${route} ${box.tag} (${box.label}) width`).toBeGreaterThanOrEqual(44);
+      expect(box.height, `${route} ${box.tag} (${box.label}) height`).toBeGreaterThanOrEqual(44);
+    }
+    const routeName = route === '/' ? 'home' : route.slice(1);
+    await page.screenshot({ path: `test-results/polish-3-targets-${routeName}.png`, fullPage: true });
+    await page.close();
+  });
+}
+
+test('the static 404 keeps every visible action at least 44 by 44 px at 390 px', async ({ browser }) => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.setContent(await readFile('dist/404.html', 'utf8'));
+  await page.keyboard.press('Tab');
+  await expect(page.locator('.skip')).toBeFocused();
+  const box = await page.locator('.skip').boundingBox();
+  expect(box).toBeTruthy();
+  expect(box!.width).toBeGreaterThanOrEqual(44);
+  expect(box!.height).toBeGreaterThanOrEqual(44);
+  for (const target of await visibleActionTargets(page)) {
+    expect(target.width, `static 404 ${target.tag} (${target.label}) width`).toBeGreaterThanOrEqual(44);
+    expect(target.height, `static 404 ${target.tag} (${target.label}) height`).toBeGreaterThanOrEqual(44);
   }
+  await page.screenshot({ path: 'test-results/polish-3-targets-static-404.png', fullPage: true });
   await page.close();
 });
 
@@ -166,7 +212,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.3 · Original generated artwork');
+  expect(page404).toContain('v1.0.4 · Original generated artwork');
 });
 
 test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {

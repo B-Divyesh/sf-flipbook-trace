@@ -171,7 +171,7 @@ p { max-width: 68ch; }
 .file-field input { width: 100%; padding: 7px; background: var(--paper-high); border: 2px solid var(--ink); }
 .file-field input::file-selector-button { min-height: 38px; margin-right: 10px; border: 0; color: white; background: var(--blue); font-weight: 800; }
 select, input[type="number"], input[type="text"] { min-height: 44px; width: 100%; border: 2px solid var(--ink); background: var(--paper-high); color: var(--ink); padding: 8px 10px; }
-input[type="range"] { width: 100%; accent-color: var(--red); min-height: 32px; }
+input[type="range"] { width: 100%; accent-color: var(--red); min-height: 44px; }
 .time-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .unit-field { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
 .label-row { display: flex; justify-content: space-between; }
@@ -183,6 +183,7 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .settings-tools { grid-column: 1 / -1; padding-top: 8px; border-top: 2px dotted var(--ink); }
 .settings-tools summary { min-height: 44px; display: flex; align-items: center; font-weight: 900; cursor: pointer; }
 .settings-tools button, .settings-tools label { min-height: 44px; margin: 6px 10px 6px 0; display: inline-flex; align-items: center; font-weight: 800; }
+.settings-tools input[type="file"] { min-height: 44px; width: 100%; }
 
 .preview-zone { min-width: 0; }
 .empty-preview { min-height: 520px; padding: 40px; display: grid; place-items: center; align-content: center; text-align: center; color: var(--ink); background-color: var(--paper-high); background-image: linear-gradient(rgba(11,95,113,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(11,95,113,.1) 1px, transparent 1px); background-size: 32px 32px; border: 2px solid var(--ink); clip-path: polygon(0 1%, 99% 0, 100% 98%, 1% 100%); }
@@ -212,6 +213,12 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .torn-note span { padding: 8px; border-block: 4px solid currentColor; font: 900 clamp(2rem, 5vw, 4.5rem)/.9 "Arial Black", sans-serif; transform: rotate(3deg); }
 .paid { grid-template-columns: .55fr 1.1fr .9fr; background: var(--yellow); box-shadow: 12px 12px 0 var(--blue); }
 .paid .section-kicker, .paid a:not(.button) { color: var(--ink); }
+.paid p a, .prose-page a {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 .paid-mark { aspect-ratio: 1; display: grid; place-items: center; text-align: center; color: white; background: var(--red); border: 3px solid var(--ink); border-radius: 50%; font: 900 clamp(1.4rem, 3vw, 2.5rem)/.9 "Arial Black", sans-serif; transform: rotate(-8deg); }
 .legal-note { font-size: 14px; color: #4b3e1f; }
 .license-actions { display: grid; gap: 16px; }
@@ -273,7 +280,7 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
   .hero h1 { margin-block: 8px 12px; font-size: 2.35rem; }
   .hero .lede { margin-block: 0 12px; font-size: 1.05rem; }
   .hero-actions { margin: 12px 0 8px; gap: 8px 12px; }
-  .text-action { min-height: 36px; }
+  .text-action { min-height: 44px; }
   .fact-list { margin-top: 10px; padding-top: 10px; gap: 4px; }
   .hero-art { margin-inline: 10px; }
   .hero-art picture { box-shadow: 7px 7px 0 var(--blue), 12px 12px 0 var(--red); }

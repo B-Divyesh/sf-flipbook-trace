@@ -20,7 +20,7 @@ const PRODUCT = 'flipbook-trace';
 const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.in';
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
-const BUILD_ID = 'v1.0.3';
+const BUILD_ID = 'v1.0.4';
 
 let isDemo = false;
 let isPro = false;
