@@ -1,44 +1,69 @@
-# Flipbook Trace review 3 handoff
+# Flipbook Trace polish 3 handoff
 
-Work order: `flipbook-trace-review-3`
-
-Role: reviewer
-
-Base reviewed: `b03f88d91e8a33347701f04833a34e51d57cddf5`
-
-Date: 2026-08-28
+- Work order: `flipbook-trace-polish-3`
+- Base: `caace7c8a75f040d5414b553f1ef897e73762a30`
+- Repair commit: `dc93f6fe058b843d5c6511d2423888add15f18a6`
+- Release: v1.0.4
+- Live: <https://flipbook-trace.sociobot.in>
 
 ## Done
 
-- Performed a fresh adversarial mobile and desktop read of the deployed product.
-- Audited every landing-page and README sentence plus headings, actions, labels, terminology, and claim-like copy.
-- Exercised the one-click demo, regeneration, reset, real-storage isolation, Start for real, offline reload, and a live local-video import/export with request interception.
-- Ran all 18 exact `.factory/claims.json` commands independently from a clean clone.
-- Rechecked every finding from review 1 and review 2 against the live site and current source/tests.
-- Checked routes, metadata, 404 behavior, links, history focus, axe results, reduced motion, responsive overflow, security/privacy behavior, and visual identity.
-- Wrote `.factory/review-3.md`. No product code was changed.
+- Closed F-3-1 and rechecked every finding in reviews 1–3.
+- Raised every remaining small mobile target to at least 44×44 CSS px.
+- Broadened the regression from selected links to every action on each route and the static 404.
+- The exhaustive check also found and fixed the 32 px line-detail slider and 25.8 px settings-import control.
+- Preserved the warm paper, spot-ink, hard-shadow, risograph worktable visual system.
+- Kept the isolated `?demo=1` sample, banner, reset, real-data separation, routes, metadata, legal pages, offline shell, and all 18 claim tests intact.
+- Updated the catalog line to: “Turn a local video into printable tracing frames without uploading it.”
+- Bumped the visible build, manifest start URL, and service-worker cache to v1.0.4.
 
-## Verdict
+## Clean-clone verification
 
-**FAIL** with one finding: F-3-1. At 390 px, the hero's real-video link, Studio policy links, privacy/terms email links, and static-404 skip link have targets shorter than the required 44 px. The current regression checks only selected controls and misses them.
+Clone: `/tmp/flipbook-polish3-clean.7Iig3e/repo` at the repair commit.
 
-All 35 earlier review findings remain fixed. All 18 registered claims pass and no unlisted product claim was found.
-
-## Verification
-
-- Clean clone: `/tmp/flipbook-review3-clean.lt2KXm/repo`.
-- Claim log: `/tmp/flipbook-review3-claims.log`; 18/18 commands exited 0.
-- `npm ci`: PASS; 141 packages, zero vulnerabilities.
-- `npm run test:unit`: PASS; 3/3.
+- `npm ci`: 141 packages; zero vulnerabilities.
+- Every exact command in `.factory/claims.json`: PASS, 18/18. Each ID has exactly one `@claim:<id>` test.
+- `npm run test:unit`: PASS, 3/3.
 - `npm run lint`: PASS.
 - `npm run typecheck`: PASS.
-- `npm test`: PASS; 39/39.
-- `npm run build`: PASS; `dist/` produced with 10,944-byte gzip JS and 4,334-byte gzip CSS.
-- `/opt/fleet/lib/verify-url.sh https://flipbook-trace.sociobot.in /tmp/review3-verify-url`: PASS.
-- Live axe: zero violations on `/`, `/?demo=1`, `/demo`, `/privacy`, `/terms`, and `/missing-page`.
-- Live route/link crawl: all valid product routes and external links resolve; unknown route returns designed HTTP 404.
-- Live screenshots: `/tmp/review3-mobile-cold.png` and `/tmp/review3-desktop-cold.png`.
+- `npm test`: PASS, 44/44.
+- `npm run build`: PASS; `dist/index.html` exists.
+- Build size: JS 31.29 KB raw / 11.05 KB gzip; CSS 15.84 KB raw / 4.35 KB gzip; mobile hero 44 KB.
+- Claim logs: `/tmp/flipbook-polish3-clean.7Iig3e/claim-logs/`.
+- Local screenshots: `test-results/polish-3-targets-*.png`.
 
-## Left to do
+The browser suite covers claim outcomes, one-click demo output, demo isolation and reset, video boundaries, decoded PDF layouts, PNG dimensions, no-upload privacy, every persistent storage surface, offline reload, service-worker updates, keyboard use, route metadata/focus, real 404 behavior, axe, mobile overflow, and all visible action targets.
 
-Fix F-3-1 as specified in `.factory/review-3.md`, broaden the touch-target regression to all visible actionable elements, and rerun review 4 from scratch. No deployment was performed under this review work order.
+## Deployment and cold live evidence
+
+- Static deployment ID: `ec53f1c5-b006-45c4-84ee-8635d1b3be71`.
+- The live JS and CSS asset names exactly match `dist/index.html`.
+- `/`, `/?demo=1`, `/demo`, `/privacy`, and `/terms` return 200. `/missing-page` returns the designed 404.
+- The factory URL verifier passed in 793 ms with no console errors.
+- Fresh 390×844 contexts checked 90 action targets across home, demo, privacy, terms, and 404. None was below 44×44.
+- Reported target heights after deployment: real-video action 44 px; Studio Privacy/Terms 44 px; both email links 44 px; static-404 skip link 44 px.
+- One live click opened twelve first-screen sample frames. The first frame ended at 520.44 px.
+- Live demo regeneration/reset produced 12 → 60 → 12 frames. Seeded real settings and license remained unchanged.
+- **Start for real** restored the saved threshold of 199. Browser forward/back moved focus to the route H1.
+- A network-offline reload restored the banner and all twelve demo frames.
+- Live route scans found zero serious/critical axe violations and no unexpected console errors.
+- All crawled product links resolved as intended. The checkout returned 303 and showed Flipbook Trace Studio, USD $9.00, and One-time.
+- Live screenshots: `/tmp/flipbook-polish3-live/live-*-390.png`.
+- Live Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100. FCP 0.903 s, LCP 1.803 s, CLS 0, TBT 0 ms.
+
+## Run and verify
+
+```sh
+npm ci
+npm run test:unit
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+Then run each exact `test` command in `.factory/claims.json` from a fresh clone.
+
+## Known gaps and next steps
+
+None. No review finding or deferred product work remains. The next action is an independent zero-finding release review.
