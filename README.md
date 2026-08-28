@@ -14,18 +14,18 @@ Demo: <https://flipbook-trace.sociobot.in/?demo=1>
 
 - Choose a video this browser can play
 - 2, 4, 6, 8, or 12 frames each second
-- Pencil edge, high contrast, and grayscale trace styles
+- Pencil edges, high contrast, and grayscale trace styles
 - Optionally show the previous frame in red
 - Numbered PNG pack and printable PDF trace sheet
 - A twelve-frame paper bird demo that does not read or change real saved data
 - Install the app and reopen the demo offline
 - Settings export and import
 
-The free version includes 960 px PNG and PDF trace sheet exports. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens checkout for Sociobot.
+The free version exports 960 px PNGs and a PDF trace sheet. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens checkout for Sociobot.
 
 ## Who it is for
 
-This tool is for creators preparing a hand-drawn flipbook study from a video they own. It replaces manual frame extraction. It is not a video editor, publishing service, or style-transfer tool.
+This tool is for creators preparing a hand-drawn flipbook from a video they own. It replaces manual frame extraction. It is not a video editor, publishing service, or style-transfer tool.
 
 ## Run locally
 
@@ -58,7 +58,7 @@ Video frames live only in page memory and disappear when the page reloads or clo
 
 ## Deploy
 
-Deploy the contents of `dist/` as a static site. Keep the host rules that send valid app routes to `index.html`, return the designed 404 for unknown routes, and set the listed security headers. The factory handles infrastructure, DNS, and billing registration.
+Deploy the contents of `dist/` as a static site. Keep the host rules that send valid routes to `index.html` and return the designed 404 for unknown routes. Keep the listed security headers too. The factory handles infrastructure, DNS, and billing registration.
 
 Set `VITE_BILLING_BASE` only when the factory needs a non-production billing endpoint. It defaults to `https://api.sociobot.in`.
 

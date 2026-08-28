@@ -269,7 +269,12 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
   .wordmark { font-size: 0; }
   .wordmark span { margin-right: 0; font-size: 16px; }
   .site-header nav { gap: 14px; font-size: 14px; }
-  .hero { padding-top: 48px; }
+  .hero { padding-top: 20px; padding-bottom: 40px; gap: 32px; }
+  .hero h1 { margin-block: 8px 12px; font-size: 2.35rem; }
+  .hero .lede { margin-block: 0 12px; font-size: 1.05rem; }
+  .hero-actions { margin: 12px 0 8px; gap: 8px 12px; }
+  .text-action { min-height: 36px; }
+  .fact-list { margin-top: 10px; padding-top: 10px; gap: 4px; }
   .hero-art { margin-inline: 10px; }
   .hero-art picture { box-shadow: 7px 7px 0 var(--blue), 12px 12px 0 var(--red); }
   .workspace-heading-row { align-items: start; flex-direction: column; }

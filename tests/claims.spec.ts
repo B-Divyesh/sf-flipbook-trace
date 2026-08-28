@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import jpeg from 'jpeg-js';
 
 async function loadRecordedVideo(page: Page, options: { name: string; seconds?: number; width?: number; height?: number } = { name: 'motion-study.webm' }): Promise<void> {
   await page.evaluate(async ({ name, seconds = 1.3, width = 320, height = 200 }) => {
@@ -28,6 +29,48 @@ function pngDimensionsInZip(bytes: Buffer): { width: number; height: number } {
   return { width: bytes.readUInt32BE(png + 16), height: bytes.readUInt32BE(png + 20) };
 }
 
+function extractRenderedSheet(bytes: Buffer): { width: number; height: number; data: Uint8Array } {
+  const markerOffset = bytes.indexOf(Buffer.from('/Filter /DCTDecode'));
+  expect(markerOffset).toBeGreaterThan(-1);
+  const streamStart = bytes.indexOf(Buffer.from('stream\n'), markerOffset) + Buffer.byteLength('stream\n');
+  const streamEnd = bytes.indexOf(Buffer.from('\nendstream'), streamStart);
+  expect(streamStart).toBeGreaterThan(markerOffset);
+  expect(streamEnd).toBeGreaterThan(streamStart);
+  const raster = jpeg.decode(bytes.subarray(streamStart, streamEnd), { useTArray: true });
+  return { width: raster.width, height: raster.height, data: raster.data };
+}
+
+function expectRenderedCells(bytes: Buffer, columns: number, cells: number): void {
+  const sheet = extractRenderedSheet(bytes);
+  expect(sheet.width).toBe(1240);
+  expect(sheet.height).toBe(1754);
+  const pixelSum = (x: number, y: number) => {
+    const offset = (Math.round(y) * sheet.width + Math.round(x)) * 4;
+    return sheet.data[offset] + sheet.data[offset + 1] + sheet.data[offset + 2];
+  };
+  const darkestNear = (x: number, y: number) => {
+    let darkest = Number.POSITIVE_INFINITY;
+    for (let scanY = y - 4; scanY <= y + 4; scanY += 1) for (let scanX = x - 4; scanX <= x + 4; scanX += 1) darkest = Math.min(darkest, pixelSum(scanX, scanY));
+    return darkest;
+  };
+  const margin = 70;
+  const gap = 18;
+  const cellWidth = (sheet.width - margin * 2 - gap * (columns - 1)) / columns;
+  const imageHeight = cellWidth * 0.625;
+  const cellHeight = imageHeight + 46;
+  for (let index = 0; index < cells; index += 1) {
+    const x = margin + (index % columns) * (cellWidth + gap);
+    const y = 144 + Math.floor(index / columns) * (cellHeight + gap);
+    expect(darkestNear(x, y), `cell ${index + 1} has a visible border`).toBeLessThan(360);
+    let darkPixels = 0;
+    for (let scanY = y + 14; scanY < y + imageHeight - 14; scanY += 12) for (let scanX = x + 14; scanX < x + cellWidth - 14; scanX += 12) if (pixelSum(scanX, scanY) < 510) darkPixels += 1;
+    expect(darkPixels, `cell ${index + 1} has non-blank trace content`).toBeGreaterThan(0);
+    let labelInk = 0;
+    for (let scanY = y + imageHeight + 4; scanY < y + imageHeight + 38; scanY += 3) for (let scanX = x; scanX < x + Math.min(44, cellWidth); scanX += 3) if (pixelSum(scanX, scanY) < 440) labelInk += 1;
+    expect(labelInk, `cell ${index + 1} has its printed number`).toBeGreaterThan(2);
+  }
+}
+
 async function idbValue(page: Page): Promise<unknown> {
   return page.evaluate(async () => new Promise((resolve, reject) => {
     const request = indexedDB.open('flipbook-trace', 1); request.onerror = () => reject(request.error);
@@ -41,6 +84,19 @@ test('@claim:demo-ready opens twelve ready sample frames with one click', async 
   await expect(page).toHaveURL(/\?demo=1$/); await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
   await expect(page.locator('#demo-strip canvas')).toHaveCount(12); await expect(page.locator('#frame-strip figure')).toHaveCount(12); await expect(page.locator('#work-status')).toHaveText('12 frames ready');
   const frame = await page.locator('#demo-strip canvas').first().boundingBox(); expect(frame!.y + frame!.height).toBeLessThanOrEqual(844);
+});
+
+test('@claim:demo-workflow regenerates the paper-bird sample for its selected section and rate', async ({ page }) => {
+  await page.goto('/?demo=1');
+  await expect(page.locator('#work-status')).toHaveText('12 frames ready');
+  await page.locator('#trim-end').fill('5');
+  await page.locator('#fps').selectOption('12');
+  await page.getByRole('button', { name: 'Make tracing frames' }).click();
+  await expect(page.locator('#work-status')).toHaveText('60 frames ready');
+  await expect(page.locator('#frame-strip figure')).toHaveCount(60);
+  await page.getByRole('button', { name: 'Reset demo' }).click();
+  await expect(page.locator('#work-status')).toHaveText('12 frames ready');
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
 });
 
 test('@claim:demo-isolation never opens, reads, or changes real saved data', async ({ page }) => {
@@ -74,16 +130,20 @@ test('@claim:clip-workflow accepts one to five seconds and rejects other lengths
 });
 
 test('@claim:ephemeral-project keeps video and frames out of persistent browser stores', async ({ page }) => {
-  await page.goto('/'); await loadRecordedVideo(page, { name: 'private-clip.webm' }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
+  await page.goto('/');
+  const storageBefore = await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } }));
+  await loadRecordedVideo(page, { name: 'private-clip.webm' }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
   const persistent = await page.evaluate(async () => {
     const databases = await indexedDB.databases(); const values: unknown[] = [];
     for (const database of databases) { if (!database.name) continue; const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(database.name!); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); }); for (const store of Array.from(db.objectStoreNames)) { const records = await new Promise<unknown[]>((resolve, reject) => { const request = db.transaction(store).objectStore(store).getAll(); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); }); values.push(...records); } }
     const cacheEntries = (await Promise.all((await caches.keys()).map(async (key) => (await caches.open(key)).keys()))).flat().map((request) => request.url);
     const directory = await navigator.storage.getDirectory?.(); const opfsEntries: string[] = []; if (directory) for await (const [name] of directory.entries()) opfsEntries.push(name);
-    return { values: JSON.stringify(values), hasBlob: values.some((value) => value instanceof Blob || value instanceof ArrayBuffer), cacheEntries, opfsEntries };
+    return { values: JSON.stringify(values), hasBlob: values.some((value) => value instanceof Blob || value instanceof ArrayBuffer), cacheEntries, opfsEntries, local: { ...localStorage }, session: { ...sessionStorage } };
   });
   expect(persistent.values).not.toContain('private-clip'); expect(persistent.hasBlob).toBe(false); expect(persistent.cacheEntries.join('\n')).not.toContain('private-clip'); expect(persistent.opfsEntries).toEqual([]);
+  expect(persistent.local).toEqual(storageBefore.local); expect(persistent.session).toEqual(storageBefore.session);
   await page.reload(); await expect(page.locator('#frame-strip figure')).toHaveCount(0); await expect(page.locator('#video-file')).toHaveValue('');
+  expect(await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } }))).toEqual(storageBefore);
 });
 
 test('@claim:trace-controls applies every trace style, frame rate, and previous-frame overlay', async ({ page }) => {
@@ -92,7 +152,7 @@ test('@claim:trace-controls applies every trace style, frame rate, and previous-
 });
 
 test('@claim:settings-portability exports, imports, and persists control settings', async ({ page }) => {
-  await page.goto('/'); await page.locator('#fps').selectOption('8'); await page.getByRole('radio', { name: 'Grayscale' }).check(); await page.locator('#threshold').fill('177'); await page.getByRole('checkbox', { name: 'Show the previous frame in red' }).check(); await page.getByText('Move saved settings').click();
+  await page.goto('/'); await page.locator('#fps').selectOption('8'); await page.getByRole('radio', { name: 'Grayscale' }).check(); await page.locator('#threshold').fill('177'); await page.getByRole('checkbox', { name: 'Show the previous frame in red' }).check(); await page.getByText('Import or export settings').click();
   const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export settings' }).click(); const path = await (await event).path(); await page.locator('#fps').selectOption('2'); await page.getByRole('radio', { name: 'Pencil edges' }).check(); await page.locator('#import-settings').setInputFiles(path!); await expect(page.locator('#fps')).toHaveValue('8'); await expect(page.getByRole('radio', { name: 'Grayscale' })).toBeChecked(); await expect(page.locator('#threshold')).toHaveValue('177'); await page.reload(); await expect(page.locator('#fps')).toHaveValue('8');
 });
 
@@ -105,14 +165,20 @@ test('@claim:pdf-export exports a non-blank twelve-frame printable PDF trace she
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export PDF trace sheet' }).click();
   const bytes = await readFile((await (await download).path())!);
-  const pdf = bytes.toString('latin1');
-  expect(pdf.startsWith('%PDF-1.4')).toBe(true);
-  expect(pdf).toContain('/Type /Pages /Kids [3 0 R] /Count 1');
-  expect(pdf).toContain('/FlipbookTraceFrameCount 12 /FlipbookTraceColumns 4');
-  expect(pdf).toContain('/FlipbookTraceCellNumbers [1 2 3 4 5 6 7 8 9 10 11 12]');
-  expect(pdf).toContain('/Width 1240 /Height 1754');
-  expect(pdf).toContain('/Filter /DCTDecode');
+  expect(bytes.subarray(0, 8).toString('latin1')).toContain('%PDF-1.4');
+  expectRenderedCells(bytes, 4, 12);
   expect(bytes.length).toBeGreaterThan(20_000);
+});
+
+test('@claim:free-quality exports free PNGs at 960 px', async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.goto('/');
+  await page.locator('#fps').selectOption('2');
+  await loadRecordedVideo(page, { name: 'free-960.webm', seconds: 1.3, width: 320, height: 200 });
+  await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 30_000 });
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 960, height: 600 });
 });
 
 test('@claim:local-processing sends no video or frame data to any server', async ({ page }) => {
@@ -130,15 +196,16 @@ test('@claim:pwa-installable ships a standalone manifest and controlling service
 test('@claim:studio-quality exports 1920 px, original-width PNGs, and six-column sheets', async ({ page }) => {
   test.setTimeout(60_000);
   await page.addInitScript(() => { localStorage.setItem('sb_license:flipbook-trace', 'test-license'); localStorage.setItem('sb_license:flipbook-trace:verdict', JSON.stringify({ valid: true, checked: Date.now() })); });
-  await page.goto('/'); await page.locator('#fps').selectOption('2'); await page.locator('#quality').selectOption('1920'); await page.locator('#columns').selectOption('6');
-  await loadRecordedVideo(page, { name: 'source-width.webm', width: 320, height: 200 }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 30_000 });
+  await page.goto('/'); await page.locator('#fps').selectOption('2'); await page.locator('#columns').selectOption('6'); await page.getByRole('radio', { name: 'High contrast' }).check();
+  await loadRecordedVideo(page, { name: 'source-width.webm', seconds: 3.1, width: 320, height: 200 }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 30_000 });
+  await page.locator('#quality').selectOption('1920'); await page.locator('#trim-end').fill('1'); await page.getByRole('button', { name: 'Make tracing frames' }).click(); await expect(page.locator('#work-status')).toHaveText('2 frames ready', { timeout: 30_000 });
   let download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click();
   expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 1920, height: 1200 });
-  await page.locator('#quality').selectOption('0'); await page.getByRole('button', { name: 'Make tracing frames' }).click(); await expect(page.locator('#work-status')).toContainText('frames ready', { timeout: 30_000 });
+  await page.locator('#quality').selectOption('0'); await page.locator('#trim-end').fill('3'); await page.getByRole('button', { name: 'Make tracing frames' }).click(); await expect(page.locator('#work-status')).toHaveText('6 frames ready', { timeout: 30_000 });
   download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click();
   expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 320, height: 200 });
   download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PDF trace sheet' }).click();
-  expect((await readFile((await (await download).path())!)).toString('latin1')).toContain('/FlipbookTraceColumns 6');
+  expectRenderedCells(await readFile((await (await download).path())!), 6, 6);
 });
 
 test('@claim:studio-purchase shows USD 9 one-time checkout for Flipbook Trace Studio', async ({ request, page }) => {

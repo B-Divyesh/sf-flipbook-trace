@@ -1,21 +1,24 @@
 # Landing copy audit
 
-Audited 2026-08-28 after polish round 1. Counts treat hyphenated ranges and contractions as one word. Headings, button labels, field labels, and sentence fragments are included because visitors read them as product copy.
+Audited 2026-08-28 for polish round 2. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
 | Turn your video into tracing frames | 7 | Pass |
-| For short-form creators who want a hand-drawn study without uploading their video. | 12 | Pass |
+| For short-form creators making a hand-drawn flipbook without uploading their video. | 11 | Pass |
 | Try it with sample data | 6 | Pass |
-| It opens a ready 12-frame motion study. | 7 | Pass |
+| It opens a ready 12-frame paper-bird sample. | 7 | Registered: `demo-ready` |
 | Local video → printable trace sheet | 5 | Pass |
 | Video stays in this browser. | 5 | Registered: `local-processing` |
 | Works offline after the first visit. | 6 | Registered: `offline-reload` |
 | Free: PNG pack and PDF trace sheet. | 7 | Registered: `png-export`, `pdf-export` |
-| Choose a video you own. | 5 | Pass |
+| Six moments become six frames to trace. | 7 | Pass |
+| The paper-bird sample is ready. | 5 | Registered: `demo-workflow` |
+| Set a 1–5 second section, choose a rate, then make frames. | 12 | Registered: `demo-workflow` |
 | The video and frames disappear on reload. | 7 | Registered: `ephemeral-project` |
 | Choose a video this browser can play. | 7 | Pass |
 | Move right to keep more dark areas. | 7 | Registered: `trace-controls` |
+| Import or export settings | 4 | Registered: `settings-portability` |
 | Export PDF trace sheet | 4 | Registered: `pdf-export` |
 | Pick a 1–5 second section from a video you own. | 10 | Registered: `clip-workflow` |
 | Export numbered PNGs or one PDF trace sheet. | 8 | Registered: `png-export`, `pdf-export` |
@@ -23,12 +26,12 @@ Audited 2026-08-28 after polish round 1. Counts treat hyphenated ranges and cont
 | It does not retain your video. | 6 | Registered: `ephemeral-project` |
 | Use a video you own or have permission to trace. | 10 | Scope statement |
 | Large or long videos may use more memory. | 8 | Limitation |
-| Trim the video before loading it if your device slows down. | 10 | Limitation |
+| Trim the video before loading it if your device slows down. | 11 | Limitation |
 | $9 once. | 2 | Registered: `studio-purchase` |
-| Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet. | 15 | Registered: `studio-quality` |
+| Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet. | 16 | Registered: `studio-quality` |
 | Dodo opens checkout for Sociobot. | 5 | Registered: `studio-purchase` |
 
-No sentence exceeds 22 words. No sentence uses a banned marketing term. The first screen identifies the job, audience, first action, and three facts in one breath.
+No customer-facing sentence exceeds 22 words. No sentence uses a banned marketing term. The first screen identifies the job, audience, first action, and all three facts in one breath.
 
 ## Terminology
 
@@ -41,6 +44,6 @@ No sentence exceeds 22 words. No sentence uses a banned marketing term. The firs
 | ZIP download | PNG pack |
 | Printable download | PDF trace sheet |
 | Paid tier | Studio |
-| Sample workspace | demo |
+| Sample workspace | paper-bird sample |
 
-Catalog description: **Turn local videos into printable tracing frames without uploading them.** (10 words, 68 characters)
+Catalog description: **Turn local videos into printable tracing frames in your browser.** (10 words, 61 characters)

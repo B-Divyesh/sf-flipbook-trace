@@ -20,7 +20,7 @@ const PRODUCT = 'flipbook-trace';
 const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.in';
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
-const BUILD_ID = 'v1.0.2';
+const BUILD_ID = 'v1.0.3';
 
 let isDemo = false;
 let isPro = false;
@@ -67,7 +67,7 @@ function workspaceTemplate(demo: boolean): string {
       <div class="workspace-heading-row">
         <div>
           <h2 id="workspace-heading">Make the tracing frames</h2>
-          <p>${demo ? 'The sample video is ready. Change a control or export it.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
+          <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
         </div>
         <output id="work-status" class="status-stamp" aria-live="polite">${demo ? '12 frames ready' : 'Waiting for a video'}</output>
       </div>
@@ -108,7 +108,7 @@ function workspaceTemplate(demo: boolean): string {
             <select id="columns"><option value="4">4 columns — free</option><option value="6">6 columns — Studio</option></select>
           </div>
           <button class="button button-dark" id="make-frames" type="button" ${demo ? '' : 'disabled'}>Make tracing frames</button>
-          <details class="settings-tools"><summary>Move saved settings</summary><button id="export-settings" type="button" aria-label="Export settings">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
+          <details class="settings-tools"><summary>Import or export settings</summary><button id="export-settings" type="button" aria-label="Export settings">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
           <p id="form-error" class="error" role="alert" hidden></p>
         </form>
         <div class="preview-zone">
@@ -140,10 +140,10 @@ function homePage(): string {
         <div class="hero-copy">
           <p class="eyebrow">Local video → printable trace sheet</p>
           <h1 tabindex="-1">Turn your video into tracing frames</h1>
-          <p class="lede">For short-form creators who want a hand-drawn study without uploading their video.</p>
+          <p class="lede">For short-form creators making a hand-drawn flipbook without uploading their video.</p>
           <div class="hero-actions">
             <a class="button button-blue" href="/?demo=1" data-route>Try it with sample data</a>
-            <span>It opens a ready 12-frame motion study.</span>
+            <span>It opens a ready 12-frame paper-bird sample.</span>
           </div>
           <label class="text-action" for="video-file">Or choose your own video ↓</label>
           <ul class="fact-list" aria-label="Product facts">
@@ -156,9 +156,9 @@ function homePage(): string {
           <span class="registration registration-one" aria-hidden="true"></span>
           <picture>
             <source srcset="/assets/hero-worktable-640.webp 640w, /assets/hero-worktable.webp 1200w" sizes="(max-width: 800px) 100vw, 54vw" type="image/webp" />
-            <img src="/assets/hero-worktable.webp" width="1200" height="800" alt="Hands arrange six bird drawings into a flipbook motion study." fetchpriority="high" decoding="async" />
+            <img src="/assets/hero-worktable.webp" width="1200" height="800" alt="Hands arrange six bird drawings into a hand-drawn flipbook." fetchpriority="high" decoding="async" />
           </picture>
-          <figcaption>Six moments become six pages to trace.</figcaption>
+          <figcaption>Six moments become six frames to trace.</figcaption>
         </figure>
       </section>
       ${workspaceTemplate(false)}
@@ -193,7 +193,7 @@ function paidSection(): string {
 }
 
 function demoPage(): string {
-  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sample motion study</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · adjust the controls below</p></div></section>${workspaceTemplate(true)}</main>`);
+  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div></section>${workspaceTemplate(true)}</main>`);
 }
 
 function privacyPage(): string {
@@ -347,16 +347,27 @@ async function importSettings(file?: File): Promise<void> {
   }
 }
 
-function loadDemoFrames(): void {
-  sourceFrames = Array.from({ length: 12 }, (_, index) => {
+function loadDemoFrames(count = 12): void {
+  sourceFrames = Array.from({ length: count }, (_, index) => {
     const canvas = document.createElement('canvas');
     canvas.width = 640;
     canvas.height = 400;
-    drawDemoFrame(canvas, index);
+    drawDemoFrame(canvas, index, count);
     return canvas;
   });
   rebuildOutputFrames();
-  paintDemoPeek();
+}
+
+function makeDemoFrames(): void {
+  clearError();
+  updateSettings();
+  const start = Number(value<HTMLInputElement>('trim-start').value);
+  const end = Number(value<HTMLInputElement>('trim-end').value);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end > 5 || end - start < 1 || end - start > 5) {
+    showError('The selected section must be 1–5 seconds inside the paper-bird sample. Change the start or end time.');
+    return;
+  }
+  loadDemoFrames(Math.max(2, Math.floor((end - start) * settings.fps)));
 }
 
 function paintDemoPeek(): void {
@@ -429,6 +440,10 @@ async function seek(video: HTMLVideoElement, time: number): Promise<void> {
 }
 
 async function makeFramesFromVideo(): Promise<void> {
+  if (isDemo && !loadedVideo) {
+    makeDemoFrames();
+    return;
+  }
   if (!loadedVideo) return;
   clearError();
   updateSettings();
@@ -482,6 +497,7 @@ function rebuildOutputFrames(): void {
     return canvas;
   });
   paintFrames();
+  if (isDemo) paintDemoPeek();
 }
 
 function paintFrames(): void {

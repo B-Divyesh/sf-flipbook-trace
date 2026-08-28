@@ -43,6 +43,15 @@ test('the 390 px layout keeps actions inside the viewport', async ({ browser }) 
   await page.close();
 });
 
+test('the 390 px landing screen keeps all three facts above the fold', async ({ browser }) => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto('/');
+  const facts = await page.locator('.fact-list').boundingBox();
+  expect(facts).toBeTruthy();
+  expect(facts!.y + facts!.height).toBeLessThanOrEqual(844);
+  await page.close();
+});
+
 for (const viewport of [{ width: 1366, height: 768 }, { width: 1440, height: 900 }]) {
   test(`desktop ${viewport.width}x${viewport.height} keeps all three facts in the first screen`, async ({ browser }) => {
     const page = await browser.newPage({ viewport });
@@ -152,6 +161,12 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('This page fell out of the stack');
   expect(page404).toContain('href="/privacy"');
   expect(page404).toContain('href="/terms"');
+  expect(page404).toContain('href="/?demo=1"');
+  expect(page404).toContain('href="/#how"');
+  expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
+  expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
+  expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
+  expect(page404).toContain('v1.0.3 · Original generated artwork');
 });
 
 test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {
