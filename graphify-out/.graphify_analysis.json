@@ -216,16 +216,6 @@
       "degree": 8
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
-    },
-    {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 8
-    },
-    {
       "id": "src_main_importsettings",
       "label": "importSettings()",
       "degree": 8
@@ -238,6 +228,16 @@
     {
       "id": "src_main_showerror",
       "label": "showError()",
+      "degree": 8
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 8
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
       "degree": 8
     }
   ],
@@ -276,8 +276,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "loadDemoFrames()",
-      "target": "drawDemoFrame()",
+      "source": "rebuildOutputFrames()",
+      "target": "applyTraceFilter()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -287,8 +287,8 @@
       "why": "cross-file semantic connection"
     },
     {
-      "source": "render()",
-      "target": "loadPreferences()",
+      "source": "loadDemoFrames()",
+      "target": "drawDemoFrame()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
