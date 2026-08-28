@@ -2,7 +2,7 @@
 
 Repairs the full set of findings in `.factory/review-1.md` from candidate `c03c947d6a3c6263f7fa78fc043536ee1a472698`. Earlier verification records were also read; their remaining scope and storage concerns are included below.
 
-Live recheck: <https://flipbook-trace.sociobot.in>, <https://flipbook-trace.sociobot.in/?demo=1>, <https://flipbook-trace.sociobot.in/privacy>, <https://flipbook-trace.sociobot.in/terms>, and <https://flipbook-trace.sociobot.in/missing-page>. The first demo frames are also captured in `test-results/polish-demo-390.png`, `test-results/polish-demo-1440.png`, and `/tmp/flipbook-live-evidence/demo-390.png`.
+Live recheck: <https://flipbook-trace.sociobot.in>, <https://flipbook-trace.sociobot.in/?demo=1>, <https://flipbook-trace.sociobot.in/privacy>, <https://flipbook-trace.sociobot.in/terms>, and <https://flipbook-trace.sociobot.in/missing-page>. The first demo frames are captured in `test-results/polish-demo-390.png` and `test-results/polish-demo-1440.png`.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
