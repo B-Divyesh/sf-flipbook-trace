@@ -181,7 +181,7 @@ export async function makePngZip(frames: HTMLCanvasElement[]): Promise<Blob> {
   return new Blob([archive.buffer as ArrayBuffer], { type: 'application/zip' });
 }
 
-export function makeContactSheet(frames: HTMLCanvasElement[], columns: number): HTMLCanvasElement {
+function drawContactSheet(frames: HTMLCanvasElement[], columns: number, startNumber: number, total: number): HTMLCanvasElement {
   const page = document.createElement('canvas');
   page.width = 1240;
   page.height = 1754;
@@ -193,7 +193,7 @@ export function makeContactSheet(frames: HTMLCanvasElement[], columns: number): 
   context.font = 'bold 36px monospace';
   context.fillText('FLIPBOOK TRACE', 70, 72);
   context.font = '20px monospace';
-  context.fillText(`${frames.length} FRAMES  •  TRACE / CUT / STACK`, 70, 108);
+  context.fillText(`${total} FRAMES  •  TRACE / CUT / STACK`, 70, 108);
   const gap = 18;
   const margin = 70;
   const cellWidth = (page.width - margin * 2 - gap * (columns - 1)) / columns;
@@ -210,9 +210,27 @@ export function makeContactSheet(frames: HTMLCanvasElement[], columns: number): 
     context.drawImage(frame, x + 3, y + 3, cellWidth - 6, imageHeight - 6);
     context.fillStyle = '#181713';
     context.font = 'bold 22px monospace';
-    context.fillText(String(index + 1).padStart(2, '0'), x, y + imageHeight + 31);
+    context.fillText(String(startNumber + index).padStart(2, '0'), x, y + imageHeight + 31);
   });
   return page;
+}
+
+export function makeContactSheets(frames: HTMLCanvasElement[], columns: number): HTMLCanvasElement[] {
+  if (!frames.length) return [];
+  const pageWidth = 1240;
+  const pageHeight = 1754;
+  const margin = 70;
+  const gap = 18;
+  const cellWidth = (pageWidth - margin * 2 - gap * (columns - 1)) / columns;
+  const imageHeight = cellWidth * frames[0].height / frames[0].width;
+  const cellHeight = imageHeight + 46 + gap;
+  const rows = Math.max(1, Math.floor((pageHeight - 144 - 60) / cellHeight));
+  const perPage = rows * columns;
+  const pages: HTMLCanvasElement[] = [];
+  for (let start = 0; start < frames.length; start += perPage) {
+    pages.push(drawContactSheet(frames.slice(start, start + perPage), columns, start + 1, frames.length));
+  }
+  return pages;
 }
 
 function ascii(value: string): Uint8Array {
@@ -220,16 +238,25 @@ function ascii(value: string): Uint8Array {
 }
 
 export async function makePdf(frames: HTMLCanvasElement[], columns: number): Promise<Blob> {
-  const sheet = makeContactSheet(frames, columns);
-  const jpeg = new Uint8Array(await (await canvasBlob(sheet, 'image/jpeg', 0.9)).arrayBuffer());
   const content = ascii('q\n595 0 0 842 0 0 cm\n/Im0 Do\nQ\n');
+  const sheets = makeContactSheets(frames, columns);
+  const pageReferences = sheets.map((_, index) => `${3 + index * 3} 0 R`).join(' ');
   const objects: Uint8Array[] = [
     ascii('<< /Type /Catalog /Pages 2 0 R >>'),
-    ascii('<< /Type /Pages /Kids [3 0 R] /Count 1 >>'),
-    ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>'),
-    joinBytes([ascii(`<< /Length ${content.length} >>\nstream\n`), content, ascii('endstream')]),
-    joinBytes([ascii(`<< /Type /XObject /Subtype /Image /Width ${sheet.width} /Height ${sheet.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`), jpeg, ascii('\nendstream')]),
+    ascii(`<< /Type /Pages /Kids [${pageReferences}] /Count ${sheets.length} >>`),
   ];
+  for (let index = 0; index < sheets.length; index += 1) {
+    const sheet = sheets[index];
+    const pageObject = 3 + index * 3;
+    const contentObject = pageObject + 1;
+    const imageObject = pageObject + 2;
+    const jpeg = new Uint8Array(await (await canvasBlob(sheet, 'image/jpeg', 0.9)).arrayBuffer());
+    objects.push(
+      ascii(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 ${imageObject} 0 R >> >> /Contents ${contentObject} 0 R >>`),
+      joinBytes([ascii(`<< /Length ${content.length} >>\nstream\n`), content, ascii('endstream')]),
+      joinBytes([ascii(`<< /Type /XObject /Subtype /Image /Width ${sheet.width} /Height ${sheet.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`), jpeg, ascii('\nendstream')]),
+    );
+  }
   const chunks: Uint8Array[] = [ascii('%PDF-1.4\n%----\n')];
   const offsets = [0];
   let offset = chunks[0].length;

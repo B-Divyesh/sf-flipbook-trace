@@ -104,7 +104,7 @@ function workspaceTemplate(demo: boolean): string {
             <select id="columns"><option value="4">4 columns — free</option><option value="6">6 columns — Studio</option></select>
           </div>
           <button class="button button-dark" id="make-frames" type="button" ${demo ? '' : 'disabled'}>Make tracing frames</button>
-          <details class="settings-tools"><summary>Move saved settings</summary><button id="export-settings" type="button">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
+          <details class="settings-tools"><summary>Move saved settings</summary><button id="export-settings" type="button" aria-label="Export settings">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
           <p id="form-error" class="error" role="alert" hidden></p>
         </form>
         <div class="preview-zone">
@@ -182,7 +182,7 @@ function paidSection(): string {
     <div class="license-actions">
       <a class="button button-red" href="${BILLING_BASE}/api/v1/products/${PRODUCT}/checkout">Buy Studio for $9</a>
       <p id="license-status" class="license-status" aria-live="polite">${isPro ? 'Studio is active on this device.' : ''}</p>
-      <details><summary>Have a license?</summary><label for="license-input">Paste your license</label><input id="license-input" type="text" autocomplete="off" /><button id="verify-license" class="button button-paper" type="button">Verify license</button></details>
+      <details><summary>Have a license?</summary><label for="license-input">Paste your license</label><input id="license-input" type="text" autocomplete="off" /><button id="verify-license" class="button button-paper" type="button" aria-label="Verify license">Verify license</button></details>
       <p><a href="/privacy" data-route>Privacy</a> · <a href="/terms" data-route>Terms</a></p>
     </div>
   </section>`;
