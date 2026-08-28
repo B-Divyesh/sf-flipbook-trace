@@ -1,5 +1,15 @@
 # Flipbook Trace handoff
 
+## Independent verification — FAIL (2026-08-28)
+
+Candidate `626d92760bb77e8037fb596f324bbe0f371fa2cf` was tested against `https://flipbook-trace.sociobot.in`. The live core app, exports, offline reload, accessibility scans, build, and all seven registered claim commands pass, and the deployment is byte-for-byte identical to the candidate.
+
+Release is blocked by four high-severity findings: the production Studio checkout returns HTTP 404; `npm run test:unit` exits 1 because Vitest collects Playwright suites; `/demo` reads a real cached Studio license and exposes paid controls; and public promises remain missing from or under-tested by `.factory/claims.json`. Several mobile targets are smaller than 44×44 px, and the required three product facts sit below the initial desktop viewport. Full commands, measurements, and required fixes are in [`.factory/verification.md`](verification.md).
+
+**Handoff status: FAIL — do not release until the blocking findings are fixed and independently retested.**
+
+---
+
 Work order: `flipbook-trace-build-1`
 
 Completed: 2026-08-28
