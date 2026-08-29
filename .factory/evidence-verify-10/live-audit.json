@@ -1,0 +1,271 @@
+{
+  "routes": {
+    "desktop/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "desktop/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "desktop/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "desktop/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "desktop/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "mobile/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "mobile/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "mobile/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "mobile/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    },
+    "mobile/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "errors": [],
+      "undersized": []
+    }
+  },
+  "coldRequests": [
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable.webp"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-C0D3_r2N.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-BpYogwV-.css"
+    }
+  ],
+  "demo": {
+    "generatedCount": 60,
+    "resetCount": 12,
+    "png": {
+      "filename": "flipbook-trace-frames.zip",
+      "bytes": 40056,
+      "signature": "504b0304"
+    },
+    "pdf": {
+      "filename": "flipbook-trace-sheet.pdf",
+      "bytes": 150014,
+      "signature": "%PDF-1.4"
+    },
+    "runtimeRequests": [],
+    "errors": []
+  },
+  "keyboard": {
+    "firstTab": "Skip to main content",
+    "before": 142,
+    "after": 143,
+    "focus": {
+      "width": "3px",
+      "style": "solid",
+      "color": "rgb(173, 53, 45)"
+    }
+  },
+  "reducedMotion": {
+    "animationDuration": "1e-05s",
+    "transitionDuration": "1e-05s"
+  },
+  "offline": {
+    "status": 200,
+    "frames": 12,
+    "cacheNames": [
+      "flipbook-trace-v1.0.11-8d318dd6d9c9-shell"
+    ],
+    "worker": "https://flipbook-trace.sociobot.in/sw.js"
+  },
+  "startup": {
+    "longestTasks": [
+      213,
+      208,
+      215,
+      186,
+      267
+    ],
+    "maximumMs": 267,
+    "passesUnder200": false
+  },
+  "headers": {
+    "home": {
+      "status": 200,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "demo": {
+      "status": 200,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "worker": {
+      "status": 200,
+      "cacheControl": "no-cache, no-store, must-revalidate",
+      "contentType": "text/javascript",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "asset": {
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/javascript",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "manifest": {
+      "status": 200,
+      "cacheControl": "public, max-age=3600, must-revalidate",
+      "contentType": "application/manifest+json",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "missing": {
+      "status": 404,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    }
+  },
+  "manifest": {
+    "name": "Flipbook Trace",
+    "short_name": "Flipbook Trace",
+    "description": "Turn a local video into printable tracing frames.",
+    "start_url": "/?source=pwa&v=11",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#f2ead7",
+    "theme_color": "#f2ead7",
+    "icons": [
+      {
+        "src": "/icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon-maskable-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ]
+  }
+}
