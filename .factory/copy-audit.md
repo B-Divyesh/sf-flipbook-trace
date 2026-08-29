@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-29 for repair round 5. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
+Audited 2026-08-29 for repair round 8. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -22,6 +22,9 @@ Audited 2026-08-29 for repair round 5. Counts treat hyphenated ranges and contra
 | Preparing sample frames… | 3 | Progress state |
 | Making sample frames… | 3 | Progress state |
 | Resetting the sample… | 3 | Progress state |
+| Packing numbered PNGs… | 3 | Progress state |
+| Packing PNG 1 of 12… | 5 | Progress state; numbers change with the frame count |
+| 12 PNGs exported | 3 | Result state; number changes with the frame count |
 | Import or export settings | 4 | Registered: `settings-portability` |
 | Export PDF trace sheet | 4 | Registered: `pdf-export` |
 | Pick a 1–5 second section from a video you own. | 10 | Registered: `clip-workflow` |

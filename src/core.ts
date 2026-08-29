@@ -179,24 +179,26 @@ function joinBytes(parts: Uint8Array[]): Uint8Array {
   return output;
 }
 
-export async function makePngZip(frames: HTMLCanvasElement[]): Promise<Blob> {
+export async function makePngZip(frames: Iterable<HTMLCanvasElement> | AsyncIterable<HTMLCanvasElement>): Promise<Blob> {
   const encoder = new TextEncoder();
-  const locals: Uint8Array[] = [];
+  const locals: BlobPart[] = [];
   const centrals: Uint8Array[] = [];
   let offset = 0;
-  for (let index = 0; index < frames.length; index += 1) {
+  let frameCount = 0;
+  for await (const frame of frames) {
+    const index = frameCount;
     const name = encoder.encode(`flipbook-frame-${String(index + 1).padStart(3, '0')}.png`);
-    const bytes = new Uint8Array(await (await canvasBlob(frames[index])).arrayBuffer());
+    const bytes = new Uint8Array(await (await canvasBlob(frame)).arrayBuffer());
     const crc = crc32(bytes);
-    const local = joinBytes([u32(0x04034b50), u16(20), u16(0), u16(0), u16(0), u16(0), u32(crc), u32(bytes.length), u32(bytes.length), u16(name.length), u16(0), name, bytes]);
-    locals.push(local);
+    const localHeader = joinBytes([u32(0x04034b50), u16(20), u16(0), u16(0), u16(0), u16(0), u32(crc), u32(bytes.length), u32(bytes.length), u16(name.length), u16(0), name]);
+    locals.push(localHeader.buffer as ArrayBuffer, bytes.buffer as ArrayBuffer);
     centrals.push(joinBytes([u32(0x02014b50), u16(20), u16(20), u16(0), u16(0), u16(0), u16(0), u32(crc), u32(bytes.length), u32(bytes.length), u16(name.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset), name]));
-    offset += local.length;
+    offset += localHeader.length + bytes.length;
+    frameCount += 1;
   }
   const central = joinBytes(centrals);
-  const end = joinBytes([u32(0x06054b50), u16(0), u16(0), u16(frames.length), u16(frames.length), u32(central.length), u32(offset), u16(0)]);
-  const archive = joinBytes([...locals, central, end]);
-  return new Blob([archive.buffer as ArrayBuffer], { type: 'application/zip' });
+  const end = joinBytes([u32(0x06054b50), u16(0), u16(0), u16(frameCount), u16(frameCount), u32(central.length), u32(offset), u16(0)]);
+  return new Blob([...locals, central.buffer as ArrayBuffer, end.buffer as ArrayBuffer], { type: 'application/zip' });
 }
 
 function drawContactSheet(frames: HTMLCanvasElement[], columns: number, startNumber: number, total: number): HTMLCanvasElement {

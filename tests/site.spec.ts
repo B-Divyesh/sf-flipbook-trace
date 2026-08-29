@@ -185,6 +185,41 @@ test('keyboard controls reach exports and operate a range', async ({ page }) => 
   await downloadEvent;
 });
 
+test('PNG export packs all twelve frames in browser-sized chunks', async ({ browser }) => {
+  test.setTimeout(90_000);
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    const session = await context.newCDPSession(page);
+    await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    await page.goto('/?demo=1', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    await expect(page.locator('#work-status')).toHaveText('12 frames ready', { timeout: 30_000 });
+    await page.evaluate(() => {
+      const status = document.querySelector<HTMLOutputElement>('#work-status')!;
+      const descriptor = Object.getOwnPropertyDescriptor(HTMLOutputElement.prototype, 'value')!;
+      const updates: string[] = [];
+      Object.defineProperty(status, 'value', {
+        configurable: true,
+        get: () => descriptor.get!.call(status) as string,
+        set: (next: string) => {
+          updates.push(next);
+          descriptor.set!.call(status, next);
+        },
+      });
+      (window as unknown as { __pngStatusUpdates: string[] }).__pngStatusUpdates = updates;
+    });
+    const download = page.waitForEvent('download', { timeout: 60_000 });
+    await page.getByRole('button', { name: 'Export PNG pack' }).click();
+    await download;
+    const updates = await page.evaluate(() => (window as unknown as { __pngStatusUpdates: string[] }).__pngStatusUpdates);
+    expect(updates).toContain('Packing PNG 1 of 12…');
+    expect(updates).toContain('Packing PNG 12 of 12…');
+    expect(updates.at(-1)).toBe('12 PNGs exported');
+  } finally {
+    await context.close();
+  }
+});
+
 for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
   test(`Line detail stays inside the 200 ms interaction budget with 12 frames at ${viewport.width}px`, async ({ browser }) => {
     const page = await browser.newPage({ viewport });
@@ -372,7 +407,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.9 · Original generated artwork');
+  expect(page404).toContain('v1.0.10 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

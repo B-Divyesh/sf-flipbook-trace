@@ -21,7 +21,7 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.9';
+const BUILD_ID = 'v1.0.10';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
@@ -599,15 +599,25 @@ async function rebuildOutputFrames(generation: number): Promise<void> {
   if (isDemo) await paintDemoPeek(generation);
 }
 
-async function buildExportFrames(): Promise<HTMLCanvasElement[]> {
+function buildExportFrameStream(onFrame?: (index: number, total: number) => void): AsyncGenerator<HTMLCanvasElement> {
   const sources = [...sourceFrames];
   const frameSettings = { ...settings };
-  const exportFrames: HTMLCanvasElement[] = [];
-  for (let index = 0; index < sources.length; index += 1) {
-    exportFrames.push(traceFrame(sources[index], index, sources, frameSettings));
-    await yieldToBrowser();
-  }
-  return exportFrames;
+  return (async function* exportFrames() {
+    for (let index = 0; index < sources.length; index += 1) {
+      onFrame?.(index + 1, sources.length);
+      yield traceFrame(sources[index], index, sources, frameSettings);
+      // Resume only after makePngZip has encoded the yielded canvas. This
+      // keeps one full-resolution export canvas alive at a time and gives the
+      // browser a task boundary between frames on small CPU budgets.
+      await yieldToBrowser();
+    }
+  })();
+}
+
+async function buildExportFrames(): Promise<HTMLCanvasElement[]> {
+  const frames: HTMLCanvasElement[] = [];
+  for await (const frame of buildExportFrameStream()) frames.push(frame);
+  return frames;
 }
 
 async function paintFrames(generation: number): Promise<void> {
@@ -640,14 +650,19 @@ async function paintFrames(generation: number): Promise<void> {
 
 async function exportPng(): Promise<void> {
   if (!sourceFrames.length) return;
+  const exportButton = value<HTMLButtonElement>('export-png');
+  const frameCount = sourceFrames.length;
+  exportButton.disabled = true;
   setStatus('Packing numbered PNGs…');
   try {
     await yieldAfterInteraction();
-    const exportFrames = await buildExportFrames();
-    downloadBlob(await makePngZip(exportFrames), 'flipbook-trace-frames.zip');
-    setStatus(`${exportFrames.length} PNGs exported`);
+    const frames = buildExportFrameStream((index, total) => setStatus(`Packing PNG ${index} of ${total}…`));
+    downloadBlob(await makePngZip(frames), 'flipbook-trace-frames.zip');
+    setStatus(`${frameCount} PNGs exported`);
   } catch {
     showError('The PNG pack could not be made. Try fewer frames.');
+  } finally {
+    if (exportButton.isConnected) exportButton.disabled = false;
   }
 }
 

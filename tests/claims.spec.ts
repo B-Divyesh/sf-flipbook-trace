@@ -286,8 +286,27 @@ test('@claim:settings-portability exports, imports, and persists control setting
   const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export settings' }).click(); const path = await (await event).path(); await page.locator('#fps').selectOption('2'); await page.getByRole('radio', { name: 'Pencil edges' }).check(); await page.locator('#import-settings').setInputFiles(path!); await expect(page.locator('#fps')).toHaveValue('8'); await expect(page.getByRole('radio', { name: 'Grayscale' })).toBeChecked(); await expect(page.locator('#threshold')).toHaveValue('177'); await page.reload(); await expect(page.locator('#fps')).toHaveValue('8');
 });
 
-test('@claim:png-export exports twelve numbered PNGs in a ZIP', async ({ page }) => {
-  await page.goto('/?demo=1'); const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click(); const download = await event; const bytes = await readFile((await download.path())!); expect(download.suggestedFilename()).toBe('flipbook-trace-frames.zip'); expect(bytes.toString('latin1')).toContain('flipbook-frame-012.png');
+test('@claim:png-export exports twelve numbered PNGs in a ZIP', async ({ browser }) => {
+  test.setTimeout(90_000);
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto('/?demo=1', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    await expect(page.locator('#frame-strip figure')).toHaveCount(12, { timeout: 30_000 });
+    await expect(page.locator('#work-status')).toHaveText('12 frames ready', { timeout: 30_000 });
+    const exportButton = page.getByRole('button', { name: 'Export PNG pack' });
+    await expect(exportButton).toBeEnabled({ timeout: 30_000 });
+    const event = page.waitForEvent('download', { timeout: 60_000 });
+    await exportButton.click();
+    const download = await event;
+    await expect(page.locator('#work-status')).toHaveText('12 PNGs exported', { timeout: 10_000 });
+    const bytes = await readFile((await download.path())!);
+    expect(download.suggestedFilename()).toBe('flipbook-trace-frames.zip');
+    expect(bytes.subarray(0, 4).toString('latin1')).toBe('PK\x03\x04');
+    expect(bytes.toString('latin1')).toContain('flipbook-frame-012.png');
+  } finally {
+    await context.close();
+  }
 });
 
 test('@claim:pdf-export exports a non-blank twelve-frame printable PDF trace sheet', async ({ page }) => {
