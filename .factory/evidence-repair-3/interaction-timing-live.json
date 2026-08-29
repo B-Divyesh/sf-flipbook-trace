@@ -1,0 +1,20 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/demo",
+  "measured_at": "2026-08-29T10:58:02.689Z",
+  "browser": "Playwright Chromium 1.58.2",
+  "cpu_throttling": "none",
+  "budget_ms": 200,
+  "line_detail_12_frames_mobile_ms": [24, 0, 0, 0, 0],
+  "line_detail_12_frames_mobile_note": "Zero means no entry met Chromium's 16 ms reporting floor.",
+  "line_detail_12_frames_desktop_ms": 24,
+  "line_detail_12_frames_desktop_processing_ms": 0.4,
+  "regenerate_60_frames_mobile_ms": 24,
+  "regenerate_60_frames_mobile_processing_ms": 0.7,
+  "line_detail_60_frames_mobile_ms": 16,
+  "line_detail_60_frames_mobile_processing_ms": 0.1,
+  "regenerate_12_frames_mobile_ms": 24,
+  "regenerate_12_frames_mobile_processing_ms": 0.5,
+  "reset_12_frames_mobile_ms": 16,
+  "reset_12_frames_mobile_processing_ms": 0.2,
+  "result": "PASS"
+}

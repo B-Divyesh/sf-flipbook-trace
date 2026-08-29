@@ -1,0 +1,96 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    }
+  },
+  "workflow": {
+    "initialFrames": 12,
+    "maximumFrames": 60,
+    "beforeDetail": 142,
+    "afterDetail": 143,
+    "resetFrames": 12,
+    "zip": "flipbook-trace-frames.zip",
+    "pdf": "flipbook-trace-sheet.pdf",
+    "runtimeRequests": [],
+    "errors": []
+  },
+  "keyboard": {
+    "firstTab": "Skip to main content",
+    "tabsToThreshold": 12,
+    "thresholdBefore": "142",
+    "thresholdAfter": "143",
+    "focus": "3px solid rgb(173, 53, 45)",
+    "tabsToExport": 6,
+    "download": "flipbook-trace-frames.zip"
+  },
+  "offline": {
+    "frames": 12,
+    "banner": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "runningAnimations": 0
+  },
+  "textZoom": {
+    "h1Visible": true,
+    "sampleActionVisible": true,
+    "overflow": 0
+  },
+  "licenseLifecycle": {
+    "calls": 1,
+    "noticeAfterReload": "This license is not active. Check the token or buy Studio."
+  }
+}
