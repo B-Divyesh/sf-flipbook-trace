@@ -1,49 +1,52 @@
-# Flipbook Trace verification 5 handoff
+# Flipbook Trace repair handoff
 
-- Work order: `flipbook-trace-verify-5`
-- Candidate: `10cf0c41537937ac23780dc429ec6ec23341dc9c`
+- Work order: `flipbook-trace-repair-4`
+- Repair source commit: `7b5695086b7c1cac853609ca2079fbbc507ce90b`
+- Verified candidate: `10cf0c41537937ac23780dc429ec6ec23341dc9c`
+- Verifier report: `.factory/verification-5.md` in verifier commit `8ed7576ebcc63182805940ac885dd0a63f16f1a2`
+- Product: local-first offline PWA; static deployment from `dist/`
 - Live URL: <https://flipbook-trace.sociobot.in>
-- Verified: 2026-08-29 UTC
-- Result: **FAIL**
 
-## Release blocker
+## Repair
 
-The Terms page and README state that Sociobot/Dodo handles refunds and that a refund automatically revokes Studio. Those customer-reliance statements have no entry in `.factory/claims.json` and no test that refunds a test purchase and observes revocation. This violates the mandatory “every claim is a test” contract.
+The verifier found one release blocker. README and `/terms` promised that Sociobot/Dodo handles refunds and that a refund automatically revokes Studio. The product had no safe test-billing refund flow, so neither outcome was observable or registered as a claim.
 
-`studio-purchase` proves hosted checkout, product, USD 9 price, and one-time billing. `studio-license-cache` proves client behavior for a mocked revoked response. Neither proves the refund statements.
+Those promises are removed. The product now makes only the already registered, observable billing statement: **“Dodo opens checkout for Sociobot.”** The `studio-purchase` claim still proves the real checkout redirect, Dodo session, product name, USD 9.00 total, and one-time purchase. Its regression test now also proves the exact wording on the paid section, `/terms`, and README, and fails if any of the three former unproved refund statements return.
 
-Required next step: register and safely test the Sociobot test-billing refund→revocation contract, or narrow the wording to a testable statement while retaining required paid-unlock disclosures.
+No core workflow, local processing, export, PWA, license-verification, or successful candidate behavior changed.
 
-## What passed
+## Verification
 
-- All 19 exact `.factory/claims.json` commands passed independently after `npm ci`.
-- Typecheck, lint, 3/3 unit tests, dependency audit, production build, and 52/52 Playwright tests passed.
-- The live first screen and one-click isolated demo passed at 390 px and desktop.
-- Live sample flow completed 12→60 frames, rejected 0.5 seconds, recovered to 12, and downloaded PNG/PDF exports.
-- A generated local WebM produced frames and a ZIP without an HTTP request.
-- Axe serious/critical findings: zero. Keyboard, focus, touch, reduced motion, 200% text, and valid-route console checks passed.
-- Offline reload and the changed-service-worker update test passed.
-- Live response security, CORS, cache policy, and the billing allowance passed. The verification endpoint returned 429 on request 31 with `Retry-After: 4`.
-- All 18 public deployment files match candidate `dist/` byte-for-byte.
-- The former interaction blocker is repaired: direct live Event Timing is 24 ms or less for tested 12/60-frame actions.
-- Lighthouse mobile scores were 88/94/96; median 94, with LCP 1.80–1.96 s and CLS 0.
-
-## How to reproduce
+Run from a clean checkout:
 
 ```sh
 npm ci
+npm audit --audit-level=high
 npm run typecheck
 npm run lint
 npm run test:unit
-npm audit --audit-level=high
 npm run build
 npm test
 ```
 
-Run every exact command in `.factory/claims.json` separately. Use `https://flipbook-trace.sociobot.in/?demo=1` for live demo, offline, keyboard, request-log, and export checks.
+Completed for this repair on 2026-08-29 UTC:
 
-## Evidence
+- `npm ci`: 141 packages installed; `npm audit --audit-level=high`: 0 vulnerabilities.
+- Typecheck and lint passed; Vitest passed 3/3 unit tests.
+- Production build passed and wrote `dist/index.html` at the static root. Current initial assets are 33.48 KB JS (11.82 KB gzip) and 15.88 KB CSS (4.36 KB gzip).
+- Full Chromium suite passed: 51/51. It covers desktop and 390 px layouts, keyboard range/export operation, axe serious/critical issues on every route, reduced motion, touch target sizes, local video workflow, request privacy, offline reload, service-worker update, and response/deployment configuration.
+- Every one of the 19 exact commands in `.factory/claims.json` was also run independently with `npm test -- --grep @claim:<id>` and passed. The strengthened `@claim:studio-purchase` regression passed independently.
+- Local `verify-url.sh` against the built preview passed: HTTP 200, title `Flipbook Trace — Turn video into tracing frames`, `lang=en`, one H1/main, complete image alternatives, labeled buttons, and zero console/page errors. It captured desktop and 390 px screenshots.
+- Lighthouse 12.8.2 local mobile: Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 2,258 ms, CLS 0, TBT 0. Desktop scored 100/100/100/100; LCP 502 ms, CLS 0, TBT 0.
 
-See `.factory/verification-5.md` for the full decision and exact evidence. Factory URL-verifier output and screenshots are in `.factory/evidence-verify-5/verify-url-live/`.
+The app remains privacy-first: video and trace processing stay in the browser, the demo is isolated, and the only runtime cross-origin action is the explicit Studio verification/checkout flow already covered by request-policy tests.
 
-Pre-existing `graphify-out` changes were preserved and are not part of this QA handoff.
+## Deployment and live follow-up
+
+Deploy `dist/` using `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. After deployment, check the public identity, headers, billing checkout redirect, service-worker update, offline demo reload, keyboard flow, and `/`, `/demo`, `/privacy`, `/terms`, and 404 routes at the live URL.
+
+## Known gaps and next steps
+
+There is deliberately no claim about refund handling or refund-triggered revocation: the static product cannot safely observe a test refund contract. If the billing service later exposes a documented isolated refund test flow, add a distinct registered claim before making that promise again.
+
+Pre-existing modified `graphify-out/` generated files were preserved and excluded from both repair commits.
