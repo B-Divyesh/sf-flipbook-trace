@@ -1,0 +1,16 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/demo",
+  "date": "2026-08-29T00:00:00Z",
+  "browser": "Playwright Chromium 1.58.2",
+  "method": "PerformanceObserver Event Timing entries with non-zero interactionId; no CPU throttling; one second between repeated interactions",
+  "budget_ms": 200,
+  "line_detail_12_frames_mobile_ms": [376, 376, 384, 472, 520],
+  "line_detail_12_frames_mobile_median_ms": 384,
+  "line_detail_12_frames_desktop_ms": 760,
+  "line_detail_60_frames_mobile_ms": 2024,
+  "line_detail_60_frames_processing_ms": 1790,
+  "reset_demo_12_frames_mobile_ms": 392,
+  "reset_demo_12_frames_desktop_ms": 432,
+  "regenerate_12_frames_mobile_ms": 432,
+  "result": "FAIL"
+}

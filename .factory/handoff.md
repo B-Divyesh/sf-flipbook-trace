@@ -1,83 +1,56 @@
-# Flipbook Trace repair 2 handoff
+# Flipbook Trace verification 4 handoff
 
-- Work order: `flipbook-trace-repair-2`
-- Verifier report: `7a8e5c5442a69d51185828b26b74e6204f802a96`
-- Repaired candidate: `bd8f6b791388fa12754f96f8ed98bfe5afd0dd9a`
-- Repair commit: `d9710ca0f3e84913bad89a2b77a6f9f9440ca81e`
-- Version: `1.0.6`
-- Product class: static local-first offline PWA
+- Work order: `flipbook-trace-verify-4`
+- Candidate: `30c6c2bca48ffa46ed6de765ef75c61ec17200eb`
 - Live URL: <https://flipbook-trace.sociobot.in>
-- Azure Static Web Apps deployment: `98636335-58d1-409c-bebb-4488362049a8`
+- Verified: 2026-08-29 UTC
+- Result: **FAIL — do not release**
 
-## Findings reproduced before repair
+## Release blocker
 
-The candidate production build reproduced the verifier's license failure exactly. Verifying an invalid token made one request and stored `{"valid":false,"checked":…}`. Immediate reload made a second request and left `#license-status` empty. A separate stale-valid-to-revoked response stored a negative verdict but also left the notice empty.
+The deployed app exceeds the supplied 200 ms interaction budget on its core trace-preview control. Chromium Event Timing on `/demo` measured five separate default 12-frame **Line detail** interactions at 376, 376, 384, 472, and 520 ms (384 ms median). The supported 60-frame case measured 2,024 ms, including about 1,790 ms of keydown processing. Resetting or regenerating 12 frames measured about 392–432 ms.
 
-The candidate Terms page also omitted the merchant-of-record, refund, and automatic license-revocation terms.
+This is reproducible on the live candidate without CPU throttling and is not represented by Lighthouse's initial-load score. Filtering and repainting every full-size frame synchronously on each range-input event is the likely cause. Move that work off the interaction path, then require the default and 60-frame cases to remain below 200 ms.
 
-## Repairs
+## What passed
 
-- Valid, invalid, expired, wrong-product, and revoked verdicts now use the same 24-hour cache window.
-- Cached state is restored before home markup is rendered. Fresh cached verdicts do not make a request.
-- New verdict records keep the token and reason. A verdict cannot be reused for a different saved token.
-- License verification now starts after the page is mounted, so a fresh revocation is announced and remains visible.
-- Revoked and inactive states use persistent plain-language notices and a non-success visual treatment.
-- A revoked or inactive verdict resets Studio-only export controls to the free choices.
-- Invalid JSON, non-2xx responses, and malformed API verdicts fail soft without blocking the free app.
-- Terms now state that Sociobot/Dodo is the merchant of record, handles refunds, and automatically revokes a refunded license.
-- `@claim:studio-license-cache` covers fresh valid and invalid reloads, the exact 24-hour boundary, stale revalidation, revoked reload, persistent notices, request counts, and paid-control relocking.
-- A separate Terms regression asserts the required merchant, refund, and revocation wording.
+- Mandatory cold first-read gate and one-click sample demo.
+- All 19 exact `.factory/claims.json` commands.
+- `npm ci`, TypeScript, ESLint, 3/3 unit tests, exact production build, npm audit, and 49/49 Playwright tests.
+- Representative demo and generated local-video workflows at the 1-second/2-fps and 5-second/12-fps boundaries, invalid duration/file/settings input, recovery, ZIP/PDF exports, and reload cleanup.
+- Demo isolation, no-upload request logs, settings portability, free/Studio output checks, and browser-data deletion tests.
+- Previously failing invalid/revoked license caching and persistent notices: one request total across reload.
+- Live checkout redirect and USD 9 one-time checkout claim.
+- Billing allowance: requests 1–30 returned 200; request 31 returned 429 with `Retry-After: 3`.
+- Standard axe: zero serious/critical findings on all five routes; keyboard, focus, 390 px, 200% text, and reduced-motion checks.
+- Live offline reload with 12 frames; changed-worker update test; valid standalone manifest and controlling worker.
+- Exact candidate/live artifact parity, security headers, cache policy, links, routes, and designed 404.
+- Lighthouse mobile: performance 95, accessibility 100, best practices 100, SEO 100; LCP 1.9 s, TBT 240 ms, CLS 0, transfer 189 KiB.
+- Bundles: JS 11.53 KB gzip, CSS 4.36 KB gzip, mobile hero 44.80 KB, no font download.
 
-## Local verification
+## Other finding
 
-The exact work-order build command passed from a clean install:
+Low advisory: Lighthouse's experimental label-in-name audit flags the visible `FT` monogram because the link is named “Flipbook Trace home.” Standard axe is clean and Lighthouse accessibility remains 100.
+
+## Verification commands
 
 ```sh
-npm ci && npm test && npm run build
+npm ci
+jq -r '.[].test' .factory/claims.json
+npm run typecheck
+npm run lint
+npm run test:unit
+npm run build
+npm audit --audit-level=high
+npm test
 ```
 
-- npm audit: 0 vulnerabilities.
-- Unit tests: 3/3 passed.
-- TypeScript: passed with no emit.
-- ESLint: passed.
-- Production browser suite: 49/49 passed in Chromium 1.58.2.
-- Every one of the 19 commands in `.factory/claims.json` passed independently.
-- Desktop checks passed at 1366×768 and 1440×900.
-- Mobile route, overflow, first-screen, and every-action target checks passed at 390×844.
-- Keyboard range operation, focus, route focus restoration, and keyboard export passed.
-- Axe found zero serious or critical issues on home, demo, privacy, terms, and not-found routes.
-- Privacy tests inspected IndexedDB, Cache Storage, OPFS, localStorage, and sessionStorage. Video and frame sentinels were absent.
-- Offline demo reload restored its banner and 12 frames. The update test activated a changed worker, replaced the shell cache, and announced the update.
-- Local URL verifier found no console errors and confirmed title, `lang`, one H1, one main, alt text, and labeled buttons.
-- Local Lighthouse: performance 99, accessibility 100, best practices 100, SEO 100; LCP 2.3 s, TBT 0 ms, CLS 0.
-- Production output: JavaScript 32.67 KB raw / 11.53 KB gzip; CSS 15.88 KB raw / 4.36 KB gzip.
+The detailed report is `.factory/verification-4.md`. Fresh evidence is in `.factory/evidence-verify-4/`.
 
-Package/consumer tests do not apply because this artifact is a browser PWA, not a published package.
+## Repository state note
 
-## Live verification
+The checkout already had unrelated generated `graphify-out` modifications before QA began. They were not used by the build and were left untouched. Verification changed only factory QA documentation and evidence; no product code was modified.
 
-- `/`, `/demo`, `/privacy`, and `/terms` return 200. The designed `/missing-page` returns 404.
-- All five routes have one H1, one main, `lang=en`, no 390 px overflow, no serious/critical axe issue, and no cold cross-origin request.
-- Invalid verdict: one verification request total before and after reload; the inactive notice persisted.
-- Fresh valid verdict: zero verification requests across two loads; Studio remained active.
-- Stale valid verdict: one request returned revoked; reload made no second request and retained the revoked notice.
-- The deployed demo reloaded offline with all 12 frames and its demo banner.
-- Reduced-motion mode reported zero running animations.
-- Live Terms displayed both required purchase disclosures.
-- The checkout endpoint returned 303 to a Dodo checkout session.
-- The verification endpoint returned 200, `Access-Control-Allow-Origin: https://flipbook-trace.sociobot.in`, and `Cache-Control: no-store`.
-- HTML has HSTS, CSP, Referrer-Policy, Permissions-Policy, and `nosniff`. Hashed assets are immutable for one year. `sw.js` is no-store.
-- Live Lighthouse: performance 100, accessibility 100, best practices 100, SEO 100; LCP 1.8 s, TBT 0 ms, CLS 0.
+## Required next step
 
-The deployed HTML, manifest, service worker, JavaScript, and CSS match local `dist/` byte-for-byte. Representative SHA-256 values:
-
-- `index.html`: `6d085f0ffe3d8a853cf1d195f793b9cd53300e3c1a7cfd463b14f08a4b9def0d`
-- `sw.js`: `59f93e169f4de2aa52dcc25978acf970f57968f8d0dd2ee135836a6555c59730`
-- JavaScript: `ebc1928c1cf2474fcfba0b6d590863dbb8b4dab9709284a187a8ed7559d19a67`
-- CSS: `bea09084978f43dab78b57c0f47de23525f649399cb5bd01b30c4f20abc7d24f`
-
-Evidence is in `.factory/evidence-repair-2/`, including local/live Lighthouse JSON, route and license audit JSON, screenshots, and URL-verifier output.
-
-## Known gaps and next steps
-
-No release-blocking product gap remains. The external hosted checkout was verified through its redirect and existing claim test; no real purchase was placed.
+Repair trace-preview responsiveness, deploy the repaired candidate, and repeat all claim, build, functional, privacy, accessibility, billing, PWA, parity, Lighthouse, and Event Timing checks. The current candidate remains **FAIL** until the core interactions stay below 200 ms.
