@@ -279,7 +279,7 @@ test('build output uses hashed immutable assets and a revalidated service worker
   expect(config.routes.find((route) => route.route === '/sw.js')?.headers['Cache-Control']).toContain('no-cache');
 });
 
-test('the production entry defers canvas and export code until the demo needs it', async () => {
+test('the production entry keeps export code out of the demo frame processor', async () => {
   // The demo's cold mobile startup is protected both by the five-load timing
   // check below and by this build contract. The startup entry must request
   // canvas/PDF code dynamically, so demo paint can schedule its parsing and
@@ -297,8 +297,37 @@ test('the production entry defers canvas and export code until the demo needs it
   if (!coreName) throw new Error('The core canvas module is missing.');
   const core = await readFile(`dist/assets/${coreName}`, 'utf8');
   expect(core).toContain('PDF-1.4');
+  expect(core).not.toContain('drawDemoFrame');
+  expect(core).not.toContain('applyTraceFilter');
+  const frameProcessorName = assets.find((asset) => /^frame-processor-[A-Za-z0-9_-]+\.js$/.test(asset));
+  expect(frameProcessorName).toBeTruthy();
+  if (!frameProcessorName) throw new Error('The demo frame processor is missing.');
+  const frameProcessor = await readFile(`dist/assets/${frameProcessorName}`, 'utf8');
+  expect(Buffer.byteLength(frameProcessor)).toBeLessThan(4_000);
+  expect(frameProcessor).not.toContain('PDF-1.4');
   const worker = await readFile('dist/sw.js', 'utf8');
   expect(worker).toContain(`/assets/${coreName}`);
+  expect(worker).toContain(`/assets/${frameProcessorName}`);
+});
+
+test('demo startup fetches the light frame processor but not the export module', async ({ browser }) => {
+  const assets = await readdir('dist/assets');
+  const coreName = assets.find((asset) => /^core-[A-Za-z0-9_-]+\.js$/.test(asset));
+  const frameProcessorName = assets.find((asset) => /^frame-processor-[A-Za-z0-9_-]+\.js$/.test(asset));
+  expect(coreName).toBeTruthy();
+  expect(frameProcessorName).toBeTruthy();
+  if (!coreName || !frameProcessorName) throw new Error('Expected production chunks are missing.');
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
+  const page = await context.newPage();
+  try {
+    await page.goto('/?demo=1');
+    await expect(page.locator('#work-status')).toHaveText('12 frames ready');
+    const resources = await page.evaluate(() => performance.getEntriesByType('resource').map((entry) => entry.name));
+    expect(resources.some((resource) => resource.endsWith(`/assets/${frameProcessorName}`))).toBe(true);
+    expect(resources.some((resource) => resource.endsWith(`/assets/${coreName}`))).toBe(false);
+  } finally {
+    await context.close();
+  }
 });
 
 test('landing discovers the responsive LCP image in the document before app rendering', async ({ browser }) => {

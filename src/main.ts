@@ -24,8 +24,8 @@ const PREVIEW_CHUNK_SIZE = 1;
 // The sample frames only need to be sharp at their displayed size. Keeping the
 // source close to that size avoids doing full-export-sized pixel work while the
 // demo is becoming interactive on a throttled phone.
-const DEMO_SOURCE_WIDTH = 180;
-const DEMO_SOURCE_HEIGHT = 112;
+const DEMO_SOURCE_WIDTH = 144;
+const DEMO_SOURCE_HEIGHT = 90;
 const DEMO_OVERVIEW_WIDTH = 64;
 const DEMO_OVERVIEW_HEIGHT = 40;
 const PAINT_CHUNK_SIZE = 1;
@@ -48,11 +48,17 @@ let loadedVideo: HTMLVideoElement | null = null;
 let loadedVideoUrl = '';
 let previewGeneration = 0;
 let previewTimer: number | undefined;
-let processorPromise: Promise<typeof import('./core')> | undefined;
+let exportProcessorPromise: Promise<typeof import('./core')> | undefined;
+let frameProcessorPromise: Promise<typeof import('./frame-processor')> | undefined;
 
-function loadProcessor(): Promise<typeof import('./core')> {
-  processorPromise ??= import('./core');
-  return processorPromise;
+function loadExportProcessor(): Promise<typeof import('./core')> {
+  exportProcessorPromise ??= import('./core');
+  return exportProcessorPromise;
+}
+
+function loadFrameProcessor(): Promise<typeof import('./frame-processor')> {
+  frameProcessorPromise ??= import('./frame-processor');
+  return frameProcessorPromise;
 }
 
 function routePath(url = new URL(window.location.href)): string {
@@ -211,10 +217,12 @@ async function render(path = routePath(), focus = false): Promise<void> {
   if (path === '/') {
     bindWorkspace();
     bindLicense();
-    // Keep the local processor available before a person picks a video. This
-    // is an app-shell asset, not part of the video workflow, so importing a
-    // local file never starts a network request.
-    void loadProcessor();
+    // The real workspace warms its local-only processors before a person
+    // chooses a file. That keeps import, tracing, and export free of HTTP
+    // activity after the shell has settled. Demo deliberately does not use
+    // this path, so its startup never parses the export module.
+    void loadFrameProcessor();
+    void loadExportProcessor();
     if (licenseToCheck) void verifyLicense(licenseToCheck);
   } else if (path === '/demo') {
     void mountDemoWorkspace();
@@ -353,10 +361,10 @@ async function loadDemoFrames(count = 12): Promise<void> {
   setExportButtonsDisabled(true);
   setStatus('Preparing sample frames…');
   await yieldToBrowser();
-  const { drawDemoFrame } = await loadProcessor();
+  const { drawDemoFrame, drawDemoTraceFrame } = await loadFrameProcessor();
   // Module parsing and canvas work must stay in separate browser tasks on a
-  // throttled phone. The small source is still at least the width of a mobile
-  // preview card, so the ready sample remains useful to trace.
+  // throttled phone. This compact source is enlarged only for display, so the
+  // ready sample stays legible without spending export-sized pixel work.
   await yieldToBrowser();
   for (let index = 0; index < count; index += 1) {
     if (generation !== previewGeneration) return;
@@ -369,6 +377,26 @@ async function loadDemoFrames(count = 12): Promise<void> {
   }
   if (generation !== previewGeneration) return;
   sourceFrames = nextFrames;
+  if (settings.mode === 'edges' && settings.threshold === defaultSettings.threshold && !settings.onion) {
+    const traces: HTMLCanvasElement[] = [];
+    // The default sample is already a line drawing. Drawing that representation
+    // directly avoids twelve pixel readbacks while the demo is first becoming
+    // interactive; changing any trace setting still runs the full filter.
+    for (let index = 0; index < count; index += 1) {
+      if (generation !== previewGeneration) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = DEMO_SOURCE_WIDTH;
+      canvas.height = DEMO_SOURCE_HEIGHT;
+      drawDemoTraceFrame(canvas, index, count);
+      traces.push(canvas);
+      await yieldToBrowser();
+    }
+    if (generation !== previewGeneration) return;
+    outputFrames = traces;
+    await paintFrames(generation);
+    if (isDemo) await paintDemoPeek(generation);
+    return;
+  }
   schedulePreviewRender();
 }
 
@@ -561,7 +589,7 @@ async function rebuildOutputFrames(generation: number): Promise<void> {
   const sources = [...sourceFrames];
   const frameSettings = { ...settings };
   const nextFrames: HTMLCanvasElement[] = [];
-  const { applyTraceFilter } = await loadProcessor();
+  const { applyTraceFilter } = await loadFrameProcessor();
   await yieldToBrowser();
   for (let index = 0; index < sources.length; index += 1) {
     if (generation !== previewGeneration) return;
@@ -578,7 +606,7 @@ function buildExportFrameStream(onFrame?: (index: number, total: number) => void
   const sources = [...sourceFrames];
   const frameSettings = { ...settings };
   return (async function* exportFrames() {
-    const { applyTraceFilter } = await loadProcessor();
+    const { applyTraceFilter } = await loadFrameProcessor();
     for (let index = 0; index < sources.length; index += 1) {
       onFrame?.(index + 1, sources.length);
       yield traceFrame(sources[index], index, sources, frameSettings, applyTraceFilter);
@@ -634,7 +662,7 @@ async function exportPng(): Promise<void> {
   try {
     await yieldAfterInteraction();
     const frames = buildExportFrameStream((index, total) => setStatus(`Packing PNG ${index} of ${total}…`));
-    const { makePngZip } = await loadProcessor();
+    const { makePngZip } = await loadExportProcessor();
     downloadBlob(await makePngZip(frames), 'flipbook-trace-frames.zip');
     setStatus(`${frameCount} PNGs exported`);
   } catch {
@@ -650,7 +678,7 @@ async function exportPdf(): Promise<void> {
   try {
     await yieldAfterInteraction();
     const exportFrames = await buildExportFrames();
-    const { makePdf } = await loadProcessor();
+    const { makePdf } = await loadExportProcessor();
     downloadBlob(await makePdf(exportFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
     setStatus('PDF trace sheet exported');
   } catch {
