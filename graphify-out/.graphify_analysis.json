@@ -1,7 +1,42 @@
 {
   "communities": {
     "0": [
+      "axe_core_playwright",
+      "eslint",
+      "eslint_js",
+      "jpeg_js",
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_axe_core_playwright",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_js",
+      "package_devdependencies_jpeg_js",
+      "package_devdependencies_playwright_test",
+      "package_devdependencies_typescript",
+      "package_devdependencies_typescript_eslint",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitest",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_scripts_test",
+      "package_scripts_test_unit",
+      "package_scripts_typecheck",
+      "package_type",
+      "package_version",
+      "playwright_test",
+      "typescript",
+      "typescript_eslint",
+      "vite",
+      "vitest"
+    ],
+    "1": [
       "src_core_loadpreferences",
+      "src_core_savepreferences",
       "src_main",
       "src_main_applylicenseverdict",
       "src_main_approot",
@@ -15,6 +50,7 @@
       "src_main_initlicense",
       "src_main_licensestatustext",
       "src_main_licenseverdict",
+      "src_main_mountdemoworkspace",
       "src_main_navlink",
       "src_main_notfoundpage",
       "src_main_outputframes",
@@ -32,7 +68,7 @@
       "src_main_verifylicense",
       "src_main_workspacetemplate"
     ],
-    "1": [
+    "2": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -56,9 +92,8 @@
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
     ],
-    "2": [
+    "3": [
       "src_core_downloadblob",
-      "src_core_savepreferences",
       "src_main_bindworkspace",
       "src_main_buildexportframes",
       "src_main_clearerror",
@@ -77,27 +112,6 @@
       "src_main_updatesettings",
       "src_main_value",
       "src_main_yieldafterinteraction"
-    ],
-    "3": [
-      "axe_core_playwright",
-      "eslint",
-      "eslint_js",
-      "jpeg_js",
-      "package_devdependencies",
-      "package_devdependencies_axe_core_playwright",
-      "package_devdependencies_eslint",
-      "package_devdependencies_eslint_js",
-      "package_devdependencies_jpeg_js",
-      "package_devdependencies_playwright_test",
-      "package_devdependencies_typescript",
-      "package_devdependencies_typescript_eslint",
-      "package_devdependencies_vite",
-      "package_devdependencies_vitest",
-      "playwright_test",
-      "typescript",
-      "typescript_eslint",
-      "vite",
-      "vitest"
     ],
     "4": [
       "src_core",
@@ -120,21 +134,6 @@
       "src_core_u32"
     ],
     "5": [
-      "package",
-      "package_name",
-      "package_private",
-      "package_scripts",
-      "package_scripts_build",
-      "package_scripts_dev",
-      "package_scripts_lint",
-      "package_scripts_preview",
-      "package_scripts_test",
-      "package_scripts_test_unit",
-      "package_scripts_typecheck",
-      "package_type",
-      "package_version"
-    ],
-    "6": [
       "tests_claims_spec",
       "tests_claims_spec_assertnoworkflowrequests",
       "tests_claims_spec_assertonlylicenseverification",
@@ -149,7 +148,8 @@
       "tests_claims_spec_sourcefingerprint",
       "tests_claims_spec_storage_getitem"
     ],
-    "7": [
+    "6": [
+      "test",
       "tests_site_spec",
       "tests_site_spec_expectinteractionswithinbudget",
       "tests_site_spec_installinteractionobserver",
@@ -158,7 +158,7 @@
       "tests_site_spec_targetbox",
       "tests_site_spec_visibleactiontargets"
     ],
-    "8": [
+    "7": [
       "src_core_applytracefilter",
       "src_main_paintdemopeek",
       "src_main_paintframes",
@@ -166,39 +166,43 @@
       "src_main_traceframe",
       "src_main_yieldtobrowser"
     ],
-    "9": [
+    "8": [
       "factory_evidence_repair_3_interaction_audit",
       "factory_evidence_repair_3_interaction_audit_measure",
       "factory_evidence_repair_3_interaction_audit_mobilelinedetail",
       "factory_evidence_repair_3_interaction_audit_opendemo",
       "factory_evidence_repair_3_interaction_audit_result"
     ],
-    "10": [
+    "9": [
       "factory_qa_artifacts_live_qa",
       "factory_qa_artifacts_live_qa_makevideo",
       "factory_qa_artifacts_live_qa_output",
       "factory_qa_artifacts_live_qa_report",
       "factory_qa_artifacts_live_qa_watch"
     ],
-    "11": [
+    "10": [
       "scripts_finalize_build",
       "scripts_finalize_build_buildhash",
       "scripts_finalize_build_finalized",
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "12": [
+    "11": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "13": [
+    "12": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "14": [
+    "13": [
       "factory_evidence_repair_3_live_audit",
       "factory_evidence_repair_3_live_audit_result"
+    ],
+    "14": [
+      "factory_evidence_repair_7_live_audit",
+      "factory_evidence_repair_7_live_audit_result"
     ],
     "15": [
       "public_sw",
@@ -221,19 +225,19 @@
     ]
   },
   "cohesion": {
-    "0": 0.14482758620689656,
-    "1": 0.09090909090909091,
-    "2": 0.2736842105263158,
-    "3": 0.10526315789473684,
+    "0": 0.0625,
+    "1": 0.1350806451612903,
+    "2": 0.09090909090909091,
+    "3": 0.29239766081871343,
     "4": 0.1895424836601307,
-    "5": 0.15384615384615385,
-    "6": 0.16666666666666666,
-    "7": 0.2857142857142857,
-    "8": 0.4666666666666667,
+    "5": 0.16666666666666666,
+    "6": 0.25,
+    "7": 0.4666666666666667,
+    "8": 0.4,
     "9": 0.4,
     "10": 0.4,
-    "11": 0.4,
-    "12": 0.6666666666666666,
+    "11": 0.6666666666666666,
+    "12": 1.0,
     "13": 1.0,
     "14": 1.0,
     "15": 1.0,
@@ -252,7 +256,7 @@
     {
       "id": "src_main_bindworkspace",
       "label": "bindWorkspace()",
-      "degree": 15
+      "degree": 16
     },
     {
       "id": "tsconfig_compileroptions",
@@ -270,34 +274,34 @@
       "degree": 11
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
-      "degree": 9
-    },
-    {
       "id": "src_main_makedemoframes",
       "label": "makeDemoFrames()",
       "degree": 9
     },
     {
-      "id": "src_main_exportpng",
-      "label": "exportPng()",
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
+      "degree": 9
+    },
+    {
+      "id": "src_core_makepngzip",
+      "label": "makePngZip()",
       "degree": 8
     },
     {
-      "id": "src_main_importsettings",
-      "label": "importSettings()",
+      "id": "package_scripts",
+      "label": "scripts",
       "degree": 8
     },
     {
-      "id": "src_main_loadvideo",
-      "label": "loadVideo()",
+      "id": "src_main_value",
+      "label": "value()",
       "degree": 8
     }
   ],
   "surprises": [
     {
-      "source": "applyLicenseVerdict()",
+      "source": "importSettings()",
       "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
@@ -308,8 +312,19 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "render()",
-      "target": "normalizeSettings()",
+      "source": "updateSettings()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "loadDemoFrames()",
+      "target": "drawDemoFrame()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -332,17 +347,6 @@
     {
       "source": "exportPng()",
       "target": "makePngZip()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "importSettings()",
-      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
