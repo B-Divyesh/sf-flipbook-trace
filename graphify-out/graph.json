@@ -1828,16 +1828,6 @@
       "source_location": "L1"
     },
     {
-      "id": "test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 7,
-      "confidence": "EXTRACTED",
-      "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "@playwright/test"
-    },
-    {
       "id": "tests_site_spec",
       "label": "site.spec.ts",
       "_origin": "ast",
@@ -5277,15 +5267,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_site_spec",
-      "target": "test",
-      "relation": "dynamic_import",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/site.spec.ts"
-    },
-    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -5311,5 +5292,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d7c7a11827f3ce3dbaf62182478984e52c8f9508"
+  "built_at_commit": "7e1747da5426abe9919a269dc4807c4ccc222c44"
 }

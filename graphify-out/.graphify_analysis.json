@@ -150,7 +150,6 @@
       "tests_claims_spec_storage_getitem"
     ],
     "7": [
-      "test",
       "tests_site_spec",
       "tests_site_spec_expectinteractionswithinbudget",
       "tests_site_spec_installinteractionobserver",
@@ -229,7 +228,7 @@
     "4": 0.1895424836601307,
     "5": 0.15384615384615385,
     "6": 0.16666666666666666,
-    "7": 0.25,
+    "7": 0.2857142857142857,
     "8": 0.4666666666666667,
     "9": 0.4,
     "10": 0.4,
@@ -251,13 +250,13 @@
       "degree": 20
     },
     {
-      "id": "tsconfig_compileroptions",
-      "label": "compilerOptions",
+      "id": "src_main_bindworkspace",
+      "label": "bindWorkspace()",
       "degree": 15
     },
     {
-      "id": "src_main_bindworkspace",
-      "label": "bindWorkspace()",
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
       "degree": 15
     },
     {
@@ -271,35 +270,35 @@
       "degree": 11
     },
     {
-      "id": "src_main_makedemoframes",
-      "label": "makeDemoFrames()",
-      "degree": 9
-    },
-    {
       "id": "src_main_exportpdf",
       "label": "exportPdf()",
       "degree": 9
     },
     {
-      "id": "src_core_makepngzip",
-      "label": "makePngZip()",
+      "id": "src_main_makedemoframes",
+      "label": "makeDemoFrames()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_exportpng",
+      "label": "exportPng()",
       "degree": 8
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
+      "id": "src_main_importsettings",
+      "label": "importSettings()",
       "degree": 8
     },
     {
-      "id": "src_main_value",
-      "label": "value()",
+      "id": "src_main_loadvideo",
+      "label": "loadVideo()",
       "degree": 8
     }
   ],
   "surprises": [
     {
-      "source": "loadDemoFrames()",
-      "target": "drawDemoFrame()",
+      "source": "applyLicenseVerdict()",
+      "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -309,8 +308,8 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "applyLicenseVerdict()",
-      "target": "savePreferences()",
+      "source": "render()",
+      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
