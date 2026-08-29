@@ -43,7 +43,14 @@ The app remains privacy-first: video and trace processing stay in the browser, t
 
 ## Deployment and live follow-up
 
-Deploy `dist/` using `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. After deployment, check the public identity, headers, billing checkout redirect, service-worker update, offline demo reload, keyboard flow, and `/`, `/demo`, `/privacy`, `/terms`, and 404 routes at the live URL.
+Deployed the verified `dist/` with `/opt/fleet/lib/deploy-static.sh flipbook-trace dist` on 2026-08-29 UTC. Azure Static Web Apps accepted deployment `e3cec356-0905-4baf-91f6-3e4cd439ada9` and the configured custom domain returned HTTPS 200.
+
+- The live `index.html` and `/assets/index-zvKPjg0u.js` SHA-256 values match the local production build byte-for-byte.
+- The live `verify-url.sh` check passed at desktop and 390 px: title, `lang=en`, H1/main, alternatives, labels, and console/page errors all passed.
+- `/`, `/demo`, `/privacy`, and `/terms` return 200; `/missing-page` returns the designed 404.
+- In a fresh 390 px live browser, the keyboard changed Line detail from 142 to 143, direct demo entry loaded 12 frames, and an offline reload restored the demo banner and all 12 frames under the controlling service worker.
+- Live `/terms` contains the registered checkout statement and none of the former refund phrases. The production checkout endpoint returns 303 to `checkout.dodopayments.com`.
+- Live responses include HSTS, `nosniff`, strict-origin referrer policy, restrictive permissions policy, and the self/Sociobot CSP required by `staticwebapp.config.json`.
 
 ## Known gaps and next steps
 
