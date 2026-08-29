@@ -81,12 +81,34 @@ full-page screenshot disabled only to avoid a container Chrome crash, measured
 FCP 1.0 s, LCP 1.4 s, TBT 20 ms, CLS 0.031. The production entry is 25,580 B
 raw / 8,670 B gzip; CSS is 16,140 B raw / 4,440 B gzip.
 
-## Deployment and follow-up
+## Deployment and live verification
 
-Deploy `dist/` as the existing static PWA at
-`https://flipbook-trace.sociobot.in`. After deployment, repeat the five-load
-production timing check and live identity/header checks, then replace this
-section with the commit and live evidence.
+Repair commit `1adb5695cd79d5e4737d4fd6eb3da665a752a983` was pushed to `main`
+and the final `dist/` was deployed to the configured Azure Static Web App
+`sf-flipbook-trace` (`sociobot` resource group). Both its Azure hostname and
+the production custom domain serve the v1.0.14 bundle and service worker.
+All **24/24** publicly served artifacts byte-match fresh local `dist/`.
+
+On five independent fresh production loads at 390×844 CSS px, DPR 1.75, and
+CDP 4× CPU throttling, the ready 12-frame demo recorded longest tasks of
+**118/81/77/81/104 ms**. Median: **81 ms**; maximum: **118 ms**. Every run
+returned HTTP 200, rendered all twelve frames, is below the strict 200 ms
+contract, and clears the 150 ms median guard.
+
+Live smoke evidence:
+
+- Desktop demo: 12 frames, ArrowRight changed Line detail 142 → 143, PNG ZIP
+  download succeeded, no console/page errors, and every request stayed on
+  `https://flipbook-trace.sociobot.in`.
+- Mobile: service worker controlled the page; forced-offline reload returned
+  200 and restored 12 ready frames.
+- Mobile axe scans at `/`, `?demo=1`, `/privacy`, `/terms`, and `/missing-page`
+  had zero serious/critical findings and no horizontal overflow. The missing
+  route correctly returned 404.
+- Live home headers include 30-second HTML revalidation, HSTS,
+  `X-Content-Type-Options: nosniff`, strict-origin referrer policy,
+  restrictive Permissions Policy, and response-header CSP with
+  `frame-ancestors 'none'`.
 
 ## Known gaps
 
