@@ -3,36 +3,75 @@
     "0": [
       "src_main",
       "src_main_approot",
+      "src_main_bindworkspace",
       "src_main_buildexportframes",
       "src_main_buildexportframestream",
-      "src_main_cancelpreviewrender",
-      "src_main_demobanner",
-      "src_main_demopage",
+      "src_main_clearerror",
+      "src_main_exportpdf",
+      "src_main_exportpng",
+      "src_main_hasstudioaccess",
+      "src_main_importsettings",
       "src_main_licenseverdict",
       "src_main_loaddemoframes",
+      "src_main_loadexportprocessor",
       "src_main_loadframeprocessor",
-      "src_main_mountdemoworkspace",
-      "src_main_navlink",
+      "src_main_loadvideo",
+      "src_main_makedemoframes",
+      "src_main_makeframesfromvideo",
       "src_main_outputframes",
       "src_main_paintdemopeek",
       "src_main_paintframes",
       "src_main_rebuildoutputframes",
       "src_main_schedulepreviewrender",
+      "src_main_seek",
       "src_main_setexportbuttonsdisabled",
       "src_main_setstatus",
       "src_main_settings",
-      "src_main_shell",
+      "src_main_showerror",
       "src_main_sourceframes",
-      "src_main_start",
       "src_main_traceframe",
-      "src_main_workspacecontrolstemplate",
-      "src_main_workspaceheadingtemplate",
-      "src_main_workspacepreviewtemplate",
-      "src_main_workspacetemplate",
+      "src_main_updatesettings",
+      "src_main_value",
+      "src_main_yieldafterinteraction",
       "src_main_yieldforpaint",
-      "src_main_yieldtobrowser"
+      "src_main_yieldtobrowser",
+      "src_settings_downloadblob"
     ],
     "1": [
+      "axe_core_playwright",
+      "eslint",
+      "eslint_js",
+      "jpeg_js",
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_axe_core_playwright",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_js",
+      "package_devdependencies_jpeg_js",
+      "package_devdependencies_playwright_test",
+      "package_devdependencies_typescript",
+      "package_devdependencies_typescript_eslint",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitest",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_scripts_test",
+      "package_scripts_test_unit",
+      "package_scripts_typecheck",
+      "package_type",
+      "package_version",
+      "playwright_test",
+      "typescript",
+      "typescript_eslint",
+      "vite",
+      "vitest"
+    ],
+    "2": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -56,65 +95,30 @@
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
     ],
-    "2": [
-      "src_main_bindworkspace",
-      "src_main_cleanupvideo",
-      "src_main_clearerror",
-      "src_main_exportpdf",
-      "src_main_exportpng",
-      "src_main_hasstudioaccess",
-      "src_main_importsettings",
-      "src_main_loadexportprocessor",
-      "src_main_loadvideo",
-      "src_main_makedemoframes",
-      "src_main_makeframesfromvideo",
-      "src_main_render",
-      "src_main_seek",
-      "src_main_showerror",
-      "src_main_updatemeta",
-      "src_main_updatesettings",
-      "src_main_value",
-      "src_main_yieldafterinteraction",
-      "src_settings_downloadblob",
-      "src_settings_normalizesettings"
-    ],
     "3": [
-      "axe_core_playwright",
-      "eslint",
-      "eslint_js",
-      "jpeg_js",
-      "package_devdependencies",
-      "package_devdependencies_axe_core_playwright",
-      "package_devdependencies_eslint",
-      "package_devdependencies_eslint_js",
-      "package_devdependencies_jpeg_js",
-      "package_devdependencies_playwright_test",
-      "package_devdependencies_typescript",
-      "package_devdependencies_typescript_eslint",
-      "package_devdependencies_vite",
-      "package_devdependencies_vitest",
-      "playwright_test",
-      "typescript",
-      "typescript_eslint",
-      "vite",
-      "vitest"
+      "src_main_applylicenseverdict",
+      "src_main_bindlicense",
+      "src_main_bindnavigation",
+      "src_main_cancelpreviewrender",
+      "src_main_cleanupvideo",
+      "src_main_demobanner",
+      "src_main_demoinitialpage",
+      "src_main_initlicense",
+      "src_main_licensestatustext",
+      "src_main_mountdemopage",
+      "src_main_navlink",
+      "src_main_readlicenseverdict",
+      "src_main_render",
+      "src_main_routepath",
+      "src_main_shell",
+      "src_main_sitefooter",
+      "src_main_siteheader",
+      "src_main_start",
+      "src_main_updatemeta",
+      "src_main_verifylicense",
+      "src_settings_savepreferences"
     ],
     "4": [
-      "package",
-      "package_name",
-      "package_private",
-      "package_scripts",
-      "package_scripts_build",
-      "package_scripts_dev",
-      "package_scripts_lint",
-      "package_scripts_preview",
-      "package_scripts_test",
-      "package_scripts_test_unit",
-      "package_scripts_typecheck",
-      "package_type",
-      "package_version"
-    ],
-    "5": [
       "tests_claims_spec",
       "tests_claims_spec_assertnoworkflowrequests",
       "tests_claims_spec_assertonlylicenseverification",
@@ -129,7 +133,7 @@
       "tests_claims_spec_sourcefingerprint",
       "tests_claims_spec_storage_getitem"
     ],
-    "6": [
+    "5": [
       "src_core",
       "src_core_ascii",
       "src_core_canvasblob",
@@ -143,7 +147,7 @@
       "src_core_u16",
       "src_core_u32"
     ],
-    "7": [
+    "6": [
       "src_core_test",
       "src_frame_processor",
       "src_frame_processor_applytracefilter",
@@ -154,37 +158,10 @@
       "src_settings_filtermode",
       "src_settings_framesettings",
       "src_settings_loadpreferences",
-      "src_settings_savepreferences"
+      "src_settings_normalizesettings"
     ],
-    "8": [
-      "src_main_applylicenseverdict",
-      "src_main_bindlicense",
-      "src_main_bindnavigation",
-      "src_main_initlicense",
-      "src_main_licensestatustext",
-      "src_main_readlicenseverdict",
-      "src_main_routepath",
-      "src_main_verifylicense"
-    ],
-    "9": [
-      "scripts_finalize_build",
-      "scripts_finalize_build_appmodules",
-      "scripts_finalize_build_assetdirectory",
-      "scripts_finalize_build_buildhash",
-      "scripts_finalize_build_finalized",
-      "scripts_finalize_build_indexpath",
-      "scripts_finalize_build_workerpath"
-    ],
-    "10": [
-      "src_static_pages",
-      "src_static_pages_homecontent",
-      "src_static_pages_notfoundcontent",
-      "src_static_pages_pagemeta",
-      "src_static_pages_paidcontent",
-      "src_static_pages_privacycontent",
-      "src_static_pages_termscontent"
-    ],
-    "11": [
+    "7": [
+      "test",
       "tests_site_spec",
       "tests_site_spec_expectinteractionswithinbudget",
       "tests_site_spec_installinteractionobserver",
@@ -193,85 +170,110 @@
       "tests_site_spec_targetbox",
       "tests_site_spec_visibleactiontargets"
     ],
-    "12": [
+    "8": [
+      "scripts_finalize_build",
+      "scripts_finalize_build_appmodules",
+      "scripts_finalize_build_assetdirectory",
+      "scripts_finalize_build_buildhash",
+      "scripts_finalize_build_finalized",
+      "scripts_finalize_build_indexpath",
+      "scripts_finalize_build_workerpath"
+    ],
+    "9": [
+      "src_static_pages",
+      "src_static_pages_homecontent",
+      "src_static_pages_notfoundcontent",
+      "src_static_pages_pagemeta",
+      "src_static_pages_paidcontent",
+      "src_static_pages_privacycontent",
+      "src_static_pages_termscontent"
+    ],
+    "10": [
       "factory_evidence_repair_3_interaction_audit",
       "factory_evidence_repair_3_interaction_audit_measure",
       "factory_evidence_repair_3_interaction_audit_mobilelinedetail",
       "factory_evidence_repair_3_interaction_audit_opendemo",
       "factory_evidence_repair_3_interaction_audit_result"
     ],
-    "13": [
+    "11": [
       "factory_qa_artifacts_live_qa",
       "factory_qa_artifacts_live_qa_makevideo",
       "factory_qa_artifacts_live_qa_output",
       "factory_qa_artifacts_live_qa_report",
       "factory_qa_artifacts_live_qa_watch"
     ],
-    "14": [
+    "12": [
+      "src_main_mountdemoworkspace",
+      "src_main_workspacecontrolstemplate",
+      "src_main_workspaceheadingtemplate",
+      "src_main_workspacepreviewtemplate",
+      "src_main_workspacetemplate"
+    ],
+    "13": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "15": [
+    "14": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "16": [
+    "15": [
       "factory_evidence_repair_3_live_audit",
       "factory_evidence_repair_3_live_audit_result"
     ],
-    "17": [
+    "16": [
       "factory_evidence_repair_7_live_audit",
       "factory_evidence_repair_7_live_audit_result"
     ],
-    "18": [
+    "17": [
       "factory_evidence_repair_8_live_audit",
       "factory_evidence_repair_8_live_audit_result"
     ],
-    "19": [
+    "18": [
       "factory_evidence_repair_9_live_audit",
       "factory_evidence_repair_9_live_audit_result"
     ],
-    "20": [
+    "19": [
       "factory_evidence_verify_10_live_audit",
       "factory_evidence_verify_10_live_audit_result"
     ],
-    "21": [
+    "20": [
       "public_sw",
       "public_sw_precache"
     ],
-    "22": [
+    "21": [
       "eslint_config"
     ],
-    "23": [
+    "22": [
       "playwright_config"
     ],
-    "24": [
+    "23": [
       "src_vite_env_d"
     ],
-    "25": [
+    "24": [
       "vite_config"
     ],
-    "26": [
+    "25": [
       "vitest_config"
     ]
   },
   "cohesion": {
-    "0": 0.15172413793103448,
-    "1": 0.09090909090909091,
-    "2": 0.25263157894736843,
-    "3": 0.10526315789473684,
-    "4": 0.15384615384615385,
-    "5": 0.16666666666666666,
-    "6": 0.3181818181818182,
-    "7": 0.21818181818181817,
-    "8": 0.32142857142857145,
+    "0": 0.18319327731092436,
+    "1": 0.0625,
+    "2": 0.09090909090909091,
+    "3": 0.14285714285714285,
+    "4": 0.16666666666666666,
+    "5": 0.3181818181818182,
+    "6": 0.23636363636363636,
+    "7": 0.25,
+    "8": 0.2857142857142857,
     "9": 0.2857142857142857,
-    "10": 0.2857142857142857,
-    "11": 0.2857142857142857,
-    "12": 0.4,
-    "13": 0.4,
-    "14": 0.6666666666666666,
+    "10": 0.4,
+    "11": 0.4,
+    "12": 0.6,
+    "13": 0.6666666666666666,
+    "14": 1.0,
     "15": 1.0,
     "16": 1.0,
     "17": 1.0,
@@ -282,8 +284,7 @@
     "22": 1.0,
     "23": 1.0,
     "24": 1.0,
-    "25": 1.0,
-    "26": 1.0
+    "25": 1.0
   },
   "gods": [
     {
@@ -322,25 +323,36 @@
       "degree": 9
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_exportpng",
-      "label": "exportPng()",
+      "id": "src_main_value",
+      "label": "value()",
       "degree": 9
     },
     {
       "id": "src_main_makedemoframes",
       "label": "makeDemoFrames()",
       "degree": 9
+    },
+    {
+      "id": "src_main_exportpng",
+      "label": "exportPng()",
+      "degree": 9
     }
   ],
   "surprises": [
     {
       "source": "importSettings()",
-      "target": "savePreferences()",
+      "target": "normalizeSettings()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "render()",
+      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/settings.ts"
@@ -361,6 +373,17 @@
       "why": "bridges separate communities"
     },
     {
+      "source": "importSettings()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
       "source": "updateSettings()",
       "target": "savePreferences()",
       "source_files": [
@@ -370,28 +393,6 @@
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "bridges separate communities"
-    },
-    {
-      "source": "applyLicenseVerdict()",
-      "target": "savePreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/settings.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "bindWorkspace()",
-      "target": "downloadBlob()",
-      "source_files": [
-        "src/main.ts",
-        "src/settings.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
     }
   ],
   "tokens": {
