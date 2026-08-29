@@ -21,7 +21,10 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.6';
+const BUILD_ID = 'v1.0.7';
+const PREVIEW_WIDTH = 320;
+const PREVIEW_INPUT_DELAY_MS = 120;
+const PREVIEW_CHUNK_SIZE = 3;
 
 type LicenseVerdict = {
   valid: boolean;
@@ -39,6 +42,8 @@ let sourceFrames: HTMLCanvasElement[] = [];
 let outputFrames: HTMLCanvasElement[] = [];
 let loadedVideo: HTMLVideoElement | null = null;
 let loadedVideoUrl = '';
+let previewGeneration = 0;
+let previewTimer: number | undefined;
 
 function routePath(url = new URL(window.location.href)): string {
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
@@ -53,7 +58,7 @@ function shell(content: string): string {
   return `
     <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
-      <a class="wordmark" href="/" data-route aria-label="Flipbook Trace home"><span aria-hidden="true">FT</span> Flipbook Trace</a>
+      <a class="wordmark" href="/" data-route><span aria-hidden="true">FT</span> Flipbook Trace</a>
       <nav aria-label="Main navigation">
         ${navLink('/?demo=1', 'Demo')}
         <a href="/#how">How it works</a>
@@ -237,6 +242,7 @@ function updateMeta(path: string): void {
 }
 
 async function render(path = routePath(), focus = false): Promise<void> {
+  cancelPreviewRender();
   cleanupVideo();
   isDemo = path === '/demo';
   const licenseToCheck = path === '/' ? initLicense() : null;
@@ -303,11 +309,11 @@ function bindWorkspace(): void {
   threshold.addEventListener('input', () => {
     value<HTMLOutputElement>('threshold-value').value = threshold.value;
     updateSettings();
-    rebuildOutputFrames();
+    schedulePreviewRender(PREVIEW_INPUT_DELAY_MS);
   });
   document.querySelectorAll<HTMLInputElement>('input[name="mode"], #onion').forEach((input) => input.addEventListener('change', () => {
     updateSettings();
-    rebuildOutputFrames();
+    schedulePreviewRender();
   }));
   value<HTMLSelectElement>('fps').addEventListener('change', updateSettings);
   value<HTMLSelectElement>('quality').addEventListener('change', (event) => {
@@ -332,9 +338,11 @@ function bindWorkspace(): void {
   document.querySelector<HTMLInputElement>('#import-settings')?.addEventListener('change', (event) => void importSettings((event.currentTarget as HTMLInputElement).files?.[0]));
   document.querySelector<HTMLButtonElement>('#export-png')?.addEventListener('click', exportPng);
   document.querySelector<HTMLButtonElement>('#export-pdf')?.addEventListener('click', exportPdf);
-  reset?.addEventListener('click', () => {
+  reset?.addEventListener('click', async () => {
     settings = { ...defaultSettings };
-    void render('/demo');
+    setStatus('Resetting the sample…');
+    await yieldAfterInteraction();
+    await render('/demo');
   });
 }
 
@@ -367,10 +375,10 @@ function loadDemoFrames(count = 12): void {
     drawDemoFrame(canvas, index, count);
     return canvas;
   });
-  rebuildOutputFrames();
+  schedulePreviewRender();
 }
 
-function makeDemoFrames(): void {
+async function makeDemoFrames(): Promise<void> {
   clearError();
   updateSettings();
   const start = Number(value<HTMLInputElement>('trim-start').value);
@@ -379,6 +387,8 @@ function makeDemoFrames(): void {
     showError('The selected section must be 1–5 seconds inside the paper-bird sample. Change the start or end time.');
     return;
   }
+  setStatus('Making sample frames…');
+  await yieldAfterInteraction();
   loadDemoFrames(Math.max(2, Math.floor((end - start) * settings.fps)));
 }
 
@@ -386,13 +396,14 @@ function paintDemoPeek(): void {
   const strip = document.querySelector<HTMLDivElement>('#demo-strip');
   if (!strip) return;
   strip.replaceChildren();
-  outputFrames.forEach((frame, index) => {
+  const overviewFrames = outputFrames.slice(0, 12);
+  overviewFrames.forEach((frame, index) => {
     const canvas = document.createElement('canvas');
     canvas.width = frame.width;
     canvas.height = frame.height;
     canvas.getContext('2d')?.drawImage(frame, 0, 0);
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', `Sample tracing frame ${index + 1} of ${outputFrames.length}`);
+    canvas.setAttribute('aria-label', `Sample tracing frame ${index + 1} of ${overviewFrames.length}`);
     strip.append(canvas);
   });
 }
@@ -453,7 +464,7 @@ async function seek(video: HTMLVideoElement, time: number): Promise<void> {
 
 async function makeFramesFromVideo(): Promise<void> {
   if (isDemo && !loadedVideo) {
-    makeDemoFrames();
+    await makeDemoFrames();
     return;
   }
   if (!loadedVideo) return;
@@ -482,7 +493,7 @@ async function makeFramesFromVideo(): Promise<void> {
       sourceFrames.push(canvas);
       setStatus(`Making ${index + 1} of ${count} frames…`);
     }
-    rebuildOutputFrames();
+    schedulePreviewRender();
   } catch (error) {
     showError(`${error instanceof Error ? error.message : 'Frames could not be made.'} Try a shorter section or another video.`);
   } finally {
@@ -490,26 +501,79 @@ async function makeFramesFromVideo(): Promise<void> {
   }
 }
 
-function rebuildOutputFrames(): void {
+function cancelPreviewRender(): void {
+  previewGeneration += 1;
+  if (previewTimer !== undefined) window.clearTimeout(previewTimer);
+  previewTimer = undefined;
+}
+
+function yieldToBrowser(): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, 0));
+}
+
+function yieldAfterInteraction(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => window.setTimeout(resolve, 0)));
+}
+
+function traceFrame(
+  source: HTMLCanvasElement,
+  index: number,
+  sources: HTMLCanvasElement[],
+  frameSettings: FrameSettings,
+  maximumWidth?: number,
+): HTMLCanvasElement {
+  const scale = maximumWidth ? Math.min(1, maximumWidth / source.width) : 1;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(source.width * scale));
+  canvas.height = Math.max(1, Math.round(source.height * scale));
+  const context = canvas.getContext('2d');
+  context?.drawImage(source, 0, 0, canvas.width, canvas.height);
+  applyTraceFilter(canvas, frameSettings.mode, frameSettings.threshold);
+  if (frameSettings.onion && index > 0 && context) {
+    context.save();
+    context.globalAlpha = 0.16;
+    context.globalCompositeOperation = 'multiply';
+    context.drawImage(sources[index - 1], 0, 0, canvas.width, canvas.height);
+    context.restore();
+  }
+  return canvas;
+}
+
+function schedulePreviewRender(delay = 0): void {
   if (!sourceFrames.length) return;
-  outputFrames = sourceFrames.map((source, index) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = source.width;
-    canvas.height = source.height;
-    const context = canvas.getContext('2d');
-    context?.drawImage(source, 0, 0);
-    applyTraceFilter(canvas, settings.mode, settings.threshold);
-    if (settings.onion && index > 0 && context) {
-      context.save();
-      context.globalAlpha = 0.16;
-      context.globalCompositeOperation = 'multiply';
-      context.drawImage(sourceFrames[index - 1], 0, 0);
-      context.restore();
-    }
-    return canvas;
-  });
+  cancelPreviewRender();
+  const generation = previewGeneration;
+  setStatus('Updating preview…');
+  previewTimer = window.setTimeout(() => {
+    previewTimer = undefined;
+    void rebuildOutputFrames(generation);
+  }, delay);
+}
+
+async function rebuildOutputFrames(generation: number): Promise<void> {
+  const sources = [...sourceFrames];
+  const frameSettings = { ...settings };
+  const nextFrames: HTMLCanvasElement[] = [];
+  for (let index = 0; index < sources.length; index += 1) {
+    if (generation !== previewGeneration) return;
+    nextFrames.push(traceFrame(sources[index], index, sources, frameSettings, PREVIEW_WIDTH));
+    if ((index + 1) % PREVIEW_CHUNK_SIZE === 0) await yieldToBrowser();
+  }
+  if (generation !== previewGeneration) return;
+  outputFrames = nextFrames;
   paintFrames();
   if (isDemo) paintDemoPeek();
+}
+
+async function buildExportFrames(): Promise<HTMLCanvasElement[]> {
+  const sources = [...sourceFrames];
+  const frameSettings = { ...settings };
+  const exportFrames: HTMLCanvasElement[] = [];
+  for (let index = 0; index < sources.length; index += 1) {
+    exportFrames.push(traceFrame(sources[index], index, sources, frameSettings));
+    await yieldToBrowser();
+  }
+  return exportFrames;
 }
 
 function paintFrames(): void {
@@ -534,21 +598,25 @@ function paintFrames(): void {
 }
 
 async function exportPng(): Promise<void> {
-  if (!outputFrames.length) return;
+  if (!sourceFrames.length) return;
   setStatus('Packing numbered PNGs…');
   try {
-    downloadBlob(await makePngZip(outputFrames), 'flipbook-trace-frames.zip');
-    setStatus(`${outputFrames.length} PNGs exported`);
+    await yieldAfterInteraction();
+    const exportFrames = await buildExportFrames();
+    downloadBlob(await makePngZip(exportFrames), 'flipbook-trace-frames.zip');
+    setStatus(`${exportFrames.length} PNGs exported`);
   } catch {
     showError('The PNG pack could not be made. Try fewer frames.');
   }
 }
 
 async function exportPdf(): Promise<void> {
-  if (!outputFrames.length) return;
+  if (!sourceFrames.length) return;
   setStatus('Laying out the PDF trace sheet…');
   try {
-    downloadBlob(await makePdf(outputFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
+    await yieldAfterInteraction();
+    const exportFrames = await buildExportFrames();
+    downloadBlob(await makePdf(exportFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
     setStatus('PDF trace sheet exported');
   } catch {
     showError('The PDF trace sheet could not be made. Try fewer frames.');

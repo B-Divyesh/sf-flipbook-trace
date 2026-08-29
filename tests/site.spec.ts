@@ -4,6 +4,50 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join } from 'node:path';
 
+type InteractionTiming = {
+  duration: number;
+  interactionId: number;
+  name: string;
+  processing: number;
+};
+
+async function installInteractionObserver(page: import('@playwright/test').Page): Promise<void> {
+  await page.evaluate(() => {
+    const timings: InteractionTiming[] = [];
+    (window as typeof window & { __interactionTimings: InteractionTiming[] }).__interactionTimings = timings;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as PerformanceEventTiming[]) {
+        if (!entry.interactionId) continue;
+        timings.push({
+          duration: entry.duration,
+          interactionId: entry.interactionId,
+          name: entry.name,
+          processing: entry.processingEnd - entry.processingStart,
+        });
+      }
+    }).observe({ type: 'event', buffered: true, durationThreshold: 16 });
+  });
+}
+
+async function measuredInteraction(
+  page: import('@playwright/test').Page,
+  action: () => Promise<unknown>,
+): Promise<InteractionTiming[]> {
+  await page.evaluate(() => {
+    (window as typeof window & { __interactionTimings: InteractionTiming[] }).__interactionTimings.length = 0;
+  });
+  await action();
+  await page.waitForTimeout(700);
+  return page.evaluate(() => [
+    ...(window as typeof window & { __interactionTimings: InteractionTiming[] }).__interactionTimings,
+  ]);
+}
+
+function expectInteractionsWithinBudget(timings: InteractionTiming[], label: string): void {
+  const slowest = Math.max(0, ...timings.map(({ duration }) => duration));
+  expect(slowest, `${label} Event Timing ${JSON.stringify(timings)}`).toBeLessThan(200);
+}
+
 for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
   test(`${route} has the required page structure and no serious accessibility issues`, async ({ page }) => {
     const errors: string[] = [];
@@ -122,6 +166,50 @@ test('keyboard controls reach exports and operate a range', async ({ page }) => 
   await downloadEvent;
 });
 
+for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+  test(`Line detail stays inside the 200 ms interaction budget with 12 frames at ${viewport.width}px`, async ({ browser }) => {
+    const page = await browser.newPage({ viewport });
+    await page.goto('/demo');
+    await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+    expect(await page.evaluate(() => PerformanceObserver.supportedEntryTypes.includes('event'))).toBe(true);
+    await installInteractionObserver(page);
+    const before = Number(await page.locator('#threshold').inputValue());
+    const timings = await measuredInteraction(page, () => page.locator('#threshold').press('ArrowRight'));
+    await expect(page.locator('#threshold')).toHaveValue(String(before + 1));
+    await expect(page.locator('#work-status')).toHaveText('12 frames ready');
+    expectInteractionsWithinBudget(timings, `12-frame Line detail at ${viewport.width}px`);
+    await page.close();
+  });
+}
+
+test('all supported demo rebuild interactions stay inside the 200 ms budget at 390px', async ({ browser }) => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto('/demo');
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+  await installInteractionObserver(page);
+
+  await page.locator('#fps').selectOption('12');
+  await page.locator('#trim-end').fill('5');
+  let timings = await measuredInteraction(page, () => page.getByRole('button', { name: 'Make tracing frames' }).click());
+  await expect(page.locator('#frame-strip figure')).toHaveCount(60);
+  expectInteractionsWithinBudget(timings, '60-frame regeneration');
+
+  timings = await measuredInteraction(page, () => page.locator('#threshold').press('ArrowRight'));
+  await expect(page.locator('#work-status')).toHaveText('60 frames ready');
+  expectInteractionsWithinBudget(timings, '60-frame Line detail');
+
+  await page.locator('#fps').selectOption('6');
+  await page.locator('#trim-end').fill('2');
+  timings = await measuredInteraction(page, () => page.getByRole('button', { name: 'Make tracing frames' }).click());
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+  expectInteractionsWithinBudget(timings, '12-frame regeneration');
+
+  timings = await measuredInteraction(page, () => page.getByRole('button', { name: 'Reset demo' }).click());
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+  expectInteractionsWithinBudget(timings, '12-frame reset');
+  await page.close();
+});
+
 test('build output uses hashed immutable assets and a revalidated service worker', async () => {
   const index = await readFile('dist/index.html', 'utf8');
   expect(index).toMatch(/\/assets\/index-[A-Za-z0-9_-]+\.js/);
@@ -214,7 +302,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.6 · Original generated artwork');
+  expect(page404).toContain('v1.0.7 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

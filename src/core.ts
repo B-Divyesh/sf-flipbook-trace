@@ -46,6 +46,8 @@ export function applyTraceFilter(canvas: HTMLCanvasElement, mode: FilterMode, th
     gray[pixel] = Math.round(data[offset] * 0.299 + data[offset + 1] * 0.587 + data[offset + 2] * 0.114);
   }
 
+  const edgeThresholdSquared = (255 - threshold) ** 2;
+
   for (let y = 0; y < canvas.height; y += 1) {
     for (let x = 0; x < canvas.width; x += 1) {
       const pixel = y * canvas.width + x;
@@ -66,8 +68,7 @@ export function applyTraceFilter(canvas: HTMLCanvasElement, mode: FilterMode, th
           const i = gray[pixel + canvas.width + 1];
           const gx = -a + c - 2 * d + 2 * f - g + i;
           const gy = -a - 2 * b - c + g + 2 * h + i;
-          const edge = Math.min(255, Math.hypot(gx, gy));
-          value = edge > 255 - threshold ? 18 : 255;
+          value = gx * gx + gy * gy > edgeThresholdSquared ? 18 : 255;
         }
       }
       data[offset] = value;

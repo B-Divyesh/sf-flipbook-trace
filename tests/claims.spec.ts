@@ -272,7 +272,13 @@ test('@claim:ephemeral-project keeps video and frames out of persistent browser 
 
 test('@claim:trace-controls applies every trace style, frame rate, and previous-frame overlay', async ({ page }) => {
   await page.goto('/?demo=1'); await expect(page.locator('#frame-strip figure')).toHaveCount(12); expect(await page.locator('#fps option').evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value))).toEqual(['2', '4', '6', '8', '12']);
-  const image = async () => page.locator('#frame-strip canvas').nth(1).evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL()); const edges = await image(); await page.getByRole('radio', { name: 'High contrast' }).check(); const threshold = await image(); await page.getByRole('radio', { name: 'Grayscale' }).check(); const gray = await image(); await page.getByRole('checkbox', { name: 'Show the previous frame in red' }).check(); expect(new Set([edges, threshold, gray, await image()]).size).toBe(4);
+  const image = async () => page.locator('#frame-strip canvas').nth(1).evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL());
+  const waitForPreview = () => expect(page.locator('#work-status')).toHaveText('12 frames ready');
+  const edges = await image();
+  await page.getByRole('radio', { name: 'High contrast' }).check(); await waitForPreview(); const threshold = await image();
+  await page.getByRole('radio', { name: 'Grayscale' }).check(); await waitForPreview(); const gray = await image();
+  await page.getByRole('checkbox', { name: 'Show the previous frame in red' }).check(); await waitForPreview();
+  expect(new Set([edges, threshold, gray, await image()]).size).toBe(4);
 });
 
 test('@claim:settings-portability exports, imports, and persists control settings', async ({ page }) => {
