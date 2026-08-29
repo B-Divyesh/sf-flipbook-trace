@@ -21,7 +21,7 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.10';
+const BUILD_ID = 'v1.0.11';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
@@ -82,19 +82,21 @@ function shell(content: string): string {
     </footer>`;
 }
 
-function workspaceTemplate(demo: boolean): string {
+function workspaceHeadingTemplate(demo: boolean): string {
   return `
-    <section class="workspace" id="workspace" aria-labelledby="workspace-heading">
-      <div class="section-kicker">01 / Prepare</div>
-      <div class="workspace-heading-row">
-        <div>
-          <h2 id="workspace-heading">Make the tracing frames</h2>
-          <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
-        </div>
-        <output id="work-status" class="status-stamp" aria-live="polite">${demo ? 'Preparing sample frames…' : 'Waiting for a video'}</output>
+    <div class="section-kicker">01 / Prepare</div>
+    <div class="workspace-heading-row">
+      <div>
+        <h2 id="workspace-heading">Make the tracing frames</h2>
+        <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
       </div>
-      <div class="work-grid">
-        <form id="controls" class="controls" aria-label="Frame controls">
+      <output id="work-status" class="status-stamp" aria-live="polite">${demo ? 'Preparing sample frames…' : 'Waiting for a video'}</output>
+    </div>`;
+}
+
+function workspaceControlsTemplate(): string {
+  return `
+    <form id="controls" class="controls" aria-label="Frame controls">
           <div class="field file-field">
             <label for="video-file">Your video</label>
             <input id="video-file" type="file" accept="video/*" />
@@ -132,21 +134,34 @@ function workspaceTemplate(demo: boolean): string {
           <button class="button button-dark" id="make-frames" type="button" disabled>Make tracing frames</button>
           <details class="settings-tools"><summary>Import or export settings</summary><button id="export-settings" type="button" aria-label="Export settings">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
           <p id="form-error" class="error" role="alert" hidden></p>
-        </form>
-        <div class="preview-zone">
-          <div id="empty-preview" class="empty-preview" ${demo ? 'hidden' : ''}>
-            <span class="empty-number" aria-hidden="true">00</span>
-            <h3>Your frames will appear here</h3>
-            <p>Choose a video, then set a 1–5 second section.</p>
-            <label class="button button-blue" for="video-file">Choose a video</label>
-          </div>
-          <div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div>
-          <div id="export-bar" class="export-bar" ${demo ? '' : 'hidden'}>
-            <div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div>
-            <button class="button button-blue" id="export-png" type="button">Export PNG pack</button>
-            <button class="button button-paper" id="export-pdf" type="button">Export PDF trace sheet</button>
-          </div>
-        </div>
+    </form>`;
+}
+
+function workspacePreviewTemplate(demo: boolean): string {
+  return `
+    <div class="preview-zone">
+      <div id="empty-preview" class="empty-preview" ${demo ? 'hidden' : ''}>
+        <span class="empty-number" aria-hidden="true">00</span>
+        <h3>Your frames will appear here</h3>
+        <p>Choose a video, then set a 1–5 second section.</p>
+        <label class="button button-blue" for="video-file">Choose a video</label>
+      </div>
+      <div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div>
+      <div id="export-bar" class="export-bar" ${demo ? '' : 'hidden'}>
+        <div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div>
+        <button class="button button-blue" id="export-png" type="button" disabled>Export PNG pack</button>
+        <button class="button button-paper" id="export-pdf" type="button" disabled>Export PDF trace sheet</button>
+      </div>
+    </div>`;
+}
+
+function workspaceTemplate(demo: boolean): string {
+  return `
+    <section class="workspace" id="workspace" aria-labelledby="workspace-heading">
+      ${workspaceHeadingTemplate(demo)}
+      <div class="work-grid">
+        ${workspaceControlsTemplate()}
+        ${workspacePreviewTemplate(demo)}
       </div>
     </section>`;
 }
@@ -289,7 +304,19 @@ async function mountDemoWorkspace(): Promise<void> {
   if (generation !== previewGeneration || !isDemo) return;
   const mount = document.querySelector<HTMLDivElement>('#demo-workspace');
   if (!mount?.isConnected) return;
-  mount.innerHTML = workspaceTemplate(true);
+  // Demo startup is a one-click promise. Attaching the full form, frame strip,
+  // and export controls in one task was a 200+ ms phone-layout task under CPU
+  // pressure. Stage the independent pieces over browser turns: the useful
+  // demo introduction paints first, then controls, then preview/canvas work.
+  mount.innerHTML = `<section class="workspace" id="workspace" aria-labelledby="workspace-heading">${workspaceHeadingTemplate(true)}<div id="demo-work-grid" class="work-grid" aria-busy="true"></div></section>`;
+  await yieldToBrowser();
+  if (generation !== previewGeneration || !isDemo) return;
+  const grid = document.querySelector<HTMLDivElement>('#demo-work-grid');
+  if (!grid?.isConnected) return;
+  grid.insertAdjacentHTML('beforeend', workspaceControlsTemplate());
+  await yieldToBrowser();
+  if (generation !== previewGeneration || !isDemo || !grid.isConnected) return;
+  grid.insertAdjacentHTML('beforeend', workspacePreviewTemplate(true));
   bindWorkspace();
   void loadDemoFrames();
 }
@@ -393,6 +420,7 @@ async function loadDemoFrames(count = 12): Promise<void> {
   const nextFrames: HTMLCanvasElement[] = [];
   const make = document.querySelector<HTMLButtonElement>('#make-frames');
   if (make) make.disabled = true;
+  setExportButtonsDisabled(true);
   setStatus('Preparing sample frames…');
   await yieldToBrowser();
   for (let index = 0; index < count; index += 1) {
@@ -515,6 +543,7 @@ async function makeFramesFromVideo(): Promise<void> {
   const width = Math.max(1, desiredWidth);
   const height = Math.round(width * loadedVideo.videoHeight / loadedVideo.videoWidth);
   sourceFrames = [];
+  setExportButtonsDisabled(true);
   setStatus(`Making 0 of ${count} frames…`);
   value<HTMLButtonElement>('make-frames').disabled = true;
   try {
@@ -576,6 +605,7 @@ function traceFrame(
 function schedulePreviewRender(delay = 0): void {
   if (!sourceFrames.length) return;
   cancelPreviewRender();
+  setExportButtonsDisabled(true);
   const generation = previewGeneration;
   setStatus('Updating preview…');
   previewTimer = window.setTimeout(() => {
@@ -643,9 +673,10 @@ async function paintFrames(generation: number): Promise<void> {
   exports.hidden = false;
   const make = document.querySelector<HTMLButtonElement>('#make-frames');
   if (make) make.disabled = false;
+  setExportButtonsDisabled(false);
   value<HTMLElement>('export-count').textContent = `${outputFrames.length} frames`;
   setStatus(`${outputFrames.length} frames ready`);
-  document.querySelector('#demo-workspace')?.setAttribute('aria-busy', 'false');
+  document.querySelector('#demo-workspace, #demo-work-grid')?.setAttribute('aria-busy', 'false');
 }
 
 async function exportPng(): Promise<void> {
@@ -682,6 +713,12 @@ async function exportPdf(): Promise<void> {
 function setStatus(message: string): void {
   const status = document.querySelector<HTMLOutputElement>('#work-status');
   if (status) status.value = message;
+}
+
+function setExportButtonsDisabled(disabled: boolean): void {
+  document.querySelectorAll<HTMLButtonElement>('#export-png, #export-pdf').forEach((button) => {
+    button.disabled = disabled;
+  });
 }
 
 function showError(message: string): void {

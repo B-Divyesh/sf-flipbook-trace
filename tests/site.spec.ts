@@ -175,12 +175,15 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 1440, height: 900
 
 test('keyboard controls reach exports and operate a range', async ({ page }) => {
   await page.goto('/demo');
+  await expect(page.locator('#work-status')).toHaveText('12 frames ready');
   await page.locator('#threshold').focus();
   const before = Number(await page.locator('#threshold').inputValue());
   await page.keyboard.press('ArrowRight');
   expect(Number(await page.locator('#threshold').inputValue())).toBe(before + 1);
   const downloadEvent = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export PNG pack' }).focus();
+  const exportButton = page.getByRole('button', { name: 'Export PNG pack' });
+  await expect(exportButton).toBeEnabled();
+  await exportButton.focus();
   await page.keyboard.press('Enter');
   await downloadEvent;
 });
@@ -317,6 +320,9 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
       });
       await page.goto('/?demo=1');
       await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+      // Count alone can resolve while the final status/layout work is still
+      // queued. The claimed one-click sample is ready only after both are done.
+      await expect(page.locator('#work-status')).toHaveText('12 frames ready');
       const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
       longestTasks.push(longestTask);
       expect(longestTask).toBeLessThan(200);
@@ -324,6 +330,10 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
       await context.close();
     }
   }
+  await test.info().attach('demo-startup-longtasks-ms', {
+    body: JSON.stringify(longestTasks),
+    contentType: 'application/json',
+  });
   expect(longestTasks).toHaveLength(5);
 });
 
@@ -407,7 +417,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.10 · Original generated artwork');
+  expect(page404).toContain('v1.0.11 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

@@ -311,6 +311,8 @@ test('@claim:png-export exports twelve numbered PNGs in a ZIP', async ({ browser
 
 test('@claim:pdf-export exports a non-blank twelve-frame printable PDF trace sheet', async ({ page }) => {
   await page.goto('/?demo=1');
+  await expect(page.locator('#work-status')).toHaveText('12 frames ready');
+  await expect(page.getByRole('button', { name: 'Export PDF trace sheet' })).toBeEnabled();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export PDF trace sheet' }).click();
   const bytes = await readFile((await (await download).path())!);
