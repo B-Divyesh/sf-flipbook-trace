@@ -1,4 +1,4 @@
-# Repair 13 handoff — ready to deploy
+# Repair 13 handoff — deployed
 
 ## Scope and root cause
 
