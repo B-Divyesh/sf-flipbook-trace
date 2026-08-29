@@ -1,38 +1,43 @@
 # Flipbook Trace repair handoff
 
-- Work order: `flipbook-trace-repair-7`
-- Repair base: `2670be1951a3da156f6b45ed1219f71472123e92`
+- Work order: `flipbook-trace-repair-8`
+- Repair base: `31bca90e092ea74cc64dcf2caa992438d8adf007`
 - Product: PWA/offline static site, deployed from `dist/`
-- Version: `1.0.9`
+- Version: `1.0.10`
 
 ## Repaired release blocker
 
-The one-click `/?demo=1` route previously combined the first full workspace layout with sample canvas setup. On a 390 px viewport with 4x CPU throttling, that produced a 382–514 ms long task (the release-blocking verifier finding).
+The failed factory gate reported 54/55 tests passing and `@claim:png-export` timing out after 30 seconds while it waited for the twelve-frame ZIP download. The exact timeout was intermittent: at the untouched candidate, a clean two-CPU run passed the claim 10/10 and the configured one-worker suite 55/55. The reported contention path was nevertheless present in source.
 
-The demo now paints the banner and sample heading first, mounts the workspace in the next browser task, and reserves the workspace footprint before it mounts. This keeps the main thread available during startup without causing the footer to shift when the sample becomes ready. The same built-in twelve-frame paper-bird demo, controls, exports, storage isolation, and offline behavior remain unchanged.
+PNG export first traced and retained every full-resolution canvas. It then encoded every canvas, copied each PNG into a separate local-file array, and copied the complete archive again before starting the download. Peak canvas/archive memory and uninterrupted work scaled with the frame count. The claim also relied on fixture defaults and the global 30-second timeout without explicitly proving the demo was ready.
 
-`tests/site.spec.ts` now performs five independent cold 390 px / 4x-throttled startup runs in the normal test suite. Each waits for all twelve usable frames and asserts every observed long task is below 200 ms.
+The repaired exporter now lazily traces and encodes one frame at a time, yields to the browser after every encoded frame, builds the ZIP from Blob parts without the final full-archive copy, reports `Packing PNG n of total…`, and disables duplicate export clicks until packing ends. PDF behavior and PNG dimensions are unchanged.
+
+The claim now creates and closes its own fresh browser context and page. It explicitly waits for twelve rendered frames, `12 frames ready`, and an enabled export button. Navigation/readiness are bounded at 30 seconds, the download at 60 seconds, and the test at 90 seconds. It asserts ZIP magic, the exact download name, the final `flipbook-frame-012.png` entry, and the completed status. A separate regression uses 4× Chromium CPU throttling and proves the exporter reports chunks 1 through 12 before download.
 
 ## Local verification
 
-- Clean install: `npm ci`; `npm audit --audit-level=high` reported 0 vulnerabilities.
-- Static checks: `npm run typecheck`, `npm run lint`, and `npm run test:unit` passed (3 unit tests).
-- Production artifact: `npm run build` passed and produced `dist/index.html`. Initial app JS is 34,176 B (11,979 B gzip); CSS is 16,122 B (4,434 B gzip).
-- Complete integration suite: `npm test` passed, 55/55 Chromium tests. This includes all 19 registered claims, local video boundaries, PNG/PDF exports, demo isolation, privacy request guards, keyboard operation, desktop and 390 px layouts, axe serious/critical checks, reduced motion, offline reload, PWA update activation, and cache/header policy checks.
-- Release regression: `npx playwright test tests/site.spec.ts --grep 'demo startup chunks' --reporter=list` passed. Its one test contains five fresh cold starts at the verifier's 390 px / 4x setting.
-- Browser smoke: `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4174/?demo=1 .factory/evidence-repair-7/local-url` passed with no console errors, one h1/main, `lang=en`, valid demo title, and no missing image alt or unlabeled button. Desktop and 390 px screenshots were inspected.
-- Mobile Lighthouse 13.4.1, local production demo: two runs scored 100 performance and 100 accessibility. LCP was 1,362 ms / 1,357 ms; TBT 51 ms / 12 ms; CLS 0.031 in both. Raw reports: `.factory/evidence-repair-7/lighthouse-demo-local-1.json` and `lighthouse-demo-local-2.json`.
+- Baseline investigation on CPUs 0–1: candidate claim 10/10; configured candidate suite 55/55. The factory-observed timeout did not recur locally, confirming it was intermittent rather than a deterministic assertion failure.
+- Repaired claim on CPUs 0–1: `taskset -c 0,1 npm test -- --grep '@claim:png-export' --repeat-each=20 --reporter=list` passed 20/20. Each run completed in about 1.3 seconds with a fresh context.
+- Focused throttled regression: `taskset -c 0,1 npm test -- --grep 'PNG export packs all twelve' --reporter=list` passed at 4× browser CPU throttling.
+- Export integration checks passed for the twelve-frame demo ZIP, printable PDF, free 960 px PNG, Studio 1920 px PNG, original-video-width PNG, and six-column PDF.
+- Full two-CPU suite: `taskset -c 0,1 npm test -- --reporter=list` passed 56/56 in 1.4 minutes. This covers all 19 registered claims, browser/integration behavior, 390 px and desktop layouts, keyboard operation, axe serious/critical checks, privacy request/storage guards, offline reload, reduced motion, and service-worker update activation.
+- Exact clean release command: `npm ci && npm run test:unit && npm run lint && npm run build` passed. It installed 141 locked packages with 0 vulnerabilities, passed 3/3 unit tests, lint, TypeScript, and produced `dist/index.html`.
+- Production payload: JS 34,411 B (11,958 B gzip); CSS 16,122 B (4,445 B gzip). Both are below the static-product budgets.
+- Local URL smoke: [verify.json](evidence-repair-8/local-url/verify.json) records HTTP 200, `lang=en`, one H1/main, no missing image alternatives, no unlabeled buttons, and no console errors. Desktop and 390 px screenshots were inspected.
+- Local mobile Lighthouse 13.4.1: two clean runs scored 100 performance and 100 accessibility. LCP was 1,504 ms / 1,355 ms; TBT 18 ms / 20 ms; CLS 0.031 in both. Reports: [run 1](evidence-repair-8/lighthouse-demo-local-1.json) and [run 2](evidence-repair-8/lighthouse-demo-local-2.json).
 
 ## Deployment and live verification
 
-- Repair commit: `28e8298` (`fix: chunk demo startup layout`), pushed to `origin/main`.
-- Deployed with the work-order static deployment configuration: `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. Azure Static Web Apps deployment `64fd11b7-55cf-48d4-a65d-0ccdb80b5c26` completed successfully and `https://flipbook-trace.sociobot.in` returned HTTPS 200.
-- Live identity: all 18 public files in the fresh `dist/` (including the hashed JS/CSS, service worker, manifest, icons, and images) matched the live site byte-for-byte. The live script reports `v1.0.9`.
-- Live browser audit: `.factory/evidence-repair-7/live-audit.json` passed `/`, `/demo`, `/privacy`, `/terms`, and the designed 404 with one h1/main, no console errors, no horizontal overflow at 390 px, and zero axe serious/critical findings. It also proved 12 → 60 → 12 demo regeneration without post-settlement HTTP requests, visible keyboard focus plus `ArrowRight` line-detail operation (142 → 143), and the controlled service worker reloading the twelve-frame demo offline.
-- Live URL smoke: `.factory/evidence-repair-7/live-url/verify.json` records a 200 demo response, title/lang/main, no missing alt text or unlabeled buttons, and no console errors. Its desktop and 390 px screenshots were inspected.
-- Mobile Lighthouse 13.4.1, live production demo: two runs scored 100 performance and 100 accessibility. LCP was 1,078 ms / 1,079 ms; TBT 23 ms / 2 ms; CLS 0.031 in both. Raw reports: `.factory/evidence-repair-7/lighthouse-demo-live-1.json` and `lighthouse-demo-live-2.json`.
-- Live response policy: the hashed app JS is `Cache-Control: public, max-age=31536000, immutable`; `sw.js` is `no-cache, no-store, must-revalidate`; CSP includes `frame-ancestors 'none'`, plus nosniff, strict referrer policy, and restrictive permissions policy. `/missing-page` returns the designed document with HTTP 404.
+- Repair commit: `2d69439` (`fix: stream PNG pack export`), pushed to `origin/main` before deployment.
+- Deployed with `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. Azure Static Web Apps deployment `f0ac4c9f-56e1-4351-b6ca-53747eae328a` completed successfully; <https://flipbook-trace.sociobot.in> returns HTTPS 200.
+- Live identity: all 18 public files in the clean `dist/` match the custom-domain responses byte-for-byte, including `index.html`, hashed JS/CSS, `sw.js`, manifest, images, and icons. The live footer reports `v1.0.10`.
+- Live browser audit: [live-audit.json](evidence-repair-8/live-audit.json) passes `/`, `/demo`, `/privacy`, `/terms`, and the HTTP 404 route with one H1/main, no console errors, no 390 px overflow, and zero axe serious/critical findings.
+- The same audit downloaded a 40,056-byte live ZIP, verified `PK` ZIP magic, `flipbook-trace-frames.zip`, `flipbook-frame-012.png`, and `12 PNGs exported`, with zero runtime HTTP requests. It also proved 12 → 60 → 12 demo regeneration, a visible 3 px keyboard focus ring, ArrowRight changing line detail 142 → 143, and a controlled twelve-frame offline reload.
+- Live URL smoke: [verify.json](evidence-repair-8/live-url/verify.json) records HTTP 200 and no console or accessibility-baseline errors. The mobile screenshot was inspected.
+- Live mobile Lighthouse 13.4.1: both runs scored 100 performance and 100 accessibility. LCP was 1,087 ms / 1,229 ms; TBT 21.5 ms / 24 ms; CLS 0.031. Reports: [run 1](evidence-repair-8/lighthouse-demo-live-1.json) and [run 2](evidence-repair-8/lighthouse-demo-live-2.json).
+- Live response policy: hashed assets use one-year immutable caching; `sw.js` uses `no-cache, no-store, must-revalidate`; CSP includes `frame-ancestors 'none'`; nosniff, strict referrer, HSTS, and restrictive permissions headers are present. `/missing-page` returns the designed document with HTTP 404.
 
 ## Known gaps / next steps
 
-No known functional gaps. The app remains intentionally local-first: source videos and generated frames are page-memory-only and are not uploaded or persisted.
+No known functional gaps. The source video and generated frames remain local and page-memory-only. The pre-existing uncommitted `graphify-out` changes were preserved and excluded from repair commits.
