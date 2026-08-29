@@ -1,0 +1,172 @@
+{
+  "measuredAt": "2026-08-29T14:02:47.682Z",
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": [
+        "Turn your video into tracing frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflowPx": 0,
+      "seriousCriticalAxe": [],
+      "errors": [],
+      "crossOriginRequests": []
+    },
+    "/?demo=1": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Trace a paper bird in twelve frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflowPx": 0,
+      "seriousCriticalAxe": [],
+      "errors": [],
+      "crossOriginRequests": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Privacy without an upload"
+      ],
+      "mainCount": 1,
+      "horizontalOverflowPx": 0,
+      "seriousCriticalAxe": [],
+      "errors": [],
+      "crossOriginRequests": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Terms for making trace sheets"
+      ],
+      "mainCount": 1,
+      "horizontalOverflowPx": 0,
+      "seriousCriticalAxe": [],
+      "errors": [],
+      "crossOriginRequests": []
+    },
+    "/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Page not found"
+      ],
+      "mainCount": 1,
+      "horizontalOverflowPx": 0,
+      "seriousCriticalAxe": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "crossOriginRequests": []
+    }
+  },
+  "demo": {
+    "first": {
+      "h1": "Turn your video into tracing frames",
+      "audience": "For short-form creators making a hand-drawn flipbook without uploading their video.",
+      "action": "Try it with sample data"
+    },
+    "urlAfterOneClick": "https://flipbook-trace.sociobot.in/?demo=1",
+    "banner": "Demo — sample data, nothing is saved",
+    "initialFrames": 12,
+    "maxFrames": 60,
+    "invalid": "The selected section must be 1–5 seconds inside the paper-bird sample. Change the start or end time.",
+    "recoveredFrames": 12,
+    "zip": "flipbook-trace-frames.zip",
+    "pdf": "flipbook-trace-sheet.pdf",
+    "runtimeRequests": [],
+    "errors": []
+  },
+  "realVideo": {
+    "minFrames": 2,
+    "maxFrames": 60,
+    "invalid": "The selected section must be 1–5 seconds inside the video. Change the start or end time.",
+    "zip": "flipbook-trace-frames.zip",
+    "pdf": "flipbook-trace-sheet.pdf",
+    "afterReloadFrames": 0,
+    "afterReloadFile": "",
+    "requestsDuringWorkflow": [
+      "GET blob:https://flipbook-trace.sociobot.in/9fbbfc10-200c-43fe-a22c-e0c3154f8e4e"
+    ],
+    "requestsIncludingReload": [
+      "GET blob:https://flipbook-trace.sociobot.in/9fbbfc10-200c-43fe-a22c-e0c3154f8e4e",
+      "GET https://flipbook-trace.sociobot.in/",
+      "GET https://flipbook-trace.sociobot.in/assets/hero-worktable.webp",
+      "GET https://flipbook-trace.sociobot.in/assets/index-7PM-RaOV.js",
+      "GET https://flipbook-trace.sociobot.in/assets/index-DXuvi8ru.css"
+    ],
+    "errors": []
+  },
+  "errors": {
+    "emptyLicense": "Paste a license token first.",
+    "paidRecovery": {
+      "quality": "960",
+      "alert": "That export width needs Studio. Buy or restore a license below."
+    },
+    "badSettings": "Those settings could not be imported. Choose a Flipbook Trace settings file."
+  },
+  "keyboard": {
+    "firstTab": {
+      "text": "Skip to main content",
+      "id": ""
+    },
+    "skipFocus": {
+      "outline": "3px solid rgb(173, 53, 45)"
+    },
+    "tabsToRange": 12,
+    "rangeBefore": "142",
+    "rangeAfter": "143",
+    "rangeFocus": "3px solid rgb(173, 53, 45)",
+    "tabsToExport": 6,
+    "export": "flipbook-trace-frames.zip"
+  },
+  "motion": {
+    "mediaMatches": true,
+    "activeAnimations": 0
+  },
+  "offline": {
+    "frames": 12,
+    "banner": true,
+    "url": "https://flipbook-trace.sociobot.in/?demo=1"
+  },
+  "pwa": {
+    "controller": "https://flipbook-trace.sociobot.in/sw.js",
+    "manifest": {
+      "name": "Flipbook Trace",
+      "short_name": "Flipbook Trace",
+      "description": "Turn a local video into printable tracing frames.",
+      "start_url": "/?source=pwa&v=8",
+      "scope": "/",
+      "display": "standalone",
+      "background_color": "#f2ead7",
+      "theme_color": "#f2ead7",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/icons/icon-512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        },
+        {
+          "src": "/icons/icon-maskable-512.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    }
+  }
+}
