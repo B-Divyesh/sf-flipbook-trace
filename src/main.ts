@@ -21,7 +21,7 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.8';
+const BUILD_ID = 'v1.0.9';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
@@ -91,7 +91,7 @@ function workspaceTemplate(demo: boolean): string {
           <h2 id="workspace-heading">Make the tracing frames</h2>
           <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
         </div>
-        <output id="work-status" class="status-stamp" aria-live="polite">${demo ? '12 frames ready' : 'Waiting for a video'}</output>
+        <output id="work-status" class="status-stamp" aria-live="polite">${demo ? 'Preparing sample frames…' : 'Waiting for a video'}</output>
       </div>
       <div class="work-grid">
         <form id="controls" class="controls" aria-label="Frame controls">
@@ -215,7 +215,10 @@ function paidSection(): string {
 }
 
 function demoPage(): string {
-  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div></section>${workspaceTemplate(true)}</main>`);
+  // Keep the first demo paint intentionally small. The controls and twelve
+  // canvases are mounted in the next browser task so mobile layout cannot
+  // monopolise startup before the sample is usable.
+  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div></section><div id="demo-workspace" aria-busy="true"></div></main>`);
 }
 
 function privacyPage(): string {
@@ -264,13 +267,12 @@ async function render(path = routePath(), focus = false): Promise<void> {
   else app.innerHTML = notFoundPage();
   updateMeta(path);
   bindNavigation();
-  if (path === '/' || path === '/demo') {
+  if (path === '/') {
     bindWorkspace();
-    if (isDemo) void loadDemoFrames();
-    if (path === '/') {
-      bindLicense();
-      if (licenseToCheck) void verifyLicense(licenseToCheck);
-    }
+    bindLicense();
+    if (licenseToCheck) void verifyLicense(licenseToCheck);
+  } else if (path === '/demo') {
+    void mountDemoWorkspace();
   }
   if (focus) {
     window.scrollTo({ top: 0 });
@@ -279,6 +281,17 @@ async function render(path = routePath(), focus = false): Promise<void> {
     const status = document.querySelector('#route-status');
     if (status && heading) status.textContent = heading.textContent;
   }
+}
+
+async function mountDemoWorkspace(): Promise<void> {
+  const generation = previewGeneration;
+  await yieldToBrowser();
+  if (generation !== previewGeneration || !isDemo) return;
+  const mount = document.querySelector<HTMLDivElement>('#demo-workspace');
+  if (!mount?.isConnected) return;
+  mount.innerHTML = workspaceTemplate(true);
+  bindWorkspace();
+  void loadDemoFrames();
 }
 
 function bindNavigation(): void {
@@ -622,6 +635,7 @@ async function paintFrames(generation: number): Promise<void> {
   if (make) make.disabled = false;
   value<HTMLElement>('export-count').textContent = `${outputFrames.length} frames`;
   setStatus(`${outputFrames.length} frames ready`);
+  document.querySelector('#demo-workspace')?.setAttribute('aria-busy', 'false');
 }
 
 async function exportPng(): Promise<void> {

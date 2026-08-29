@@ -239,6 +239,7 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .demo-peek p { margin: 10px 2px 0; font-size: 13px; font-weight: 800; }
 .demo-strip { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 5px; overflow: hidden; }
 .demo-strip canvas { width: 100%; height: auto; display: block; background: var(--paper-high); border: 1px solid var(--ink); }
+#demo-workspace { min-height: 1600px; background: var(--blue); }
 .demo-main .workspace { padding-top: 56px; }
 
 .prose-page, .not-found { max-width: 880px; min-height: 70vh; margin: 0 auto; padding: 96px clamp(20px, 5vw, 72px); }
@@ -300,6 +301,7 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
   .demo-intro { padding-top: 32px; padding-bottom: 28px; }
   .demo-peek { margin-top: 20px; }
   .demo-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  #demo-workspace { min-height: 2800px; }
   .lost-frame { float: none; margin-bottom: 40px; }
   .site-footer { grid-template-columns: 1fr; }
 }

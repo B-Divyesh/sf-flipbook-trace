@@ -262,23 +262,34 @@ test('landing discovers the responsive LCP image in the document before app rend
   await page.close();
 });
 
-test('demo startup keeps canvas preparation below the mobile interaction threshold', async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
-  const page = await context.newPage();
-  const session = await context.newCDPSession(page);
-  await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
-  await page.addInitScript(() => {
-    const taskDurations: number[] = [];
-    new PerformanceObserver((list) => {
-      taskDurations.push(...list.getEntries().map((entry) => entry.duration));
-    }).observe({ type: 'longtask', buffered: true });
-    (window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks = taskDurations;
-  });
-  await page.goto('/?demo=1');
-  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
-  const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
-  expect(longestTask).toBeLessThan(200);
-  await context.close();
+test('demo startup chunks the initial layout and canvas preparation below the mobile interaction threshold', async ({ browser }) => {
+  // This was a release-blocking regression: one startup pass regularly took
+  // 382–514 ms on a 390 px, 4x-throttled phone. Keep five independent cold
+  // starts in the normal suite so a single lucky scheduler run cannot hide it.
+  const longestTasks: number[] = [];
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
+    const page = await context.newPage();
+    try {
+      const session = await context.newCDPSession(page);
+      await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+      await page.addInitScript(() => {
+        const taskDurations: number[] = [];
+        new PerformanceObserver((list) => {
+          taskDurations.push(...list.getEntries().map((entry) => entry.duration));
+        }).observe({ type: 'longtask', buffered: true });
+        (window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks = taskDurations;
+      });
+      await page.goto('/?demo=1');
+      await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+      const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
+      longestTasks.push(longestTask);
+      expect(longestTask).toBeLessThan(200);
+    } finally {
+      await context.close();
+    }
+  }
+  expect(longestTasks).toHaveLength(5);
 });
 
 test('@claim:app-update-check a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
@@ -361,7 +372,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.8 · Original generated artwork');
+  expect(page404).toContain('v1.0.9 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {
