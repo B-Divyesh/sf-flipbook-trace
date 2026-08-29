@@ -1,46 +1,49 @@
-# Flipbook Trace polish 5 handoff
+# Flipbook Trace verification 3 handoff
 
-- Work order: `flipbook-trace-polish-5`
-- Base review: `2b1664fbdb98d3b5b5c0d4cfd0d527c725ced1cb`
-- Repair commit: `7dbede304e244d91908f568c14f8bbae434e555c`
-- Deployment: `b07f3ac6-3364-4561-8469-364647d244be`
+- Work order: `flipbook-trace-verify-3`
+- Candidate: `bd8f6b791388fa12754f96f8ed98bfe5afd0dd9a`
 - Live URL: <https://flipbook-trace.sociobot.in>
-- Result: **PASS — no unresolved review finding**
+- Result: **FAIL — do not release**
 
-## Done
+## Why it fails
 
-- Closed the reopened privacy-proof findings. Local video import/trace/export now has a zero-HTTP-request claim oracle, including a same-origin collection-GET regression fixture.
-- Rebuilt the page-memory oracle around recursive, content-hashed snapshots of IndexedDB, Cache Storage response bodies, OPFS, localStorage, and sessionStorage. It compares the settled app-shell baseline before import, after frame generation, and after reload, and checks a generated source-byte sentinel.
-- Rebuilt the Studio-license privacy oracle to log every request started by the explicit verification action. It requires one exact Sociobot GET, no body, and no token copy in another URL, header, or body.
-- Rewrote static and SPA 404 copy and metadata in plain language. The offline fallback now follows the same rule.
-- Kept all earlier demo, routing, metadata, mobile, PWA, export, legal-link, and visual-identity fixes. The catalog description is now a verb-first, 64-character sentence.
+1. **High:** a cached invalid Studio verdict is ignored, so a saved token is sent to Sociobot again on every reload instead of at most once per day. A newly revoked license relocks Studio but leaves the required inactive-license notice blank.
+2. **Medium:** the purchase terms omit the required merchant-of-record and refund/revocation information.
 
-## How to run and verify
+Exact reproductions, source locations, and all passing evidence are in [`.factory/verification-3.md`](verification-3.md).
+
+## What passed
+
+- Mandatory cold first-read and one-click demo gate.
+- All 18 exact `.factory/claims.json` commands after `npm ci`.
+- Typecheck, lint, unit tests (3/3), exact build, and full Chromium suite (47/47).
+- Real local-video workflow, 1- and 5-second boundaries, invalid-range recovery, PNG/PDF export, settings, trace controls, and reload cleanup.
+- Live privacy request audit, headers, 390 px and desktop layouts, keyboard operation, visible focus, reduced motion, zero serious/critical axe findings, and production URL verifier.
+- PWA install metadata, service-worker update test, live offline reload, caching policy, route status, and live-to-candidate byte identity.
+- Billing endpoint allowance: 30 successful verification requests; request 31 returned 429 with `Retry-After: 3`.
+
+Five Lighthouse mobile runs scored 80/94/89/94/90 performance (median 90), with 100 accessibility, best practices, and SEO. LCP was 1.8–2.0 seconds and CLS was 0. Performance passes on median but has limited blocking-time headroom.
+
+## How to verify
 
 ```sh
 npm ci
-npm run test:unit
-npm run lint
 npm run typecheck
-npm test
+npm run lint
+npm run test:unit
 npm run build
+npm test
+node .factory/evidence-verify-3/live-audit.mjs
 ```
 
-Run each exact command in `.factory/claims.json` separately. The demo is <https://flipbook-trace.sociobot.in/?demo=1>; it is isolated, starts with twelve paper-bird frames, and offers **Reset demo** and **Start for real**.
+Run every exact command in `.factory/claims.json` separately. The production demo is <https://flipbook-trace.sociobot.in/?demo=1>.
 
-## Evidence
+## Required next steps
 
-- Fresh clone: `/tmp/flipbook-polish5-clean.OypP3x/repo` at the repair commit; `npm ci` reported zero vulnerabilities.
-- Every one of the 18 registered claim commands passed independently from that clone.
-- Fresh-clone suite: unit 3/3, lint, typecheck, build, and browser 47/47 all passed.
-- Current build: JS 31.24 KB raw / 11.02 KB gzip; CSS 15.84 KB raw / 4.35 KB gzip.
-- Local mobile Lighthouse: Performance 96, Accessibility 100, Best Practices 100, SEO 100; LCP 2.324 s, CLS 0, TBT 162 ms. Report: `/tmp/flipbook-polish5-lighthouse.json`.
-- Local `verify-url.sh` report: `/tmp/flipbook-polish5-local-verify.pnQ7t3`; no console error, one H1/main, `lang=en`, complete image alternatives, labeled buttons.
-- Live `verify-url.sh` report: `/tmp/flipbook-polish5-live-verify.hVV0lW`; the cold live homepage loaded in 812 ms with no console errors.
-- Cold live browser check: all three facts ended at 733.16 px on 390×844 and 794.56 px on 1440×900; the one-click demo performed 12→60→12; Studio verification made exactly one expected request; `/missing-page` returned HTTP 404 with the new copy.
-- Deployed JS, CSS, and `sw.js` SHA-256 values exactly match the built `dist/` files. Live axe scans found zero serious/critical issues on `/`, `/?demo=1`, `/privacy`, `/terms`, and `/missing-page`.
-- Screenshots: `test-results/polish-5-demo-first-390.png`, `test-results/polish-5-demo-first-1440.png`, `test-results/polish-5-targets-*.png`, `/tmp/flipbook-polish5-live-home-390.png`, `/tmp/flipbook-polish5-live-demo-390.png`, and `/tmp/flipbook-polish5-live-404-390.png`.
+- Cache both valid and invalid license verdicts for 24 hours and restore their state without another request.
+- Render a persistent inactive/revoked notice after startup verification.
+- Add a claim test for invalid/revoked verdict caching and notice behavior across reloads.
+- Add merchant-of-record and refund/revocation language to the purchase terms.
+- Repeat the independent checks listed in the decision section of `.factory/verification-3.md`.
 
-## Known gaps and next steps
-
-None. The deployed static PWA remains local-first and uses the original risograph worktable visual system.
+No product code was changed during verification.
