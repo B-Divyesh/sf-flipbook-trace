@@ -2,8 +2,10 @@ import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import jpeg from 'jpeg-js';
 
-async function loadRecordedVideo(page: Page, options: { name: string; seconds?: number; width?: number; height?: number } = { name: 'motion-study.webm' }): Promise<void> {
-  await page.evaluate(async ({ name, seconds = 1.3, width = 320, height = 200 }) => {
+type CapturedRequest = { body: string | null; headers: Record<string, string>; method: string; url: string };
+
+async function loadRecordedVideo(page: Page, options: { name: string; seconds?: number; sentinel?: string; width?: number; height?: number } = { name: 'motion-study.webm' }): Promise<void> {
+  await page.evaluate(async ({ name, seconds = 1.3, sentinel = '#7d00ff', width = 320, height = 200 }) => {
     const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
     const context = canvas.getContext('2d')!;
     const recorder = new MediaRecorder(canvas.captureStream(10), { mimeType: 'video/webm' });
@@ -14,12 +16,126 @@ async function loadRecordedVideo(page: Page, options: { name: string; seconds?: 
       context.fillStyle = '#fffaf0'; context.fillRect(0, 0, width, height);
       context.fillStyle = '#0b5f71'; context.fillRect((elapsed / (seconds * 1000)) * (width - 55), height * .35, 55, 55);
       context.fillStyle = '#ad352d'; context.beginPath(); context.arc(width * .5, height * .25, 18, 0, Math.PI * 2); context.fill();
+      context.fillStyle = sentinel; context.fillRect(7, 7, 11, 11);
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
     await new Promise<void>((resolve) => { recorder.onstop = () => resolve(); recorder.stop(); });
     const transfer = new DataTransfer(); transfer.items.add(new File(chunks, name, { type: 'video/webm' }));
     const input = document.querySelector<HTMLInputElement>('#video-file')!; input.files = transfer.files; input.dispatchEvent(new Event('change', { bubbles: true }));
   }, options);
+}
+
+function assertNoWorkflowRequests(requests: CapturedRequest[]): void {
+  const networkRequests = requests.filter((request) => ['http:', 'https:'].includes(new URL(request.url).protocol));
+  expect(networkRequests, 'Importing, tracing, and exporting a local video must not make any HTTP request. Local blob reads stay inside the browser.').toEqual([]);
+}
+
+function assertOnlyLicenseVerification(requests: CapturedRequest[], token: string): void {
+  const verification = `https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${encodeURIComponent(token)}`;
+  expect(requests, 'License verification must make exactly one action-triggered request.').toHaveLength(1);
+  expect(requests[0]).toEqual({ body: null, headers: expect.any(Object), method: 'GET', url: verification });
+  const tokenCarriers = requests.flatMap((request) => [request.url, request.body || '', ...Object.values(request.headers)])
+    .filter((value) => value.includes(token));
+  expect(tokenCarriers, 'The token may appear only in the expected Sociobot verification URL.').toEqual([verification]);
+}
+
+async function settleShell(page: Page): Promise<void> {
+  await page.waitForLoadState('networkidle');
+  await page.evaluate(async () => {
+    if ('serviceWorker' in navigator) await navigator.serviceWorker.ready;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  });
+}
+
+async function persistentSnapshot(page: Page): Promise<unknown> {
+  return page.evaluate(async () => {
+    const digest = async (bytes: ArrayBuffer): Promise<string> => {
+      const hash = await crypto.subtle.digest('SHA-256', bytes);
+      return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    };
+    const inspect = async (value: unknown, seen = new WeakSet<object>()): Promise<unknown> => {
+      if (value === null || typeof value === 'boolean' || typeof value === 'number' || typeof value === 'string') return value;
+      if (typeof value === 'undefined') return { type: 'undefined' };
+      if (typeof value === 'bigint') return { type: 'bigint', value: String(value) };
+      if (typeof value === 'symbol' || typeof value === 'function') return { type: typeof value };
+      if (value instanceof Blob) {
+        return { binary: { kind: value instanceof File ? 'File' : 'Blob', name: value instanceof File ? value.name : '', sha256: await digest(await value.arrayBuffer()), size: value.size, type: value.type } };
+      }
+      if (value instanceof ArrayBuffer) return { binary: { kind: 'ArrayBuffer', sha256: await digest(value), size: value.byteLength } };
+      if (ArrayBuffer.isView(value)) {
+        const bytes = value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength);
+        return { binary: { kind: value.constructor.name, sha256: await digest(bytes), size: value.byteLength } };
+      }
+      if (value instanceof Date) return { date: value.toISOString() };
+      if (typeof value === 'object') {
+        if (seen.has(value)) return { type: 'cycle' };
+        seen.add(value);
+        if (Array.isArray(value)) return Promise.all(value.map((entry) => inspect(entry, seen)));
+        const result: Record<string, unknown> = {};
+        for (const key of Object.keys(value).sort()) result[key] = await inspect((value as Record<string, unknown>)[key], seen);
+        return result;
+      }
+      return { type: typeof value };
+    };
+    const request = <T>(idbRequest: IDBRequest<T>): Promise<T> => new Promise((resolve, reject) => {
+      idbRequest.onsuccess = () => resolve(idbRequest.result);
+      idbRequest.onerror = () => reject(idbRequest.error);
+    });
+    const openDatabase = (name: string): Promise<IDBDatabase> => new Promise((resolve, reject) => {
+      const open = indexedDB.open(name);
+      open.onsuccess = () => resolve(open.result);
+      open.onerror = () => reject(open.error);
+    });
+    const storage = (surface: Storage) => Object.fromEntries(Array.from({ length: surface.length }, (_, index) => surface.key(index) || '')
+      .filter(Boolean).sort().map((key) => [key, surface.getItem(key)]));
+    const databases: Record<string, unknown> = {};
+    for (const database of (await indexedDB.databases()).filter((entry) => entry.name).sort((a, b) => a.name!.localeCompare(b.name!))) {
+      const db = await openDatabase(database.name!);
+      const stores: Record<string, unknown> = {};
+      for (const storeName of Array.from(db.objectStoreNames).sort()) {
+        const transaction = db.transaction(storeName, 'readonly').objectStore(storeName);
+        const [keys, values] = await Promise.all([request(transaction.getAllKeys()), request(transaction.getAll())]);
+        stores[storeName] = await Promise.all(values.map(async (entry, index) => ({ key: await inspect(keys[index]), value: await inspect(entry) })));
+      }
+      databases[database.name!] = stores;
+      db.close();
+    }
+    const cacheStorage: Record<string, unknown> = {};
+    for (const cacheName of (await caches.keys()).sort()) {
+      const cache = await caches.open(cacheName);
+      cacheStorage[cacheName] = await Promise.all((await cache.matchAll()).map(async (response, index) => {
+        const requestKey = (await cache.keys())[index];
+        return {
+          request: { headers: [...requestKey.headers].sort(([a], [b]) => a.localeCompare(b)), method: requestKey.method, url: requestKey.url },
+          response: { contentType: response.headers.get('content-type'), sha256: await digest(await response.clone().arrayBuffer()), status: response.status },
+        };
+      }));
+    }
+    const walk = async (directory: FileSystemDirectoryHandle): Promise<unknown> => {
+      const entries: Array<{ name: string; value: unknown }> = [];
+      for await (const [name, handle] of directory.entries()) {
+        if (handle.kind === 'file') {
+          const file = await handle.getFile();
+          entries.push({ name, value: { sha256: await digest(await file.arrayBuffer()), size: file.size, type: file.type } });
+        } else entries.push({ name, value: await walk(handle) });
+      }
+      return entries.sort((a, b) => a.name.localeCompare(b.name));
+    };
+    const root = await navigator.storage.getDirectory?.();
+    return { caches: cacheStorage, indexedDb: databases, localStorage: storage(localStorage), opfs: root ? await walk(root) : [], sessionStorage: storage(sessionStorage) };
+  });
+}
+
+async function sourceFingerprint(page: Page): Promise<{ byteSentinel: string; name: string; sha256: string }> {
+  return page.locator('#video-file').evaluate(async (input) => {
+    const file = (input as HTMLInputElement).files?.[0];
+    if (!file) throw new Error('The generated source video is missing.');
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const hash = await crypto.subtle.digest('SHA-256', bytes);
+    const start = Math.max(0, Math.floor(bytes.length / 2) - 12);
+    const byteSentinel = [...bytes.slice(start, start + 24)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    return { byteSentinel, name: file.name, sha256: [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('') };
+  });
 }
 
 function pngDimensionsInZip(bytes: Buffer): { width: number; height: number } {
@@ -131,19 +247,27 @@ test('@claim:clip-workflow accepts one to five seconds and rejects other lengths
 
 test('@claim:ephemeral-project keeps video and frames out of persistent browser stores', async ({ page }) => {
   await page.goto('/');
-  const storageBefore = await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } }));
-  await loadRecordedVideo(page, { name: 'private-clip.webm' }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
-  const persistent = await page.evaluate(async () => {
-    const databases = await indexedDB.databases(); const values: unknown[] = [];
-    for (const database of databases) { if (!database.name) continue; const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(database.name!); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); }); for (const store of Array.from(db.objectStoreNames)) { const records = await new Promise<unknown[]>((resolve, reject) => { const request = db.transaction(store).objectStore(store).getAll(); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); }); values.push(...records); } }
-    const cacheEntries = (await Promise.all((await caches.keys()).map(async (key) => (await caches.open(key)).keys()))).flat().map((request) => request.url);
-    const directory = await navigator.storage.getDirectory?.(); const opfsEntries: string[] = []; if (directory) for await (const [name] of directory.entries()) opfsEntries.push(name);
-    return { values: JSON.stringify(values), hasBlob: values.some((value) => value instanceof Blob || value instanceof ArrayBuffer), cacheEntries, opfsEntries, local: { ...localStorage }, session: { ...sessionStorage } };
-  });
-  expect(persistent.values).not.toContain('private-clip'); expect(persistent.hasBlob).toBe(false); expect(persistent.cacheEntries.join('\n')).not.toContain('private-clip'); expect(persistent.opfsEntries).toEqual([]);
-  expect(persistent.local).toEqual(storageBefore.local); expect(persistent.session).toEqual(storageBefore.session);
-  await page.reload(); await expect(page.locator('#frame-strip figure')).toHaveCount(0); await expect(page.locator('#video-file')).toHaveValue('');
-  expect(await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } }))).toEqual(storageBefore);
+  await settleShell(page);
+  await page.locator('#threshold').press('ArrowRight');
+  await page.locator('#threshold').press('ArrowLeft');
+  await page.waitForTimeout(100);
+  await page.reload();
+  await settleShell(page);
+  const baseline = await persistentSnapshot(page);
+  await loadRecordedVideo(page, { name: 'private-clip-ink-sentinel.webm', sentinel: '#7d00ff' });
+  const source = await sourceFingerprint(page);
+  await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
+  const afterFrames = await persistentSnapshot(page);
+  expect(afterFrames, 'Every IndexedDB value, cached response body, OPFS file, and web-storage value must match the pre-import baseline.').toEqual(baseline);
+  const inspectedContent = JSON.stringify(afterFrames);
+  expect(inspectedContent).not.toContain(source.name);
+  expect(inspectedContent, 'A known 24-byte source-video sentinel must not appear in any recursively inspected stored value.').not.toContain(source.byteSentinel);
+  expect(inspectedContent, 'The known in-memory video-byte sentinel must not be retained in a persistent surface.').not.toContain(source.sha256);
+  await page.reload();
+  await settleShell(page);
+  await expect(page.locator('#frame-strip figure')).toHaveCount(0);
+  await expect(page.locator('#video-file')).toHaveValue('');
+  expect(await persistentSnapshot(page), 'Reload must not add or retain a source video or generated frame.').toEqual(baseline);
 });
 
 test('@claim:trace-controls applies every trace style, frame rate, and previous-frame overlay', async ({ page }) => {
@@ -182,7 +306,20 @@ test('@claim:free-quality exports free PNGs at 960 px', async ({ page }) => {
 });
 
 test('@claim:local-processing sends no video or frame data to any server', async ({ page }) => {
-  await page.goto('/'); const requests: Array<{ method: string; url: string; body: string | null }> = []; page.on('request', (request) => requests.push({ method: request.method(), url: request.url(), body: request.postData() })); await loadRecordedVideo(page, { name: 'local-only.webm' }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 }); const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click(); await event; expect(requests.filter((request) => !['GET', 'HEAD'].includes(request.method))).toEqual([]); expect(requests.filter((request) => request.body !== null)).toEqual([]); expect(requests.filter((request) => new URL(request.url).origin !== 'http://127.0.0.1:4173')).toEqual([]);
+  await page.goto('/');
+  await settleShell(page);
+  const requests: CapturedRequest[] = [];
+  page.on('request', (request) => requests.push({ body: request.postData(), headers: request.headers(), method: request.method(), url: request.url() }));
+  await loadRecordedVideo(page, { name: 'local-only.webm' });
+  await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
+  const event = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  await event;
+  assertNoWorkflowRequests(requests);
+});
+
+test('the local-processing request guard rejects a same-origin collection GET fixture', () => {
+  expect(() => assertNoWorkflowRequests([{ body: null, headers: {}, method: 'GET', url: 'http://127.0.0.1:4173/collect?video=sentinel' }])).toThrow();
 });
 
 test('@claim:offline-reload reloads the demo without a network', async ({ context, page }) => {
@@ -213,16 +350,27 @@ test('@claim:studio-purchase shows USD 9 one-time checkout for Flipbook Trace St
 });
 
 test('@claim:studio-license-check sends a pasted license only to Sociobot verification', async ({ page }) => {
-  const verification = 'https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=pasted-test';
+  const token = 'pasted-test';
+  const verification = `https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${token}`;
   await page.route(verification, (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'http://127.0.0.1:4173' }, body: JSON.stringify({ valid: true, reason: 'ok' }) }));
-  const requests: string[] = [];
-  page.on('request', (request) => { if (request.url().includes('verify?license=')) requests.push(request.url()); });
   await page.goto('/');
+  await settleShell(page);
+  const requests: CapturedRequest[] = [];
+  page.on('request', (request) => requests.push({ body: request.postData(), headers: request.headers(), method: request.method(), url: request.url() }));
   await page.getByText('Have a license?').click();
-  await page.getByLabel('Paste your license').fill('pasted-test');
+  await page.getByLabel('Paste your license').fill(token);
   await page.getByRole('button', { name: 'Verify license' }).click();
   await expect(page.getByText('Studio is active on this device.')).toBeVisible();
-  expect(requests).toEqual([verification]);
+  assertOnlyLicenseVerification(requests, token);
+});
+
+test('the Studio-license request guard rejects a second token-bearing destination', () => {
+  const token = 'pasted-test';
+  const verification = `https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${token}`;
+  expect(() => assertOnlyLicenseVerification([
+    { body: null, headers: {}, method: 'GET', url: verification },
+    { body: null, headers: {}, method: 'GET', url: `http://127.0.0.1:4173/collect?license=${token}` },
+  ], token)).toThrow();
 });
 
 test('@claim:browser-data-deletion clears settings and a saved license', async ({ context, page }) => {

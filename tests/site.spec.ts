@@ -67,7 +67,7 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
       expect(box.height, `${route} ${box.tag} (${box.label}) height`).toBeGreaterThanOrEqual(44);
     }
     const routeName = route === '/' ? 'home' : route.slice(1);
-    await page.screenshot({ path: `test-results/polish-3-targets-${routeName}.png`, fullPage: true });
+    await page.screenshot({ path: `test-results/polish-5-targets-${routeName}.png`, fullPage: true });
     await page.close();
   });
 }
@@ -85,7 +85,7 @@ test('the static 404 keeps every visible action at least 44 by 44 px at 390 px',
     expect(target.width, `static 404 ${target.tag} (${target.label}) width`).toBeGreaterThanOrEqual(44);
     expect(target.height, `static 404 ${target.tag} (${target.label}) height`).toBeGreaterThanOrEqual(44);
   }
-  await page.screenshot({ path: 'test-results/polish-3-targets-static-404.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/polish-5-targets-static-404.png', fullPage: true });
   await page.close();
 });
 
@@ -204,7 +204,9 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(config.responseOverrides?.['404']?.rewrite).toBe('/404.html');
   const page404 = await readFile('public/404.html', 'utf8');
   expect(page404).toContain('<title>Page not found — Flipbook Trace</title>');
-  expect(page404).toContain('This page fell out of the stack');
+  expect(page404).toContain('<h1>Page not found</h1>');
+  expect(page404).toContain('This page does not exist. Open Flipbook Trace.');
+  expect(page404).toContain('Open Flipbook Trace');
   expect(page404).toContain('href="/privacy"');
   expect(page404).toContain('href="/terms"');
   expect(page404).toContain('href="/?demo=1"');
@@ -212,7 +214,14 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.4 · Original generated artwork');
+  expect(page404).toContain('v1.0.5 · Original generated artwork');
+});
+
+test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {
+  await page.goto('/missing-page');
+  await expect(page.getByRole('heading', { level: 1, name: 'Page not found' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Open Flipbook Trace' })).toBeVisible();
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'This page does not exist. Open Flipbook Trace.');
 });
 
 test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {
@@ -231,7 +240,7 @@ test('the designed static 404 artifact is served with HTTP 404', async ({ reques
   try {
     const response = await request.get(`http://127.0.0.1:${address.port}/missing-page`);
     expect(response.status()).toBe(404);
-    expect(await response.text()).toContain('This page fell out of the stack');
+    expect(await response.text()).toContain('<h1>Page not found</h1>');
   } finally {
     await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
   }
@@ -245,6 +254,7 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 
     const frame = await page.locator('#demo-strip canvas').first().boundingBox();
     expect(frame).toBeTruthy();
     expect(frame!.y + frame!.height).toBeLessThanOrEqual(viewport.height);
+    await page.screenshot({ path: `test-results/polish-5-demo-first-${viewport.width}.png` });
     await page.close();
   });
 }

@@ -20,7 +20,7 @@ const PRODUCT = 'flipbook-trace';
 const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.in';
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
-const BUILD_ID = 'v1.0.4';
+const BUILD_ID = 'v1.0.5';
 
 let isDemo = false;
 let isPro = false;
@@ -205,7 +205,7 @@ function termsPage(): string {
 }
 
 function notFoundPage(): string {
-  return shell(`<main id="main" class="not-found"><div class="lost-frame" aria-hidden="true">?</div><p class="eyebrow">Frame missing</p><h1 tabindex="-1">This page fell out of the stack</h1><p>The address does not match a page in Flipbook Trace.</p><a class="button button-blue" href="/" data-route>Return to the worktable</a></main>`);
+  return shell(`<main id="main" class="not-found"><div class="lost-frame" aria-hidden="true">?</div><h1 tabindex="-1">Page not found</h1><p>The address does not match a page in Flipbook Trace.</p><a class="button button-blue" href="/" data-route>Open Flipbook Trace</a></main>`);
 }
 
 function updateMeta(path: string): void {
@@ -215,7 +215,7 @@ function updateMeta(path: string): void {
     '/privacy': ['Privacy — Flipbook Trace', 'How Flipbook Trace handles local video, settings, and licenses.'],
     '/terms': ['Terms — Flipbook Trace', 'Terms for using Flipbook Trace and buying Studio.'],
   };
-  const [title, description] = details[path] || ['Page not found — Flipbook Trace', 'Return to the Flipbook Trace worktable.'];
+  const [title, description] = details[path] || ['Page not found — Flipbook Trace', 'This page does not exist. Open Flipbook Trace.'];
   const canonical = `https://flipbook-trace.sociobot.in${path}`;
   document.title = title;
   document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', description);

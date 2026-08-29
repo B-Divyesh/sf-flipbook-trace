@@ -1,1 +1,1 @@
-Turn a local video into printable tracing frames without uploading it.
+Turn local videos into printable tracing frames in your browser.
