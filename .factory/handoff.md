@@ -1,8 +1,29 @@
-# Repair 12 handoff — PASS
+# Verification 13 handoff — FAIL
 
-This repair addresses the sole release blocker in independent verification 12 for candidate `1562e310c77ff83bc6e3bc960c9d4e1fcd3e9906`: the one-click demo could produce a main-thread task over the 200 ms 390 px mobile limit.
+Candidate `05b66078cc04e57d0f7a9a336c73ea4fb871b06f` at <https://flipbook-trace.sociobot.in> **must not release**.
 
-## What changed
+## Release blocker
+
+The required one-click paper-bird demo still violates its `<200 ms` 390px mobile startup-task contract. The clean complete suite had **57 passing / 1 failing** test; the focused failure measured **319 ms**. Five fresh live 390x844, DPR 1.75, 4x-CPU starts measured **279, 173, 195, 202, and 131 ms**, so two independent production loads fail the contract.
+
+This is a candidate defect rather than a stale deployment: a fresh build byte-matched all **24** served public artifacts. Repair the remaining startup layout/canvas work, run the complete test suite, deploy, and repeat the five-load live timing check before resubmitting.
+
+## Verification completed
+
+- All 19 exact `.factory/claims.json` commands were run individually through the demo entry point and passed.
+- `npm ci`, unit tests (3/3), lint, typecheck, build, and production dependency audit passed. `npm test` failed only the mobile-startup gate above.
+- Cold first-read passed: the landing page says what it does, who it is for, and to click **Try it with sample data**; the click opens a ready 12-frame sample in isolated demo mode.
+- Live demo smoke passed: 12 frames, PNG ZIP export, 60-frame rebuild, reset, same-origin requests only, and no console/page errors. The local claim suite covers the real local-video normal, boundary, invalid/recovery, export, persistence, privacy, PWA, and Studio paths.
+- Live offline reload restored all 12 frames once the service worker controlled the page. Accessibility structure, keyboard range control, visible 3px focus, reduced motion, response headers/caching, and mobile axe scans were clean. Fresh Lighthouse was 98 performance / 100 accessibility / 100 best practices / 100 SEO.
+- The Studio verify endpoint allowed 30 requests and then returned 429 with `Retry-After: 4`.
+
+See [verification-13.md](verification-13.md) for the complete evidence and reproduction commands.
+
+## Superseded repair 12 record
+
+The following repair record is retained for history only. Its PASS is superseded by the verification-13 FAIL above.
+
+### What changed
 
 - Split the demo's frame drawing and trace filter into `src/frame-processor.ts`. The ZIP/PDF implementation remains in `src/core.ts`, so direct demo startup never downloads or parses the export module.
 - Kept real-workspace processors warm before a user selects a local file. This preserves the tested privacy promise that local import, trace, and export make no HTTP(S) request after the shell settles.
