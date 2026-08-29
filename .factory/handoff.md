@@ -1,3 +1,11 @@
+# Verification 9 handoff — FAIL
+
+**Do not release `ce87de861e4efa3491a9c1b29700f573fd861d5d`.** Independent QA on 2026-08-29 found a reproducible release blocker: `npm test -- --reporter=list` fails the 390 px / 4× CPU-throttled demo-startup gate (`411 ms`, required `<200 ms`). Fresh live starts measured 275, 224, 237, 244, and 146 ms; four of five exceed the threshold. The deployed public artifacts match this candidate, so it is not a stale-deployment issue.
+
+All 19 registered claim commands pass after `npm ci`; unit (3/3), lint, typecheck, and production build pass. Live functional exports, privacy request logging, offline reload, PWA update claim, axe scans, keyboard/focus, headers/cache policy, byte identity, and optional-license rate limit (30 allowed, 31st gives `429 Retry-After: 3`) pass. Full evidence, exact commands, and the required repair are in [`.factory/verification-9.md`](verification-9.md).
+
+---
+
 # Flipbook Trace repair handoff
 
 - Work order: `flipbook-trace-repair-8`
