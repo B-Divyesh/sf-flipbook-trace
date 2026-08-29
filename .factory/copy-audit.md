@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-29 for repair round 3. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
+Audited 2026-08-29 for repair round 5. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -19,6 +19,7 @@ Audited 2026-08-29 for repair round 3. Counts treat hyphenated ranges and contra
 | Choose a video this browser can play. | 7 | Pass |
 | Move right to keep more dark areas. | 7 | Registered: `trace-controls` |
 | Updating preview… | 2 | Progress state |
+| Preparing sample frames… | 3 | Progress state |
 | Making sample frames… | 3 | Progress state |
 | Resetting the sample… | 3 | Progress state |
 | Import or export settings | 4 | Registered: `settings-portability` |

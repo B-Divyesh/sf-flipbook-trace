@@ -222,6 +222,46 @@ test('build output uses hashed immutable assets and a revalidated service worker
   expect(config.routes.find((route) => route.route === '/sw.js')?.headers['Cache-Control']).toContain('no-cache');
 });
 
+test('landing discovers the responsive LCP image in the document before app rendering', async ({ browser }) => {
+  const index = await readFile('dist/index.html', 'utf8');
+  expect(index).toContain('rel="preload" as="image"');
+  expect(index).toContain('imagesrcset="/assets/hero-worktable-640.webp 640w, /assets/hero-worktable.webp 1200w"');
+  expect(index).toContain('imagesizes="(max-width: 800px) calc(100vw - 60px), 54vw"');
+  expect(index).toContain('fetchpriority="high"');
+
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
+  await page.goto('/');
+  await expect(page.locator('.hero-art img')).toBeVisible();
+  const resources = await page.evaluate(() => performance.getEntriesByType('resource').map((entry) => ({
+    initiatorType: entry.initiatorType,
+    name: entry.name,
+  })));
+  expect(resources).toContainEqual({
+    initiatorType: 'link',
+    name: 'http://127.0.0.1:4173/assets/hero-worktable-640.webp',
+  });
+  await page.close();
+});
+
+test('demo startup keeps canvas preparation below the mobile interaction threshold', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
+  const page = await context.newPage();
+  const session = await context.newCDPSession(page);
+  await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await page.addInitScript(() => {
+    const taskDurations: number[] = [];
+    new PerformanceObserver((list) => {
+      taskDurations.push(...list.getEntries().map((entry) => entry.duration));
+    }).observe({ type: 'longtask', buffered: true });
+    (window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks = taskDurations;
+  });
+  await page.goto('/?demo=1');
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+  const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
+  expect(longestTask).toBeLessThan(200);
+  await context.close();
+});
+
 test('@claim:app-update-check a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
   const distRoot = join(process.cwd(), 'dist');
   const originalWorker = await readFile(join(distRoot, 'sw.js'), 'utf8');
@@ -302,7 +342,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.7 · Original generated artwork');
+  expect(page404).toContain('v1.0.8 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

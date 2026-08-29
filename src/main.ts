@@ -21,10 +21,12 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.7';
+const BUILD_ID = 'v1.0.8';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
-const PREVIEW_CHUNK_SIZE = 3;
+const PREVIEW_CHUNK_SIZE = 1;
+const DEMO_SOURCE_WIDTH = PREVIEW_WIDTH;
+const DEMO_SOURCE_HEIGHT = 200;
 
 type LicenseVerdict = {
   valid: boolean;
@@ -121,7 +123,7 @@ function workspaceTemplate(demo: boolean): string {
             <label for="columns">PDF trace sheet columns</label>
             <select id="columns"><option value="4">4 columns — free</option><option value="6">6 columns — Studio</option></select>
           </div>
-          <button class="button button-dark" id="make-frames" type="button" ${demo ? '' : 'disabled'}>Make tracing frames</button>
+          <button class="button button-dark" id="make-frames" type="button" disabled>Make tracing frames</button>
           <details class="settings-tools"><summary>Import or export settings</summary><button id="export-settings" type="button" aria-label="Export settings">Export settings</button><label for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json" /></details>
           <p id="form-error" class="error" role="alert" hidden></p>
         </form>
@@ -169,7 +171,7 @@ function homePage(): string {
         <figure class="hero-art">
           <span class="registration registration-one" aria-hidden="true"></span>
           <picture>
-            <source srcset="/assets/hero-worktable-640.webp 640w, /assets/hero-worktable.webp 1200w" sizes="(max-width: 800px) 100vw, 54vw" type="image/webp" />
+            <source srcset="/assets/hero-worktable-640.webp 640w, /assets/hero-worktable.webp 1200w" sizes="(max-width: 800px) calc(100vw - 60px), 54vw" type="image/webp" />
             <img src="/assets/hero-worktable.webp" width="1200" height="800" alt="Hands arrange six bird drawings into a hand-drawn flipbook." fetchpriority="high" decoding="async" />
           </picture>
           <figcaption>Six moments become six frames to trace.</figcaption>
@@ -258,7 +260,7 @@ async function render(path = routePath(), focus = false): Promise<void> {
   bindNavigation();
   if (path === '/' || path === '/demo') {
     bindWorkspace();
-    if (isDemo) loadDemoFrames();
+    if (isDemo) void loadDemoFrames();
     if (path === '/') {
       bindLicense();
       if (licenseToCheck) void verifyLicense(licenseToCheck);
@@ -367,14 +369,24 @@ async function importSettings(file?: File): Promise<void> {
   }
 }
 
-function loadDemoFrames(count = 12): void {
-  sourceFrames = Array.from({ length: count }, (_, index) => {
+async function loadDemoFrames(count = 12): Promise<void> {
+  const generation = previewGeneration;
+  const nextFrames: HTMLCanvasElement[] = [];
+  const make = document.querySelector<HTMLButtonElement>('#make-frames');
+  if (make) make.disabled = true;
+  setStatus('Preparing sample frames…');
+  await yieldToBrowser();
+  for (let index = 0; index < count; index += 1) {
+    if (generation !== previewGeneration) return;
     const canvas = document.createElement('canvas');
-    canvas.width = 640;
-    canvas.height = 400;
+    canvas.width = DEMO_SOURCE_WIDTH;
+    canvas.height = DEMO_SOURCE_HEIGHT;
     drawDemoFrame(canvas, index, count);
-    return canvas;
-  });
+    nextFrames.push(canvas);
+    await yieldToBrowser();
+  }
+  if (generation !== previewGeneration) return;
+  sourceFrames = nextFrames;
   schedulePreviewRender();
 }
 
@@ -389,7 +401,7 @@ async function makeDemoFrames(): Promise<void> {
   }
   setStatus('Making sample frames…');
   await yieldAfterInteraction();
-  loadDemoFrames(Math.max(2, Math.floor((end - start) * settings.fps)));
+  await loadDemoFrames(Math.max(2, Math.floor((end - start) * settings.fps)));
 }
 
 function paintDemoPeek(): void {
@@ -593,6 +605,8 @@ function paintFrames(): void {
   });
   empty.hidden = true;
   exports.hidden = false;
+  const make = document.querySelector<HTMLButtonElement>('#make-frames');
+  if (make) make.disabled = false;
   value<HTMLElement>('export-count').textContent = `${outputFrames.length} frames`;
   setStatus(`${outputFrames.length} frames ready`);
 }
