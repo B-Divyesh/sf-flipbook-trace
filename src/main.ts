@@ -25,8 +25,14 @@ const BUILD_ID = 'v1.0.8';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
-const DEMO_SOURCE_WIDTH = PREVIEW_WIDTH;
-const DEMO_SOURCE_HEIGHT = 200;
+// The sample frames only need to be sharp at their displayed size. Keeping the
+// source close to that size avoids doing full-export-sized pixel work while the
+// demo is becoming interactive on a throttled phone.
+const DEMO_SOURCE_WIDTH = 240;
+const DEMO_SOURCE_HEIGHT = 150;
+const DEMO_OVERVIEW_WIDTH = 64;
+const DEMO_OVERVIEW_HEIGHT = 40;
+const PAINT_CHUNK_SIZE = 2;
 
 type LicenseVerdict = {
   valid: boolean;
@@ -404,20 +410,23 @@ async function makeDemoFrames(): Promise<void> {
   await loadDemoFrames(Math.max(2, Math.floor((end - start) * settings.fps)));
 }
 
-function paintDemoPeek(): void {
+async function paintDemoPeek(generation: number): Promise<void> {
   const strip = document.querySelector<HTMLDivElement>('#demo-strip');
   if (!strip) return;
   strip.replaceChildren();
   const overviewFrames = outputFrames.slice(0, 12);
-  overviewFrames.forEach((frame, index) => {
+  for (let index = 0; index < overviewFrames.length; index += 1) {
+    if (generation !== previewGeneration) return;
+    const frame = overviewFrames[index];
     const canvas = document.createElement('canvas');
-    canvas.width = frame.width;
-    canvas.height = frame.height;
-    canvas.getContext('2d')?.drawImage(frame, 0, 0);
+    canvas.width = DEMO_OVERVIEW_WIDTH;
+    canvas.height = DEMO_OVERVIEW_HEIGHT;
+    canvas.getContext('2d')?.drawImage(frame, 0, 0, canvas.width, canvas.height);
     canvas.setAttribute('role', 'img');
     canvas.setAttribute('aria-label', `Sample tracing frame ${index + 1} of ${overviewFrames.length}`);
     strip.append(canvas);
-  });
+    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldToBrowser();
+  }
 }
 
 async function loadVideo(file?: File): Promise<void> {
@@ -573,8 +582,8 @@ async function rebuildOutputFrames(generation: number): Promise<void> {
   }
   if (generation !== previewGeneration) return;
   outputFrames = nextFrames;
-  paintFrames();
-  if (isDemo) paintDemoPeek();
+  await paintFrames(generation);
+  if (isDemo) await paintDemoPeek(generation);
 }
 
 async function buildExportFrames(): Promise<HTMLCanvasElement[]> {
@@ -588,13 +597,15 @@ async function buildExportFrames(): Promise<HTMLCanvasElement[]> {
   return exportFrames;
 }
 
-function paintFrames(): void {
+async function paintFrames(generation: number): Promise<void> {
   const strip = document.querySelector<HTMLDivElement>('#frame-strip');
   const empty = document.querySelector<HTMLElement>('#empty-preview');
   const exports = document.querySelector<HTMLElement>('#export-bar');
   if (!strip || !empty || !exports) return;
   strip.replaceChildren();
-  outputFrames.forEach((canvas, index) => {
+  for (let index = 0; index < outputFrames.length; index += 1) {
+    if (generation !== previewGeneration) return;
+    const canvas = outputFrames[index];
     const figure = document.createElement('figure');
     const caption = document.createElement('figcaption');
     caption.textContent = String(index + 1).padStart(2, '0');
@@ -602,7 +613,9 @@ function paintFrames(): void {
     canvas.setAttribute('aria-label', `Tracing frame ${index + 1} of ${outputFrames.length}`);
     figure.append(canvas, caption);
     strip.append(figure);
-  });
+    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldToBrowser();
+  }
+  if (generation !== previewGeneration) return;
   empty.hidden = true;
   exports.hidden = false;
   const make = document.querySelector<HTMLButtonElement>('#make-frames');

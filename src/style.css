@@ -243,8 +243,9 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 
 .prose-page, .not-found { max-width: 880px; min-height: 70vh; margin: 0 auto; padding: 96px clamp(20px, 5vw, 72px); }
 .prose-page h1, .not-found h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); max-width: 13ch; }
-.prose-page h2 { margin-top: 56px; font-size: 2rem; }
+.prose-page h2 { margin-top: 56px; font-size: 2rem; overflow-wrap: anywhere; word-break: break-word; }
 .prose-page p { font-size: 1.05rem; }
+.prose-page a[href^="mailto:"] { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
 .not-found { position: relative; }
 .lost-frame { float: right; width: 180px; aspect-ratio: 1; display: grid; place-items: center; color: white; background: var(--red); border: 3px solid var(--ink); box-shadow: 9px 9px 0 var(--blue); font: 900 7rem "Arial Black", sans-serif; transform: rotate(7deg); }
 

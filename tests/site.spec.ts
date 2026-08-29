@@ -64,6 +64,25 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
   });
 }
 
+for (const route of ['/privacy', '/terms']) {
+  test(`${route} wraps its legal contact email without horizontal overflow at 200% text`, async ({ browser }) => {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await page.goto(route);
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    const email = page.getByRole('link', { name: /@sociobot\.in/ });
+    await expect(email).toBeVisible();
+    const emailBounds = await email.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      return { left: bounds.left, right: bounds.right, scrollWidth: element.scrollWidth, width: bounds.width };
+    });
+    expect(emailBounds.left).toBeGreaterThanOrEqual(0);
+    expect(emailBounds.right).toBeLessThanOrEqual(390);
+    expect(emailBounds.scrollWidth).toBeLessThanOrEqual(Math.ceil(emailBounds.width));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    await page.close();
+  });
+}
+
 type TargetBox = { height: number; label: string; tag: string; width: number };
 
 async function visibleActionTargets(page: import('@playwright/test').Page): Promise<TargetBox[]> {
