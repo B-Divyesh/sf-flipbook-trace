@@ -1,4 +1,4 @@
-# Repair 12 handoff — ready for deployment verification
+# Repair 12 handoff — PASS
 
 This repair addresses the sole release blocker in independent verification 12 for candidate `1562e310c77ff83bc6e3bc960c9d4e1fcd3e9906`: the one-click demo could produce a main-thread task over the 200 ms 390 px mobile limit.
 
@@ -44,9 +44,17 @@ Results:
 
 Fresh local 390×844, DPR 1.75, 4×-CPU demo starts after the final fix measured longest main-thread tasks of **112/110/107/110/102 ms**. The longest was 112 ms, well below 200 ms.
 
-## Deployment follow-up
+## Deployment verification
 
-The static artifact remains `dist/` and will be deployed through the work order's static deployment configuration. Before final acceptance, repeat the same five fresh 390×844, DPR 1.75, 4×-CPU starts against `https://flipbook-trace.sociobot.in/?demo=1`, confirm every run remains below 200 ms, and verify live artifact identity, headers, offline reload, and update behavior.
+Repair commit `8eb5cb5` was pushed to `main` and deployed as the existing static PWA at <https://flipbook-trace.sociobot.in>. The work order build command (`npm ci && npm test && npm run build`) passed immediately before upload.
+
+- Live artifact identity: **24/24** public files from fresh `dist/` byte-match production, including the entry, split frame processor, export core, worker, manifest, maps, images, legal/static files, and 404.
+- Live response policy: HTML revalidates in 30 seconds; hashed JS/CSS use `public, max-age=31536000, immutable`; `sw.js` is `no-cache, no-store, must-revalidate`. Responses include HSTS, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, restrictive Permissions Policy, and CSP with response-header `frame-ancestors 'none'`.
+- Five fresh production demo starts at 390×844 CSS px, DPR 1.75, and 4× CPU throttling measured longest tasks of **0/68/100/82/88 ms**. Each returned HTTP 200 and rendered all 12 frames. The 100 ms maximum satisfies the `<200 ms` contract with 100 ms headroom.
+- Live desktop smoke: HTTP 200, correct demo title, 12 frames, PNG download, no console/page errors, no cross-origin requests, and no serious/critical axe findings.
+- Live mobile smoke: skip link is first in Tab order; ArrowRight changed Line detail from 142 to 143; focus outline is `3px solid rgb(173, 53, 45)`; no horizontal overflow. The service worker controls `/sw.js`; after forced offline reload the demo returned HTTP 200 and all 12 frames.
+- Fresh live mobile Lighthouse: performance 100, accessibility 100, best practices 100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 10 ms, CLS 0.031.
+- The checked `@claim:app-update-check` continues to exercise worker replacement/cache replacement/update notification locally. It passed in the 58-test suite and all 19 independent claim commands.
 
 ## Known gaps
 
