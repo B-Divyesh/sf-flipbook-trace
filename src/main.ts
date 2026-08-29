@@ -17,7 +17,7 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.13';
+const BUILD_ID = 'v1.0.14';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
@@ -70,24 +70,32 @@ function navLink(path: string, label: string): string {
   return `<a href="${path}" data-route>${label}</a>`;
 }
 
+function siteHeader(): string {
+  return `<header class="site-header">
+    <a class="wordmark" href="/" data-route><span aria-hidden="true">FT</span> Flipbook Trace</a>
+    <nav aria-label="Main navigation">
+      ${navLink('/?demo=1', 'Demo')}
+      <a href="/#how">How it works</a>
+      ${navLink('/privacy', 'Privacy')}
+    </nav>
+  </header>`;
+}
+
+function siteFooter(): string {
+  return `<footer class="site-footer">
+    <p>Turn your video into printable tracing frames.</p>
+    <div>${navLink('/privacy', 'Privacy')} ${navLink('/terms', 'Terms')} <a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></div>
+    <p>${BUILD_ID} · Original generated artwork</p>
+  </footer>`;
+}
+
 function shell(content: string): string {
   return `
     <a class="skip-link" href="#main">Skip to main content</a>
-    <header class="site-header">
-      <a class="wordmark" href="/" data-route><span aria-hidden="true">FT</span> Flipbook Trace</a>
-      <nav aria-label="Main navigation">
-        ${navLink('/?demo=1', 'Demo')}
-        <a href="/#how">How it works</a>
-        ${navLink('/privacy', 'Privacy')}
-      </nav>
-    </header>
+    ${siteHeader()}
     ${content}
     <div id="route-status" class="sr-only" aria-live="polite"></div>
-    <footer class="site-footer">
-      <p>Turn your video into printable tracing frames.</p>
-      <div>${navLink('/privacy', 'Privacy')} ${navLink('/terms', 'Terms')} <a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></div>
-      <p>${BUILD_ID} · Original generated artwork</p>
-    </footer>`;
+    ${siteFooter()}`;
 }
 
 function workspaceHeadingTemplate(demo: boolean): string {
@@ -178,11 +186,18 @@ function demoBanner(): string {
   return `<aside class="demo-banner" aria-label="Demo mode"><strong>Demo — sample data, nothing is saved</strong><div><button id="reset-demo" type="button">Reset demo</button><a href="/" data-route>Start for real</a></div></aside>`;
 }
 
-function demoPage(): string {
-  // Keep the first demo paint intentionally small. The controls and twelve
-  // canvases are mounted in the next browser task so mobile layout cannot
-  // monopolise startup before the sample is usable.
-  return shell(`${demoBanner()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div></section><div id="demo-workspace" aria-busy="true"></div></main>`);
+function demoInitialPage(): string {
+  // The demo is the required first interaction, so its first layout contains
+  // only the navigation, mode notice, and useful explanation. The preview,
+  // workspace, and footer are attached over later browser turns below. This
+  // prevents style and layout for off-screen controls from joining the first
+  // mobile startup task.
+  return `
+    <a class="skip-link" href="#main">Skip to main content</a>
+    ${siteHeader()}
+    ${demoBanner()}
+    <main id="main" class="demo-main"><section id="demo-intro" class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p></section></main>
+    <div id="route-status" class="sr-only" aria-live="polite"></div>`;
 }
 
 function updateMeta(path: string, details: [string, string]): void {
@@ -208,12 +223,12 @@ async function render(path = routePath(), focus = false): Promise<void> {
   outputFrames = [];
   const staticPages = path === '/demo' ? null : await import('./static-pages');
   if (path === '/') app.innerHTML = shell(staticPages!.homeContent(workspaceTemplate(false), staticPages!.paidContent(BILLING_BASE, PRODUCT, licenseStatusText(), Boolean(licenseVerdict && !isPro))));
-  else if (path === '/demo') app.innerHTML = demoPage();
+  else if (path === '/demo') app.innerHTML = demoInitialPage();
   else if (path === '/privacy') app.innerHTML = shell(staticPages!.privacyContent());
   else if (path === '/terms') app.innerHTML = shell(staticPages!.termsContent());
   else app.innerHTML = shell(staticPages!.notFoundContent());
   updateMeta(path, path === '/demo' ? ['Demo — Flipbook Trace', 'Try twelve ready paper-bird tracing frames.'] : staticPages!.pageMeta(path));
-  bindNavigation();
+  if (path !== '/demo') bindNavigation();
   if (path === '/') {
     bindWorkspace();
     bindLicense();
@@ -225,7 +240,7 @@ async function render(path = routePath(), focus = false): Promise<void> {
     void loadExportProcessor();
     if (licenseToCheck) void verifyLicense(licenseToCheck);
   } else if (path === '/demo') {
-    void mountDemoWorkspace();
+    void mountDemoPage();
   }
   if (focus) {
     window.scrollTo({ top: 0 });
@@ -234,6 +249,25 @@ async function render(path = routePath(), focus = false): Promise<void> {
     const status = document.querySelector('#route-status');
     if (status && heading) status.textContent = heading.textContent;
   }
+}
+
+async function mountDemoPage(): Promise<void> {
+  const generation = previewGeneration;
+  await yieldForPaint();
+  if (generation !== previewGeneration || !isDemo) return;
+  const intro = document.querySelector<HTMLElement>('#demo-intro');
+  const main = document.querySelector<HTMLElement>('#main');
+  if (!intro?.isConnected || !main?.isConnected) return;
+  // The frame overview and workspace have independent layout. Keep both out
+  // of the initial viewport task, then give this small page extension its own
+  // paint before mounting the controls.
+  intro.insertAdjacentHTML('beforeend', '<div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div>');
+  main.insertAdjacentHTML('beforeend', '<div id="demo-workspace" aria-busy="true"></div>');
+  app.insertAdjacentHTML('beforeend', siteFooter());
+  bindNavigation();
+  await yieldForPaint();
+  if (generation !== previewGeneration || !isDemo) return;
+  void mountDemoWorkspace();
 }
 
 async function mountDemoWorkspace(): Promise<void> {

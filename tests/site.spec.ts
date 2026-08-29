@@ -355,6 +355,8 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
   // This was a release-blocking regression: one startup pass regularly took
   // 382–514 ms on a 390 px, 4x-throttled phone. Keep five independent cold
   // starts in the normal suite so a single lucky scheduler run cannot hide it.
+  const startupTaskLimitMs = 200;
+  const medianTargetMs = 150;
   const longestTasks: number[] = [];
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
@@ -376,16 +378,22 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
       await expect(page.locator('#work-status')).toHaveText('12 frames ready');
       const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
       longestTasks.push(longestTask);
-      expect(longestTask).toBeLessThan(200);
     } finally {
       await context.close();
     }
   }
+  const sortedTasks = [...longestTasks].sort((left, right) => left - right);
+  const medianTask = sortedTasks[Math.floor(sortedTasks.length / 2)];
   await test.info().attach('demo-startup-longtasks-ms', {
-    body: JSON.stringify(longestTasks),
+    body: JSON.stringify({ longestTasks, medianTask, medianTargetMs, startupTaskLimitMs }),
     contentType: 'application/json',
   });
   expect(longestTasks).toHaveLength(5);
+  // The product claim remains strict: every independent fresh load must stay
+  // below 200 ms. The median guard catches gradual startup regressions before
+  // a noisy single run reaches that hard user-facing limit.
+  expect(Math.max(...longestTasks), `all startup tasks ${JSON.stringify(longestTasks)}`).toBeLessThan(startupTaskLimitMs);
+  expect(medianTask, `median startup task ${JSON.stringify(longestTasks)}`).toBeLessThan(medianTargetMs);
 });
 
 test('@claim:app-update-check a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
@@ -468,7 +476,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.13 · Original generated artwork');
+  expect(page404).toContain('v1.0.14 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

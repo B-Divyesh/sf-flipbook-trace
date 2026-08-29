@@ -234,7 +234,7 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .demo-banner button, .demo-banner a { min-width: 44px; min-height: 44px; padding: 8px 6px; display: inline-flex; align-items: center; justify-content: center; color: white; background: transparent; border: 0; text-decoration: underline; font-weight: 900; }
 .demo-main { background: var(--paper); }
 .demo-intro { max-width: 1320px; margin: 0 auto; padding: 64px clamp(20px, 5vw, 72px) 40px; }
-.demo-intro h1 { font-size: clamp(2.5rem, 6vw, 5.4rem); max-width: 13ch; }
+.demo-intro h1 { font-size: clamp(2.5rem, 6vw, 5.4rem); max-width: 13ch; text-wrap: wrap; }
 .demo-peek { margin-top: 28px; max-width: 780px; padding: 12px; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
 .demo-peek p { margin: 10px 2px 0; font-size: 13px; font-weight: 800; }
 .demo-strip { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 5px; overflow: hidden; }
