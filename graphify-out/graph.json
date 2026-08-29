@@ -45,7 +45,7 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
       "norm_label": "targetbox",
       "source_file": "tests/site.spec.ts",
@@ -426,17 +426,6 @@
       "source_location": "L21"
     },
     {
-      "id": "src_core_savepreferences",
-      "label": "savePreferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "file_type": "code",
-      "norm_label": "savepreferences()",
-      "source_file": "src/core.ts",
-      "source_location": "L304"
-    },
-    {
       "id": "src_core_u16",
       "label": "u16()",
       "_callable": true,
@@ -468,6 +457,17 @@
       "norm_label": "downloadblob()",
       "source_file": "src/core.ts",
       "source_location": "L294"
+    },
+    {
+      "id": "src_core_savepreferences",
+      "label": "savePreferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "file_type": "code",
+      "norm_label": "savepreferences()",
+      "source_file": "src/core.ts",
+      "source_location": "L304"
     },
     {
       "id": "src_main_bindworkspace",
@@ -756,11 +756,22 @@
       "source_location": "L227"
     },
     {
+      "id": "factory_evidence_verify_3_live_audit_loadrecordedvideo",
+      "label": "loadRecordedVideo()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "file_type": "code",
+      "norm_label": "loadrecordedvideo()",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L8"
+    },
+    {
       "id": "tests_site_spec_visibleactiontargets",
       "label": "visibleActionTargets()",
       "_callable": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
       "norm_label": "visibleactiontargets()",
       "source_file": "tests/site.spec.ts",
@@ -1037,10 +1048,30 @@
       "source_location": "L18"
     },
     {
+      "id": "public_sw",
+      "label": "sw.js",
+      "_origin": "ast",
+      "community": 10,
+      "file_type": "code",
+      "norm_label": "sw.js",
+      "source_file": "public/sw.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "public_sw_precache",
+      "label": "PRECACHE",
+      "_origin": "ast",
+      "community": 10,
+      "file_type": "code",
+      "norm_label": "precache",
+      "source_file": "public/sw.js",
+      "source_location": "L4"
+    },
+    {
       "id": "eslint_config",
       "label": "eslint.config.mjs",
       "_origin": "ast",
-      "community": 10,
+      "community": 11,
       "file_type": "code",
       "norm_label": "eslint.config.mjs",
       "source_file": "eslint.config.mjs",
@@ -1050,7 +1081,7 @@
       "id": "playwright_config",
       "label": "playwright.config.ts",
       "_origin": "ast",
-      "community": 11,
+      "community": 12,
       "file_type": "code",
       "norm_label": "playwright.config.ts",
       "source_file": "playwright.config.ts",
@@ -1060,7 +1091,7 @@
       "id": "src_vite_env_d",
       "label": "vite-env.d.ts",
       "_origin": "ast",
-      "community": 12,
+      "community": 13,
       "file_type": "code",
       "norm_label": "vite-env.d.ts",
       "source_file": "src/vite-env.d.ts",
@@ -1070,7 +1101,7 @@
       "id": "vite_config",
       "label": "vite.config.ts",
       "_origin": "ast",
-      "community": 13,
+      "community": 14,
       "file_type": "code",
       "norm_label": "vite.config.ts",
       "source_file": "vite.config.ts",
@@ -1080,7 +1111,7 @@
       "id": "vitest_config",
       "label": "vitest.config.ts",
       "_origin": "ast",
-      "community": 14,
+      "community": 15,
       "file_type": "code",
       "norm_label": "vitest.config.ts",
       "source_file": "vitest.config.ts",
@@ -1507,44 +1538,34 @@
       "source_location": "L5"
     },
     {
-      "id": "test",
-      "label": "@playwright/test",
+      "id": "factory_evidence_verify_3_live_audit",
+      "label": "live-audit.mjs",
       "_origin": "ast",
       "community": 8,
-      "confidence": "EXTRACTED",
       "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "@playwright/test"
+      "norm_label": "live-audit.mjs",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "factory_evidence_verify_3_live_audit_result",
+      "label": "result",
+      "_origin": "ast",
+      "community": 8,
+      "file_type": "code",
+      "norm_label": "result",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L6"
     },
     {
       "id": "tests_site_spec",
       "label": "site.spec.ts",
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
       "norm_label": "site.spec.ts",
       "source_file": "tests/site.spec.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "public_sw",
-      "label": "sw.js",
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "sw.js",
-      "source_file": "public/sw.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "public_sw_precache",
-      "label": "PRECACHE",
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "precache",
-      "source_file": "public/sw.js",
-      "source_location": "L4"
     }
   ],
   "links": [
@@ -3013,6 +3034,28 @@
       "weight": 1.0
     },
     {
+      "source": "factory_evidence_verify_3_live_audit",
+      "target": "factory_evidence_verify_3_live_audit_result",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "factory_evidence_verify_3_live_audit",
+      "target": "factory_evidence_verify_3_live_audit_loadrecordedvideo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
       "source": "package",
       "target": "package_devdependencies",
       "relation": "contains",
@@ -4300,15 +4343,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_site_spec",
-      "target": "test",
-      "relation": "dynamic_import",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/site.spec.ts"
-    },
-    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -4334,5 +4368,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bd8f6b791388fa12754f96f8ed98bfe5afd0dd9a"
+  "built_at_commit": "7a8e5c5442a69d51185828b26b74e6204f802a96"
 }
