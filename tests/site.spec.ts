@@ -214,7 +214,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.5 · Original generated artwork');
+  expect(page404).toContain('v1.0.6 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {
@@ -222,6 +222,12 @@ test('the SPA not-found route names the error and its destination in plain words
   await expect(page.getByRole('heading', { level: 1, name: 'Page not found' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Open Flipbook Trace' })).toBeVisible();
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'This page does not exist. Open Flipbook Trace.');
+});
+
+test('the terms identify the merchant of record and explain refund revocation', async ({ page }) => {
+  await page.goto('/terms');
+  await expect(page.getByText('Sociobot/Dodo is the merchant of record and handles refunds.')).toBeVisible();
+  await expect(page.getByText('A refund automatically revokes the Studio license.')).toBeVisible();
 });
 
 test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {

@@ -20,11 +20,20 @@ const PRODUCT = 'flipbook-trace';
 const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.in';
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
-const BUILD_ID = 'v1.0.5';
+const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
+const BUILD_ID = 'v1.0.6';
+
+type LicenseVerdict = {
+  valid: boolean;
+  checked: number;
+  reason?: string;
+  token?: string;
+};
 
 let isDemo = false;
 let isPro = false;
 let licenseInitialized = false;
+let licenseVerdict: LicenseVerdict | null = null;
 let settings: FrameSettings = { ...defaultSettings };
 let sourceFrames: HTMLCanvasElement[] = [];
 let outputFrames: HTMLCanvasElement[] = [];
@@ -185,7 +194,7 @@ function paidSection(): string {
     <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF trace sheet exports. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo opens checkout for Sociobot.</p></div>
     <div class="license-actions">
       <a class="button button-red" href="${BILLING_BASE}/api/v1/products/${PRODUCT}/checkout">Buy Studio for $9</a>
-      <p id="license-status" class="license-status" aria-live="polite">${isPro ? 'Studio is active on this device.' : ''}</p>
+      <p id="license-status" class="license-status${licenseVerdict && !isPro ? ' is-inactive' : ''}" aria-live="polite">${licenseStatusText()}</p>
       <details><summary>Have a license?</summary><label for="license-input">Paste your license</label><input id="license-input" type="text" autocomplete="off" /><button id="verify-license" class="button button-paper" type="button" aria-label="Verify license">Verify license</button></details>
       <p><a href="/privacy" data-route>Privacy</a> · <a href="/terms" data-route>Terms</a></p>
     </div>
@@ -201,7 +210,7 @@ function privacyPage(): string {
 }
 
 function termsPage(): string {
-  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with a video you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy a video without permission.</p><h2>The service</h2><p>The app is provided as-is. Video support varies by browser. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Dodo opens checkout for Sociobot. Studio enables the larger export choices.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`);
+  return shell(`<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with a video you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy a video without permission.</p><h2>The service</h2><p>The app is provided as-is. Video support varies by browser. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Studio enables the larger export choices.</p><p>Sociobot/Dodo is the merchant of record and handles refunds. A refund automatically revokes the Studio license.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`);
 }
 
 function notFoundPage(): string {
@@ -230,8 +239,8 @@ function updateMeta(path: string): void {
 async function render(path = routePath(), focus = false): Promise<void> {
   cleanupVideo();
   isDemo = path === '/demo';
-  if (path === '/') await initLicense();
-  settings = isDemo ? { ...defaultSettings } : await loadPreferences();
+  const licenseToCheck = path === '/' ? initLicense() : null;
+  settings = isDemo ? { ...defaultSettings } : normalizeSettings(await loadPreferences(), hasStudioAccess());
   sourceFrames = [];
   outputFrames = [];
   if (path === '/') app.innerHTML = homePage();
@@ -244,7 +253,10 @@ async function render(path = routePath(), focus = false): Promise<void> {
   if (path === '/' || path === '/demo') {
     bindWorkspace();
     if (isDemo) loadDemoFrames();
-    if (path === '/') bindLicense();
+    if (path === '/') {
+      bindLicense();
+      if (licenseToCheck) void verifyLicense(licenseToCheck);
+    }
   }
   if (focus) {
     window.scrollTo({ top: 0 });
@@ -570,26 +582,70 @@ function hasStudioAccess(): boolean {
   return !isDemo && isPro;
 }
 
-async function verifyLicense(token: string, force = false): Promise<void> {
-  const status = document.querySelector<HTMLElement>('#license-status');
+function readLicenseVerdict(token: string): LicenseVerdict | null {
   const cached = localStorage.getItem(LICENSE_CACHE_KEY);
-  if (!force && cached) {
-    const record = JSON.parse(cached) as { valid: boolean; checked: number };
-    if (record.valid && Date.now() - record.checked < 86_400_000) {
-      isPro = true;
-      if (status) status.textContent = 'Studio is active on this device.';
+  if (!cached) return null;
+  try {
+    const record = JSON.parse(cached) as Partial<LicenseVerdict>;
+    if (typeof record.valid !== 'boolean' || typeof record.checked !== 'number' || !Number.isFinite(record.checked)) return null;
+    if (record.token && record.token !== token) return null;
+    return { valid: record.valid, checked: record.checked, reason: record.reason, token: record.token };
+  } catch {
+    localStorage.removeItem(LICENSE_CACHE_KEY);
+    return null;
+  }
+}
+
+function licenseStatusText(): string {
+  if (isPro) return 'Studio is active on this device.';
+  if (!licenseVerdict || licenseVerdict.valid) return '';
+  if (licenseVerdict.reason === 'revoked') return 'This Studio license was revoked. Free exports still work. Buy Studio again if you need larger exports.';
+  if (licenseVerdict.reason === 'expired') return 'This Studio license expired. Free exports still work.';
+  if (licenseVerdict.reason === 'wrong_product') return 'This license is for another product. Free exports still work.';
+  return 'This license is not active. Check the token or buy Studio.';
+}
+
+function applyLicenseVerdict(verdict: LicenseVerdict): void {
+  licenseVerdict = verdict;
+  isPro = verdict.valid;
+  const status = document.querySelector<HTMLElement>('#license-status');
+  if (status) {
+    status.textContent = licenseStatusText();
+    status.classList.toggle('is-inactive', !verdict.valid);
+  }
+  if (!verdict.valid && !isDemo) {
+    const quality = document.querySelector<HTMLSelectElement>('#quality');
+    const columns = document.querySelector<HTMLSelectElement>('#columns');
+    if (quality || columns) {
+      settings = { ...settings, quality: 960, columns: 4 };
+      if (quality) quality.value = '960';
+      if (columns) columns.value = '4';
+      void savePreferences(settings);
+    }
+  }
+}
+
+async function verifyLicense(token: string): Promise<void> {
+  const status = document.querySelector<HTMLElement>('#license-status');
+  const cached = readLicenseVerdict(token);
+  if (cached) {
+    const age = Date.now() - cached.checked;
+    if (age >= 0 && age < LICENSE_CACHE_MS) {
+      applyLicenseVerdict(cached);
       return;
     }
   }
   if (status) status.textContent = 'Checking the license…';
   try {
     const response = await fetch(`${BILLING_BASE}/api/v1/products/${PRODUCT}/verify?license=${encodeURIComponent(token)}`);
+    if (!response.ok) throw new Error(`License check returned ${response.status}.`);
     const verdict = await response.json() as { valid: boolean; reason?: string };
-    isPro = verdict.valid;
-    localStorage.setItem(LICENSE_CACHE_KEY, JSON.stringify({ valid: isPro, checked: Date.now() }));
-    if (status) status.textContent = isPro ? 'Studio is active on this device.' : 'This license is not active. Check the token or buy Studio.';
+    if (typeof verdict.valid !== 'boolean') throw new Error('License check returned an invalid response.');
+    const record: LicenseVerdict = { valid: verdict.valid, checked: Date.now(), reason: verdict.reason, token };
+    localStorage.setItem(LICENSE_CACHE_KEY, JSON.stringify(record));
+    applyLicenseVerdict(record);
   } catch {
-    if (status) status.textContent = 'The license could not be checked. The free exports still work.';
+    if (status) status.textContent = licenseStatusText() || 'The license could not be checked. The free exports still work.';
   }
 }
 
@@ -600,23 +656,38 @@ function bindLicense(): void {
       value<HTMLElement>('license-status').textContent = 'Paste a license token first.';
       return;
     }
+    const previousToken = localStorage.getItem(LICENSE_KEY);
     localStorage.setItem(LICENSE_KEY, token);
-    void verifyLicense(token, true);
+    if (previousToken !== token) {
+      localStorage.removeItem(LICENSE_CACHE_KEY);
+      licenseVerdict = null;
+      isPro = false;
+    }
+    void verifyLicense(token);
   });
 }
 
-async function initLicense(): Promise<void> {
-  if (routePath() !== '/' || licenseInitialized) return;
+function initLicense(): string | null {
+  if (routePath() !== '/' || licenseInitialized) return null;
   licenseInitialized = true;
   const params = new URLSearchParams(location.search);
   const returned = params.get('license');
   if (returned) {
+    const previousToken = localStorage.getItem(LICENSE_KEY);
     localStorage.setItem(LICENSE_KEY, returned);
+    if (previousToken !== returned) localStorage.removeItem(LICENSE_CACHE_KEY);
     params.delete('license');
     history.replaceState({}, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
   }
   const token = returned || localStorage.getItem(LICENSE_KEY);
-  if (token) await verifyLicense(token);
+  if (!token) return null;
+  const cached = readLicenseVerdict(token);
+  if (cached) {
+    applyLicenseVerdict(cached);
+    const age = Date.now() - cached.checked;
+    if (age >= 0 && age < LICENSE_CACHE_MS) return null;
+  }
+  return token;
 }
 
 window.addEventListener('popstate', () => void render(routePath(), true));

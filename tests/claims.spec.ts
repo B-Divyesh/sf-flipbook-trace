@@ -364,6 +364,76 @@ test('@claim:studio-license-check sends a pasted license only to Sociobot verifi
   assertOnlyLicenseVerification(requests, token);
 });
 
+test('@claim:studio-license-cache restores valid, invalid, and revoked verdicts for 24 hours without another request', async ({ browser }) => {
+  const invalidToken = 'invalid-cache-test';
+  const invalidContext = await browser.newContext();
+  const invalidPage = await invalidContext.newPage();
+  let invalidCalls = 0;
+  await invalidPage.route(`https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${invalidToken}`, (route) => {
+    invalidCalls += 1;
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: false, reason: 'invalid' }) });
+  });
+  await invalidPage.goto('/');
+  await invalidPage.getByText('Have a license?').click();
+  await invalidPage.getByLabel('Paste your license').fill(invalidToken);
+  await invalidPage.getByRole('button', { name: 'Verify license' }).click();
+  await expect(invalidPage.locator('#license-status')).toContainText('not active');
+  expect(invalidCalls).toBe(1);
+  expect(await invalidPage.evaluate(() => JSON.parse(localStorage.getItem('sb_license:flipbook-trace:verdict') || '{}'))).toMatchObject({ valid: false, reason: 'invalid', token: invalidToken });
+  await invalidPage.reload();
+  await expect(invalidPage.locator('#license-status')).toContainText('not active');
+  await expect(invalidPage.locator('#license-status')).toHaveClass(/is-inactive/);
+  expect(invalidCalls, 'A fresh invalid verdict must suppress the reload request.').toBe(1);
+  await invalidContext.close();
+
+  const validToken = 'valid-cache-test';
+  const validContext = await browser.newContext();
+  await validContext.addInitScript(({ token }) => {
+    if (!localStorage.getItem('sb_license:flipbook-trace')) {
+      localStorage.setItem('sb_license:flipbook-trace', token);
+      localStorage.setItem('sb_license:flipbook-trace:verdict', JSON.stringify({ valid: true, checked: Date.now() - 86_399_000, reason: 'ok', token }));
+    }
+  }, { token: validToken });
+  const validPage = await validContext.newPage();
+  let validCalls = 0;
+  await validPage.route(`https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${validToken}`, (route) => {
+    validCalls += 1;
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: false, reason: 'revoked' }) });
+  });
+  await validPage.goto('/');
+  await expect(validPage.locator('#license-status')).toHaveText('Studio is active on this device.');
+  expect(validCalls, 'A valid verdict younger than 24 hours must be restored without a request.').toBe(0);
+  await validPage.reload();
+  await expect(validPage.locator('#license-status')).toHaveText('Studio is active on this device.');
+  expect(validCalls).toBe(0);
+  await validContext.close();
+
+  const revokedToken = 'revoked-cache-test';
+  const revokedContext = await browser.newContext();
+  await revokedContext.addInitScript(({ token }) => {
+    if (!localStorage.getItem('sb_license:flipbook-trace')) {
+      localStorage.setItem('sb_license:flipbook-trace', token);
+      localStorage.setItem('sb_license:flipbook-trace:verdict', JSON.stringify({ valid: true, checked: Date.now() - 86_401_000, reason: 'ok', token }));
+    }
+  }, { token: revokedToken });
+  const revokedPage = await revokedContext.newPage();
+  let revokedCalls = 0;
+  await revokedPage.route(`https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${revokedToken}`, (route) => {
+    revokedCalls += 1;
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: false, reason: 'revoked' }) });
+  });
+  await revokedPage.goto('/');
+  await expect(revokedPage.locator('#license-status')).toContainText('was revoked');
+  expect(revokedCalls, 'A verdict older than 24 hours must be refreshed once.').toBe(1);
+  await revokedPage.locator('#quality').selectOption('1920');
+  await expect(revokedPage.locator('#quality')).toHaveValue('960');
+  await revokedPage.reload();
+  await expect(revokedPage.locator('#license-status')).toContainText('was revoked');
+  await expect(revokedPage.locator('#license-status')).toHaveClass(/is-inactive/);
+  expect(revokedCalls, 'The fresh revoked verdict must suppress the reload request.').toBe(1);
+  await revokedContext.close();
+});
+
 test('the Studio-license request guard rejects a second token-bearing destination', () => {
   const token = 'pasted-test';
   const verification = `https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${token}`;
