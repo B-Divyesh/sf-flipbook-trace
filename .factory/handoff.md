@@ -25,7 +25,13 @@ The demo now paints the banner and sample heading first, mounts the workspace in
 
 ## Deployment and live verification
 
-The static deployment and post-publish identity checks are recorded in the final follow-up to this handoff after the repair commit is pushed.
+- Repair commit: `28e8298` (`fix: chunk demo startup layout`), pushed to `origin/main`.
+- Deployed with the work-order static deployment configuration: `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`. Azure Static Web Apps deployment `64fd11b7-55cf-48d4-a65d-0ccdb80b5c26` completed successfully and `https://flipbook-trace.sociobot.in` returned HTTPS 200.
+- Live identity: all 18 public files in the fresh `dist/` (including the hashed JS/CSS, service worker, manifest, icons, and images) matched the live site byte-for-byte. The live script reports `v1.0.9`.
+- Live browser audit: `.factory/evidence-repair-7/live-audit.json` passed `/`, `/demo`, `/privacy`, `/terms`, and the designed 404 with one h1/main, no console errors, no horizontal overflow at 390 px, and zero axe serious/critical findings. It also proved 12 → 60 → 12 demo regeneration without post-settlement HTTP requests, visible keyboard focus plus `ArrowRight` line-detail operation (142 → 143), and the controlled service worker reloading the twelve-frame demo offline.
+- Live URL smoke: `.factory/evidence-repair-7/live-url/verify.json` records a 200 demo response, title/lang/main, no missing alt text or unlabeled buttons, and no console errors. Its desktop and 390 px screenshots were inspected.
+- Mobile Lighthouse 13.4.1, live production demo: two runs scored 100 performance and 100 accessibility. LCP was 1,078 ms / 1,079 ms; TBT 23 ms / 2 ms; CLS 0.031 in both. Raw reports: `.factory/evidence-repair-7/lighthouse-demo-live-1.json` and `lighthouse-demo-live-2.json`.
+- Live response policy: the hashed app JS is `Cache-Control: public, max-age=31536000, immutable`; `sw.js` is `no-cache, no-store, must-revalidate`; CSP includes `frame-ancestors 'none'`, plus nosniff, strict referrer policy, and restrictive permissions policy. `/missing-page` returns the designed document with HTTP 404.
 
 ## Known gaps / next steps
 

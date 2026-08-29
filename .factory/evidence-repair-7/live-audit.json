@@ -1,0 +1,46 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "seriousOrCriticalAxe": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "frames": 12,
+      "seriousOrCriticalAxe": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    },
+    "/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    }
+  },
+  "desktopDemo": {
+    "initialFrames": 12,
+    "maximumFrames": 60,
+    "resetFrames": 12,
+    "runtimeRequests": []
+  },
+  "mobileKeyboard": {
+    "firstTab": "Skip to main content",
+    "before": 142,
+    "after": 143,
+    "outline": "3px"
+  },
+  "offline": {
+    "frames": 12,
+    "banner": true
+  }
+}
