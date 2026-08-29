@@ -146,7 +146,6 @@
       "scripts_finalize_build_workerpath"
     ],
     "8": [
-      "test",
       "tests_site_spec",
       "tests_site_spec_targetbox",
       "tests_site_spec_visibleactiontargets"
@@ -183,7 +182,7 @@
     "5": 0.15384615384615385,
     "6": 0.4,
     "7": 0.4,
-    "8": 0.5,
+    "8": 0.6666666666666666,
     "9": 1.0,
     "10": 1.0,
     "11": 1.0,
@@ -219,16 +218,6 @@
       "degree": 8
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
-    },
-    {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 8
-    },
-    {
       "id": "src_main_importsettings",
       "label": "importSettings()",
       "degree": 8
@@ -241,6 +230,16 @@
     {
       "id": "src_main_showerror",
       "label": "showError()",
+      "degree": 8
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 8
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
       "degree": 8
     }
   ],
