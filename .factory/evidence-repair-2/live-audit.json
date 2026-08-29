@@ -1,0 +1,92 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    },
+    "/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "overflow": 0,
+      "seriousOrCriticalAxe": [],
+      "crossOriginRequests": [],
+      "errors": []
+    }
+  },
+  "license": {
+    "invalid": {
+      "calls": 1,
+      "stored": {
+        "valid": false,
+        "checked": 1787995618015,
+        "reason": "invalid",
+        "token": "repair-invalid-cache"
+      },
+      "noticeAfterReload": "This license is not active. Check the token or buy Studio."
+    },
+    "valid": {
+      "calls": 0,
+      "noticeAfterReload": "Studio is active on this device."
+    },
+    "revoked": {
+      "calls": 1,
+      "noticeAfterReload": "This Studio license was revoked. Free exports still work. Buy Studio again if you need larger exports.",
+      "inactiveStyle": "license-status is-inactive"
+    }
+  },
+  "offline": {
+    "frames": 12,
+    "banner": true
+  },
+  "terms": {
+    "merchant": true,
+    "revocation": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "runningAnimations": 0
+  }
+}
