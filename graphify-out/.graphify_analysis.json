@@ -2,32 +2,41 @@
   "communities": {
     "0": [
       "src_main",
-      "src_main_applylicenseverdict",
       "src_main_approot",
-      "src_main_bindlicense",
-      "src_main_bindnavigation",
-      "src_main_cleanupvideo",
-      "src_main_demobanner",
-      "src_main_demopage",
-      "src_main_initlicense",
-      "src_main_licensestatustext",
+      "src_main_bindworkspace",
+      "src_main_buildexportframes",
+      "src_main_buildexportframestream",
+      "src_main_cancelpreviewrender",
+      "src_main_clearerror",
+      "src_main_exportpdf",
+      "src_main_exportpng",
+      "src_main_hasstudioaccess",
+      "src_main_importsettings",
       "src_main_licenseverdict",
-      "src_main_mountdemoworkspace",
-      "src_main_navlink",
+      "src_main_loaddemoframes",
+      "src_main_loadprocessor",
+      "src_main_loadvideo",
+      "src_main_makedemoframes",
+      "src_main_makeframesfromvideo",
       "src_main_outputframes",
-      "src_main_readlicenseverdict",
-      "src_main_render",
-      "src_main_routepath",
+      "src_main_paintdemopeek",
+      "src_main_paintframes",
+      "src_main_rebuildoutputframes",
+      "src_main_schedulepreviewrender",
+      "src_main_seek",
+      "src_main_setexportbuttonsdisabled",
+      "src_main_setstatus",
       "src_main_settings",
-      "src_main_shell",
+      "src_main_showerror",
       "src_main_sourceframes",
-      "src_main_start",
-      "src_main_updatemeta",
-      "src_main_verifylicense",
-      "src_main_workspacecontrolstemplate",
-      "src_main_workspaceheadingtemplate",
-      "src_main_workspacepreviewtemplate",
-      "src_main_workspacetemplate"
+      "src_main_traceframe",
+      "src_main_updatesettings",
+      "src_main_value",
+      "src_main_yieldafterinteraction",
+      "src_main_yieldforpaint",
+      "src_main_yieldtobrowser",
+      "src_settings_downloadblob",
+      "src_settings_savepreferences"
     ],
     "1": [
       "ref_dom",
@@ -54,6 +63,29 @@
       "tsconfig_include"
     ],
     "2": [
+      "src_main_applylicenseverdict",
+      "src_main_bindlicense",
+      "src_main_bindnavigation",
+      "src_main_cleanupvideo",
+      "src_main_demobanner",
+      "src_main_demopage",
+      "src_main_initlicense",
+      "src_main_licensestatustext",
+      "src_main_mountdemoworkspace",
+      "src_main_navlink",
+      "src_main_readlicenseverdict",
+      "src_main_render",
+      "src_main_routepath",
+      "src_main_shell",
+      "src_main_start",
+      "src_main_updatemeta",
+      "src_main_verifylicense",
+      "src_main_workspacecontrolstemplate",
+      "src_main_workspaceheadingtemplate",
+      "src_main_workspacepreviewtemplate",
+      "src_main_workspacetemplate"
+    ],
+    "3": [
       "axe_core_playwright",
       "eslint",
       "eslint_js",
@@ -74,44 +106,21 @@
       "vite",
       "vitest"
     ],
-    "3": [
+    "4": [
       "src_core",
+      "src_core_applytracefilter",
       "src_core_ascii",
       "src_core_canvasblob",
       "src_core_crc32",
       "src_core_crctable",
-      "src_core_defaultsettings",
       "src_core_drawcontactsheet",
-      "src_core_filtermode",
-      "src_core_framesettings",
+      "src_core_drawdemoframe",
       "src_core_joinbytes",
-      "src_core_loadpreferences",
       "src_core_makecontactsheets",
       "src_core_makepdf",
       "src_core_makepngzip",
-      "src_core_normalizesettings",
-      "src_core_savepreferences",
-      "src_core_test",
       "src_core_u16",
       "src_core_u32"
-    ],
-    "4": [
-      "src_core_downloadblob",
-      "src_main_bindworkspace",
-      "src_main_clearerror",
-      "src_main_exportpdf",
-      "src_main_exportpng",
-      "src_main_hasstudioaccess",
-      "src_main_importsettings",
-      "src_main_loadvideo",
-      "src_main_makedemoframes",
-      "src_main_makeframesfromvideo",
-      "src_main_seek",
-      "src_main_setstatus",
-      "src_main_showerror",
-      "src_main_updatesettings",
-      "src_main_value",
-      "src_main_yieldafterinteraction"
     ],
     "5": [
       "package",
@@ -129,21 +138,6 @@
       "package_version"
     ],
     "6": [
-      "src_core_applytracefilter",
-      "src_core_drawdemoframe",
-      "src_main_buildexportframes",
-      "src_main_buildexportframestream",
-      "src_main_cancelpreviewrender",
-      "src_main_loaddemoframes",
-      "src_main_paintdemopeek",
-      "src_main_paintframes",
-      "src_main_rebuildoutputframes",
-      "src_main_schedulepreviewrender",
-      "src_main_setexportbuttonsdisabled",
-      "src_main_traceframe",
-      "src_main_yieldtobrowser"
-    ],
-    "7": [
       "tests_claims_spec",
       "tests_claims_spec_assertnoworkflowrequests",
       "tests_claims_spec_assertonlylicenseverification",
@@ -158,6 +152,16 @@
       "tests_claims_spec_sourcefingerprint",
       "tests_claims_spec_storage_getitem"
     ],
+    "7": [
+      "test",
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
+    ],
     "8": [
       "scripts_finalize_build",
       "scripts_finalize_build_appmodules",
@@ -168,6 +172,15 @@
       "scripts_finalize_build_workerpath"
     ],
     "9": [
+      "src_core_test",
+      "src_settings",
+      "src_settings_defaultsettings",
+      "src_settings_filtermode",
+      "src_settings_framesettings",
+      "src_settings_loadpreferences",
+      "src_settings_normalizesettings"
+    ],
+    "10": [
       "src_static_pages",
       "src_static_pages_homecontent",
       "src_static_pages_notfoundcontent",
@@ -175,15 +188,6 @@
       "src_static_pages_paidcontent",
       "src_static_pages_privacycontent",
       "src_static_pages_termscontent"
-    ],
-    "10": [
-      "tests_site_spec",
-      "tests_site_spec_expectinteractionswithinbudget",
-      "tests_site_spec_installinteractionobserver",
-      "tests_site_spec_interactiontiming",
-      "tests_site_spec_measuredinteraction",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
     ],
     "11": [
       "factory_evidence_repair_3_interaction_audit",
@@ -249,16 +253,16 @@
     ]
   },
   "cohesion": {
-    "0": 0.15954415954415954,
+    "0": 0.1761904761904762,
     "1": 0.09090909090909091,
-    "2": 0.10526315789473684,
-    "3": 0.17543859649122806,
-    "4": 0.35833333333333334,
+    "2": 0.14285714285714285,
+    "3": 0.10526315789473684,
+    "4": 0.25274725274725274,
     "5": 0.15384615384615385,
-    "6": 0.23076923076923078,
-    "7": 0.16666666666666666,
+    "6": 0.16666666666666666,
+    "7": 0.25,
     "8": 0.2857142857142857,
-    "9": 0.2857142857142857,
+    "9": 0.38095238095238093,
     "10": 0.2857142857142857,
     "11": 0.4,
     "12": 0.4,
@@ -280,7 +284,7 @@
     {
       "id": "src_main_render",
       "label": "render()",
-      "degree": 20
+      "degree": 21
     },
     {
       "id": "src_main_bindworkspace",
@@ -303,18 +307,8 @@
       "degree": 11
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_exportpng",
-      "label": "exportPng()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_makedemoframes",
-      "label": "makeDemoFrames()",
+      "id": "src_main_mountdemoworkspace",
+      "label": "mountDemoWorkspace()",
       "degree": 9
     },
     {
@@ -323,9 +317,19 @@
       "degree": 9
     },
     {
-      "id": "src_main_mountdemoworkspace",
-      "label": "mountDemoWorkspace()",
-      "degree": 8
+      "id": "src_main_makedemoframes",
+      "label": "makeDemoFrames()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_exportpng",
+      "label": "exportPng()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
+      "degree": 9
     }
   ],
   "surprises": [
@@ -334,40 +338,7 @@
       "target": "loadPreferences()",
       "source_files": [
         "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "applyLicenseVerdict()",
-      "target": "savePreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "importSettings()",
-      "target": "savePreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "updateSettings()",
-      "target": "savePreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
+        "src/settings.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
@@ -378,11 +349,44 @@
       "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
-        "src/core.ts"
+        "src/settings.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "bridges separate communities"
+    },
+    {
+      "source": "importSettings()",
+      "target": "normalizeSettings()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "applyLicenseVerdict()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "bindWorkspace()",
+      "target": "downloadBlob()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
     }
   ],
   "tokens": {
