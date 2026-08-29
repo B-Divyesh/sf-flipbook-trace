@@ -1,8 +1,6 @@
 {
   "communities": {
     "0": [
-      "src_core_loadpreferences",
-      "src_core_savepreferences",
       "src_main",
       "src_main_applylicenseverdict",
       "src_main_approot",
@@ -87,10 +85,12 @@
       "src_core_filtermode",
       "src_core_framesettings",
       "src_core_joinbytes",
+      "src_core_loadpreferences",
       "src_core_makecontactsheets",
       "src_core_makepdf",
       "src_core_makepngzip",
       "src_core_normalizesettings",
+      "src_core_savepreferences",
       "src_core_test",
       "src_core_u16",
       "src_core_u32"
@@ -159,16 +159,6 @@
       "tests_claims_spec_storage_getitem"
     ],
     "8": [
-      "test",
-      "tests_site_spec",
-      "tests_site_spec_expectinteractionswithinbudget",
-      "tests_site_spec_installinteractionobserver",
-      "tests_site_spec_interactiontiming",
-      "tests_site_spec_measuredinteraction",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "9": [
       "scripts_finalize_build",
       "scripts_finalize_build_appmodules",
       "scripts_finalize_build_assetdirectory",
@@ -177,7 +167,7 @@
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "10": [
+    "9": [
       "src_static_pages",
       "src_static_pages_homecontent",
       "src_static_pages_notfoundcontent",
@@ -185,6 +175,15 @@
       "src_static_pages_paidcontent",
       "src_static_pages_privacycontent",
       "src_static_pages_termscontent"
+    ],
+    "10": [
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
     ],
     "11": [
       "factory_evidence_repair_3_interaction_audit",
@@ -250,15 +249,15 @@
     ]
   },
   "cohesion": {
-    "0": 0.1477832512315271,
+    "0": 0.15954415954415954,
     "1": 0.09090909090909091,
     "2": 0.10526315789473684,
-    "3": 0.20588235294117646,
+    "3": 0.17543859649122806,
     "4": 0.35833333333333334,
     "5": 0.15384615384615385,
     "6": 0.23076923076923078,
     "7": 0.16666666666666666,
-    "8": 0.25,
+    "8": 0.2857142857142857,
     "9": 0.2857142857142857,
     "10": 0.2857142857142857,
     "11": 0.4,
@@ -304,13 +303,8 @@
       "degree": 11
     },
     {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_makedemoframes",
-      "label": "makeDemoFrames()",
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
       "degree": 9
     },
     {
@@ -319,17 +313,44 @@
       "degree": 9
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
+      "id": "src_main_makedemoframes",
+      "label": "makeDemoFrames()",
       "degree": 9
     },
     {
-      "id": "src_core_makepngzip",
-      "label": "makePngZip()",
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_mountdemoworkspace",
+      "label": "mountDemoWorkspace()",
       "degree": 8
     }
   ],
   "surprises": [
+    {
+      "source": "render()",
+      "target": "loadPreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "applyLicenseVerdict()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
     {
       "source": "importSettings()",
       "target": "savePreferences()",
@@ -353,29 +374,7 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "exportPdf()",
-      "target": "makePdf()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "exportPng()",
-      "target": "makePngZip()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "importSettings()",
+      "source": "render()",
       "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",

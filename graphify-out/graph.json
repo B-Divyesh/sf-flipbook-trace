@@ -16,16 +16,28 @@
       "source_location": "L37"
     },
     {
-      "id": "src_static_pages_pagemeta",
-      "label": "PageMeta",
+      "id": "tests_site_spec_interactiontiming",
+      "label": "InteractionTiming",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "pagemeta",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L1"
+      "norm_label": "interactiontiming",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "tests_site_spec_targetbox",
+      "label": "TargetBox",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "file_type": "code",
+      "norm_label": "targetbox",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L86"
     },
     {
       "id": "src_core_filtermode",
@@ -64,50 +76,16 @@
       "source_location": "L5"
     },
     {
-      "id": "tests_site_spec_interactiontiming",
-      "label": "InteractionTiming",
+      "id": "src_static_pages_pagemeta",
+      "label": "PageMeta",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
-      "norm_label": "interactiontiming",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L7"
-    },
-    {
-      "id": "tests_site_spec_targetbox",
-      "label": "TargetBox",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "file_type": "code",
-      "norm_label": "targetbox",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L86"
-    },
-    {
-      "id": "src_core_loadpreferences",
-      "label": "loadPreferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "loadpreferences()",
-      "source_file": "src/core.ts",
-      "source_location": "L321"
-    },
-    {
-      "id": "src_core_savepreferences",
-      "label": "savePreferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "savepreferences()",
-      "source_file": "src/core.ts",
-      "source_location": "L307"
+      "norm_label": "pagemeta",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L1"
     },
     {
       "id": "src_main_applylicenseverdict",
@@ -341,59 +319,48 @@
       "source_location": "L158"
     },
     {
-      "id": "src_static_pages_homecontent",
-      "label": "homeContent()",
+      "id": "tests_site_spec_expectinteractionswithinbudget",
+      "label": "expectInteractionsWithinBudget()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "homecontent()",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L12"
+      "norm_label": "expectinteractionswithinbudget()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L46"
     },
     {
-      "id": "src_static_pages_notfoundcontent",
-      "label": "notFoundContent()",
+      "id": "tests_site_spec_installinteractionobserver",
+      "label": "installInteractionObserver()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "notfoundcontent()",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L79"
+      "norm_label": "installinteractionobserver()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L14"
     },
     {
-      "id": "src_static_pages_paidcontent",
-      "label": "paidContent()",
+      "id": "tests_site_spec_measuredinteraction",
+      "label": "measuredInteraction()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "paidcontent()",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L58"
+      "norm_label": "measuredinteraction()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L32"
     },
     {
-      "id": "src_static_pages_privacycontent",
-      "label": "privacyContent()",
+      "id": "tests_site_spec_visibleactiontargets",
+      "label": "visibleActionTargets()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "privacycontent()",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L71"
-    },
-    {
-      "id": "src_static_pages_termscontent",
-      "label": "termsContent()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "termscontent()",
-      "source_file": "src/static-pages.ts",
-      "source_location": "L75"
+      "norm_label": "visibleactiontargets()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L88"
     },
     {
       "id": "factory_evidence_repair_3_interaction_audit_measure",
@@ -506,6 +473,17 @@
       "source_location": "L172"
     },
     {
+      "id": "src_core_loadpreferences",
+      "label": "loadPreferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "loadpreferences()",
+      "source_file": "src/core.ts",
+      "source_location": "L321"
+    },
+    {
       "id": "src_core_makecontactsheets",
       "label": "makeContactSheets()",
       "_callable": true,
@@ -548,6 +526,17 @@
       "norm_label": "normalizesettings()",
       "source_file": "src/core.ts",
       "source_location": "L21"
+    },
+    {
+      "id": "src_core_savepreferences",
+      "label": "savePreferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "savepreferences()",
+      "source_file": "src/core.ts",
+      "source_location": "L307"
     },
     {
       "id": "src_core_u16",
@@ -1012,48 +1001,59 @@
       "source_location": "L227"
     },
     {
-      "id": "tests_site_spec_expectinteractionswithinbudget",
-      "label": "expectInteractionsWithinBudget()",
+      "id": "src_static_pages_homecontent",
+      "label": "homeContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
-      "norm_label": "expectinteractionswithinbudget()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L46"
+      "norm_label": "homecontent()",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L12"
     },
     {
-      "id": "tests_site_spec_installinteractionobserver",
-      "label": "installInteractionObserver()",
+      "id": "src_static_pages_notfoundcontent",
+      "label": "notFoundContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
-      "norm_label": "installinteractionobserver()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L14"
+      "norm_label": "notfoundcontent()",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L79"
     },
     {
-      "id": "tests_site_spec_measuredinteraction",
-      "label": "measuredInteraction()",
+      "id": "src_static_pages_paidcontent",
+      "label": "paidContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
-      "norm_label": "measuredinteraction()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L32"
+      "norm_label": "paidcontent()",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L58"
     },
     {
-      "id": "tests_site_spec_visibleactiontargets",
-      "label": "visibleActionTargets()",
+      "id": "src_static_pages_privacycontent",
+      "label": "privacyContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 8,
+      "community": 9,
       "file_type": "code",
-      "norm_label": "visibleactiontargets()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L88"
+      "norm_label": "privacycontent()",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "src_static_pages_termscontent",
+      "label": "termsContent()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "termscontent()",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L75"
     },
     {
       "id": "src_main",
@@ -1326,13 +1326,13 @@
       "source_location": "L18"
     },
     {
-      "id": "src_static_pages",
-      "label": "static-pages.ts",
+      "id": "tests_site_spec",
+      "label": "site.spec.ts",
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "static-pages.ts",
-      "source_file": "src/static-pages.ts",
+      "norm_label": "site.spec.ts",
+      "source_file": "tests/site.spec.ts",
       "source_location": "L1"
     },
     {
@@ -1976,30 +1976,10 @@
       "source_location": "L1"
     },
     {
-      "id": "test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 8,
-      "confidence": "EXTRACTED",
-      "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "@playwright/test"
-    },
-    {
-      "id": "tests_site_spec",
-      "label": "site.spec.ts",
-      "_origin": "ast",
-      "community": 8,
-      "file_type": "code",
-      "norm_label": "site.spec.ts",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "scripts_finalize_build",
       "label": "finalize-build.mjs",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "finalize-build.mjs",
       "source_file": "scripts/finalize-build.mjs",
@@ -2009,7 +1989,7 @@
       "id": "scripts_finalize_build_appmodules",
       "label": "appModules",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "appmodules",
       "source_file": "scripts/finalize-build.mjs",
@@ -2019,7 +1999,7 @@
       "id": "scripts_finalize_build_assetdirectory",
       "label": "assetDirectory",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "assetdirectory",
       "source_file": "scripts/finalize-build.mjs",
@@ -2029,7 +2009,7 @@
       "id": "scripts_finalize_build_buildhash",
       "label": "buildHash",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "buildhash",
       "source_file": "scripts/finalize-build.mjs",
@@ -2039,7 +2019,7 @@
       "id": "scripts_finalize_build_finalized",
       "label": "finalized",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "finalized",
       "source_file": "scripts/finalize-build.mjs",
@@ -2049,7 +2029,7 @@
       "id": "scripts_finalize_build_indexpath",
       "label": "indexPath",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "indexpath",
       "source_file": "scripts/finalize-build.mjs",
@@ -2059,11 +2039,21 @@
       "id": "scripts_finalize_build_workerpath",
       "label": "workerPath",
       "_origin": "ast",
-      "community": 9,
+      "community": 8,
       "file_type": "code",
       "norm_label": "workerpath",
       "source_file": "scripts/finalize-build.mjs",
       "source_location": "L5"
+    },
+    {
+      "id": "src_static_pages",
+      "label": "static-pages.ts",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "static-pages.ts",
+      "source_file": "src/static-pages.ts",
+      "source_location": "L1"
     }
   ],
   "links": [
@@ -5702,15 +5692,6 @@
       "source_file": "src/main.ts"
     },
     {
-      "source": "tests_site_spec",
-      "target": "test",
-      "relation": "dynamic_import",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/site.spec.ts"
-    },
-    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -5736,5 +5717,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4892cd72cd3482637ea6bf606d1d78b5154dccf5"
+  "built_at_commit": "b7c48749a8a4e5b465bf43b6be7a8b2c25798a24"
 }
