@@ -312,12 +312,6 @@ test('the SPA not-found route names the error and its destination in plain words
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'This page does not exist. Open Flipbook Trace.');
 });
 
-test('the terms identify the merchant of record and explain refund revocation', async ({ page }) => {
-  await page.goto('/terms');
-  await expect(page.getByText('Sociobot/Dodo is the merchant of record and handles refunds.')).toBeVisible();
-  await expect(page.getByText('A refund automatically revokes the Studio license.')).toBeVisible();
-});
-
 test('the designed static 404 artifact is served with HTTP 404', async ({ request }) => {
   const page404 = await readFile('dist/404.html');
   const server = createServer((incoming, response) => {

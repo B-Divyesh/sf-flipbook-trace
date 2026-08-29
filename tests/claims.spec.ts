@@ -352,7 +352,25 @@ test('@claim:studio-quality exports 1920 px, original-width PNGs, and six-column
 });
 
 test('@claim:studio-purchase shows USD 9 one-time checkout for Flipbook Trace Studio', async ({ request, page }) => {
-  await page.route('https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=returned-test', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok' }) })); await page.goto('/?license=returned-test'); expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBe('returned-test'); const checkout = page.getByRole('link', { name: 'Buy Studio for $9' }); const response = await request.get(await checkout.getAttribute('href') as string, { maxRedirects: 0 }); expect(response.status()).toBe(303); const location = response.headers().location!; expect(location).toMatch(/^https:\/\/checkout\.dodopayments\.com\/session\//); const body = await (await request.get(location)).text(); expect(body).toContain('Flipbook Trace Studio'); expect(body).toContain('$9.00'); expect(body).toContain('One-time');
+  await page.route('https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=returned-test', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok' }) }));
+  await page.goto('/?license=returned-test');
+  expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBe('returned-test');
+  await expect(page.getByText('Dodo opens checkout for Sociobot.')).toBeVisible();
+  const checkout = page.getByRole('link', { name: 'Buy Studio for $9' });
+  const response = await request.get(await checkout.getAttribute('href') as string, { maxRedirects: 0 });
+  expect(response.status()).toBe(303);
+  const location = response.headers().location!;
+  expect(location).toMatch(/^https:\/\/checkout\.dodopayments\.com\/session\//);
+  const body = await (await request.get(location)).text();
+  expect(body).toContain('Flipbook Trace Studio');
+  expect(body).toContain('$9.00');
+  expect(body).toContain('One-time');
+
+  await page.goto('/terms');
+  await expect(page.getByText('Dodo opens checkout for Sociobot.')).toBeVisible();
+  const readme = await readFile('README.md', 'utf8');
+  expect(readme).toContain('Dodo opens checkout for Sociobot.');
+  expect(`${await page.locator('main').innerText()}\n${readme}`).not.toMatch(/merchant of record|handles refunds|refund automatically revokes/i);
 });
 
 test('@claim:studio-license-check sends a pasted license only to Sociobot verification', async ({ page }) => {
