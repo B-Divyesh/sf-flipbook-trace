@@ -1,16 +1,12 @@
 import './style.css';
 import {
-  applyTraceFilter,
   defaultSettings,
   downloadBlob,
-  drawDemoFrame,
   loadPreferences,
-  makePdf,
-  makePngZip,
   normalizeSettings,
   savePreferences,
   type FrameSettings,
-} from './core';
+} from './settings';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) throw new Error('App root is missing.');
@@ -21,18 +17,18 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.12';
+const BUILD_ID = 'v1.0.13';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
 // The sample frames only need to be sharp at their displayed size. Keeping the
 // source close to that size avoids doing full-export-sized pixel work while the
 // demo is becoming interactive on a throttled phone.
-const DEMO_SOURCE_WIDTH = 240;
-const DEMO_SOURCE_HEIGHT = 150;
+const DEMO_SOURCE_WIDTH = 180;
+const DEMO_SOURCE_HEIGHT = 112;
 const DEMO_OVERVIEW_WIDTH = 64;
 const DEMO_OVERVIEW_HEIGHT = 40;
-const PAINT_CHUNK_SIZE = 2;
+const PAINT_CHUNK_SIZE = 1;
 
 type LicenseVerdict = {
   valid: boolean;
@@ -52,6 +48,12 @@ let loadedVideo: HTMLVideoElement | null = null;
 let loadedVideoUrl = '';
 let previewGeneration = 0;
 let previewTimer: number | undefined;
+let processorPromise: Promise<typeof import('./core')> | undefined;
+
+function loadProcessor(): Promise<typeof import('./core')> {
+  processorPromise ??= import('./core');
+  return processorPromise;
+}
 
 function routePath(url = new URL(window.location.href)): string {
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
@@ -209,6 +211,10 @@ async function render(path = routePath(), focus = false): Promise<void> {
   if (path === '/') {
     bindWorkspace();
     bindLicense();
+    // Keep the local processor available before a person picks a video. This
+    // is an app-shell asset, not part of the video workflow, so importing a
+    // local file never starts a network request.
+    void loadProcessor();
     if (licenseToCheck) void verifyLicense(licenseToCheck);
   } else if (path === '/demo') {
     void mountDemoWorkspace();
@@ -224,7 +230,7 @@ async function render(path = routePath(), focus = false): Promise<void> {
 
 async function mountDemoWorkspace(): Promise<void> {
   const generation = previewGeneration;
-  await yieldToBrowser();
+  await yieldForPaint();
   if (generation !== previewGeneration || !isDemo) return;
   const mount = document.querySelector<HTMLDivElement>('#demo-workspace');
   if (!mount?.isConnected) return;
@@ -233,7 +239,7 @@ async function mountDemoWorkspace(): Promise<void> {
   // pressure. Stage the independent pieces over browser turns: the useful
   // demo introduction paints first, then controls, then preview/canvas work.
   mount.innerHTML = `<section class="workspace" id="workspace" aria-labelledby="workspace-heading">${workspaceHeadingTemplate(true)}<div id="demo-work-grid" class="work-grid" aria-busy="true"></div></section>`;
-  await yieldToBrowser();
+  await yieldForPaint();
   if (generation !== previewGeneration || !isDemo) return;
   const grid = document.querySelector<HTMLDivElement>('#demo-work-grid');
   if (!grid?.isConnected) return;
@@ -347,6 +353,11 @@ async function loadDemoFrames(count = 12): Promise<void> {
   setExportButtonsDisabled(true);
   setStatus('Preparing sample frames…');
   await yieldToBrowser();
+  const { drawDemoFrame } = await loadProcessor();
+  // Module parsing and canvas work must stay in separate browser tasks on a
+  // throttled phone. The small source is still at least the width of a mobile
+  // preview card, so the ready sample remains useful to trace.
+  await yieldToBrowser();
   for (let index = 0; index < count; index += 1) {
     if (generation !== previewGeneration) return;
     const canvas = document.createElement('canvas');
@@ -390,7 +401,7 @@ async function paintDemoPeek(generation: number): Promise<void> {
     canvas.setAttribute('role', 'img');
     canvas.setAttribute('aria-label', `Sample tracing frame ${index + 1} of ${overviewFrames.length}`);
     strip.append(canvas);
-    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldToBrowser();
+    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldForPaint();
   }
 }
 
@@ -502,11 +513,19 @@ function yieldAfterInteraction(): Promise<void> {
   return new Promise((resolve) => requestAnimationFrame(() => window.setTimeout(resolve, 0)));
 }
 
+function yieldForPaint(): Promise<void> {
+  // A timer boundary lets scripts run again before the renderer necessarily
+  // paints. Two animation frames guarantee that the previous DOM batch has a
+  // paint opportunity before adding the next thumbnail.
+  return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+}
+
 function traceFrame(
   source: HTMLCanvasElement,
   index: number,
   sources: HTMLCanvasElement[],
   frameSettings: FrameSettings,
+  applyFilter: (canvas: HTMLCanvasElement, mode: FrameSettings['mode'], threshold: number) => void,
   maximumWidth?: number,
 ): HTMLCanvasElement {
   const scale = maximumWidth ? Math.min(1, maximumWidth / source.width) : 1;
@@ -515,7 +534,7 @@ function traceFrame(
   canvas.height = Math.max(1, Math.round(source.height * scale));
   const context = canvas.getContext('2d');
   context?.drawImage(source, 0, 0, canvas.width, canvas.height);
-  applyTraceFilter(canvas, frameSettings.mode, frameSettings.threshold);
+  applyFilter(canvas, frameSettings.mode, frameSettings.threshold);
   if (frameSettings.onion && index > 0 && context) {
     context.save();
     context.globalAlpha = 0.16;
@@ -542,9 +561,11 @@ async function rebuildOutputFrames(generation: number): Promise<void> {
   const sources = [...sourceFrames];
   const frameSettings = { ...settings };
   const nextFrames: HTMLCanvasElement[] = [];
+  const { applyTraceFilter } = await loadProcessor();
+  await yieldToBrowser();
   for (let index = 0; index < sources.length; index += 1) {
     if (generation !== previewGeneration) return;
-    nextFrames.push(traceFrame(sources[index], index, sources, frameSettings, PREVIEW_WIDTH));
+    nextFrames.push(traceFrame(sources[index], index, sources, frameSettings, applyTraceFilter, PREVIEW_WIDTH));
     if ((index + 1) % PREVIEW_CHUNK_SIZE === 0) await yieldToBrowser();
   }
   if (generation !== previewGeneration) return;
@@ -557,9 +578,10 @@ function buildExportFrameStream(onFrame?: (index: number, total: number) => void
   const sources = [...sourceFrames];
   const frameSettings = { ...settings };
   return (async function* exportFrames() {
+    const { applyTraceFilter } = await loadProcessor();
     for (let index = 0; index < sources.length; index += 1) {
       onFrame?.(index + 1, sources.length);
-      yield traceFrame(sources[index], index, sources, frameSettings);
+      yield traceFrame(sources[index], index, sources, frameSettings, applyTraceFilter);
       // Resume only after makePngZip has encoded the yielded canvas. This
       // keeps one full-resolution export canvas alive at a time and gives the
       // browser a task boundary between frames on small CPU budgets.
@@ -590,7 +612,7 @@ async function paintFrames(generation: number): Promise<void> {
     canvas.setAttribute('aria-label', `Tracing frame ${index + 1} of ${outputFrames.length}`);
     figure.append(canvas, caption);
     strip.append(figure);
-    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldToBrowser();
+    if ((index + 1) % PAINT_CHUNK_SIZE === 0) await yieldForPaint();
   }
   if (generation !== previewGeneration) return;
   empty.hidden = true;
@@ -612,6 +634,7 @@ async function exportPng(): Promise<void> {
   try {
     await yieldAfterInteraction();
     const frames = buildExportFrameStream((index, total) => setStatus(`Packing PNG ${index} of ${total}…`));
+    const { makePngZip } = await loadProcessor();
     downloadBlob(await makePngZip(frames), 'flipbook-trace-frames.zip');
     setStatus(`${frameCount} PNGs exported`);
   } catch {
@@ -627,6 +650,7 @@ async function exportPdf(): Promise<void> {
   try {
     await yieldAfterInteraction();
     const exportFrames = await buildExportFrames();
+    const { makePdf } = await loadProcessor();
     downloadBlob(await makePdf(exportFrames, hasStudioAccess() ? settings.columns : 4), 'flipbook-trace-sheet.pdf');
     setStatus('PDF trace sheet exported');
   } catch {

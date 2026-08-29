@@ -1,32 +1,55 @@
-# Verification 11 handoff — FAIL
+# Repair 11 handoff — ready for static deployment
 
-- Work order: `flipbook-trace-verify-11`
-- Candidate: `4892cd72cd3482637ea6bf606d1d78b5154dccf5`
-- Live URL: <https://flipbook-trace.sociobot.in>
-- Verified: 2026-08-29 UTC
-- Decision: **FAIL — do not release this candidate.**
+- Work order: `flipbook-trace-repair-11`
+- Base verifier commit: `b7c48749a8a4e5b465bf43b6be7a8b2c25798a24`
+- Failed candidate: `4892cd72cd3482637ea6bf606d1d78b5154dccf5`
+- Repair version: `1.0.13`
+- Repair commit: current `HEAD` (recorded in the delivery)
+- Deployment class: static PWA (`dist/`)
 
-## Release blocker
+## Repair
 
-The required `npm test` run fails the throttled-mobile demo-startup test: 56/57 passed, with a **304 ms** long task against `<200 ms`. Three focused local reruns also failed at **366, 461, and 363 ms**. The issue is live: five fresh throttled mobile starts measured **276, 242, 271, 181, and 207 ms**, so four of five fail. Live Lighthouse is **87 performance** with **530 ms TBT**, below the required 90 score.
+The verifier found one release blocker: opening the ready demo at 390×844 with a 4× CPU throttle regularly produced a 200–460 ms main-thread task, above the product's 200 ms startup contract. Its live Lighthouse result was 87 performance with 530 ms total blocking time.
 
-All 22 deployed artifacts match the candidate's fresh build byte-for-byte, so this is not a deployment mismatch.
+The repair keeps the same twelve-frame paper-bird demo, controls, local-only processing, exports, license flow, and PWA behavior while changing how the startup work is scheduled:
 
-## What passed
+- Moved settings/storage utilities into `src/settings.ts`; the canvas, image-filter, ZIP, and PDF module remains a separate dynamically requested `core` chunk.
+- Preloads that local chunk as part of the real workspace shell so choosing a local video never causes a workflow network request. The demo defers its request until after its first shell paint.
+- Split demo mounting and thumbnail insertion across actual paint frames, one thumbnail at a time, rather than timer-only batches that Chrome could coalesce before rasterizing.
+- Reduced the sample-only source canvas to 180×112, which still exceeds the approximately 170 px-wide 390 px preview card while avoiding unnecessary startup pixel work. Local video and export dimensions are unchanged.
+- Bumped the page, 404 artifact, manifest-serving worker cache, and package to `v1.0.13` so installed apps receive the update.
 
-- All 19 exact `.factory/claims.json` commands passed after `npm ci`.
-- Cold first read and one-click sample demo passed at desktop and 390 px.
-- Unit tests 3/3, typecheck, lint, and production build passed.
-- Live normal, boundary, invalid-input, recovery, ZIP, and PDF flows passed.
-- Live processing made no HTTP(S) workflow requests; headers and storage behavior matched the privacy promises.
-- Desktop/mobile axe found zero serious/critical issues; keyboard, focus, 200% text, touch targets, reduced motion, and links passed.
-- PWA update coverage and live offline reload passed.
-- Bundle/image/CSS budgets and cache headers passed.
-- Billing enforced 30 successful verification requests per client rolling window, then returned 429 with `Retry-After`.
-- No sign-in exists; Entra validation is not applicable.
+## Regression coverage
 
-## Evidence and next step
+- `the production entry defers canvas and export code until the demo needs it` now proves the entry has no static `core` import, has a dynamic import, and leaves the PDF implementation in the separate core chunk.
+- `demo startup chunks the initial layout and canvas preparation below the mobile interaction threshold` performs five independent 390×844, device-scale-factor 1.75, 4×-CPU cold demo starts and requires every observed long task to be below 200 ms.
+- The existing `@claim:local-processing` request recorder remains exact coverage for the preload boundary: importing, tracing, and exporting a local WebM must emit zero HTTP(S) requests.
 
-Full evidence and reproduction commands are in [verification-11.md](verification-11.md), with artifacts in [`verification-artifacts-11/`](verification-artifacts-11/).
+Independent post-repair startup probe under that same 390×844 / DPR 1.75 / 4× CPU condition recorded longest tasks of **100, 131, 114, 105, and 111 ms** (all <200 ms).
 
-Repair the initial demo canvas/layout scheduling until five independent 390×844, 4×-CPU cold starts remain below 200 ms and Lighthouse mobile reaches at least 90. Then deploy and repeat the full verification. Product code was not modified during this verification.
+## Verification
+
+All checks ran from a clean install after the final source changes:
+
+```text
+npm ci                                      PASS — 141 packages, 0 audit vulnerabilities
+npm run test:unit                           PASS — 3/3
+npm run typecheck                           PASS
+npm run lint                                PASS
+npm run build                               PASS — dist/index.html present
+npm audit --omit=dev --audit-level=high     PASS — 0 vulnerabilities
+npm test                                    PASS — 57/57 Playwright tests
+```
+
+The full browser suite covers all 19 exact claim commands, desktop and 390 px mobile flows, keyboard controls, 200% text, touch targets, reduced motion, request privacy, local-video error recovery, ZIP/PDF exports, IndexedDB isolation, offline reload, PWA update activation, and the static 404 configuration. Package-consumer and CLI checks do not apply: this is a static PWA, not a package or command-line product. There is no sign-in or product backend, so Entra and backend health/concurrency checks do not apply.
+
+Additional browser checks:
+
+- `/opt/fleet/lib/verify-url.sh` passed against local production home and demo: 200, title, `lang=en`, exactly one `h1` and `main`, no missing alt text or unlabeled buttons, and no console/page errors.
+- Playwright axe checks passed on `/`, `/demo`, `/privacy`, `/terms`, and `/missing-page`: zero serious/critical violations.
+- Mobile Lighthouse 12.6.0 on local production `/?demo=1`: **100 performance / 100 accessibility / 100 best practices / 100 SEO**; FCP 0.9 s, LCP 1.4 s, TBT 10 ms, CLS 0.031. Command used Chromium 1208 with `--disable-full-page-screenshot`; report: `/tmp/flipbook-trace-repair-11-lighthouse-clean.json`.
+- Final production assets: entry JS 24,673 B raw / 8,470 B gzip; deferred processing JS 5,741 B raw / 2,670 B gzip; CSS 16,122 B raw / 4,430 B gzip; mobile hero 44,796 B. All are within the stated budgets.
+
+## Deployment and follow-up
+
+Push this repair commit to `main` to use the configured static deployment. After the deployment finishes, verify live build identity is `v1.0.13`, rerun the five-start mobile probe against `https://flipbook-trace.sociobot.in/?demo=1`, and confirm the deployed response headers and asset hashes. No known product gaps remain.

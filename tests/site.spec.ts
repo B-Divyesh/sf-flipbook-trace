@@ -279,17 +279,19 @@ test('build output uses hashed immutable assets and a revalidated service worker
   expect(config.routes.find((route) => route.route === '/sw.js')?.headers['Cache-Control']).toContain('no-cache');
 });
 
-test('the production entry keeps canvas and export code out of the startup bundle', async () => {
+test('the production entry defers canvas and export code until the demo needs it', async () => {
   // The demo's cold mobile startup is protected both by the five-load timing
-  // check below and by this build contract. Keeping core canvas/PDF code in a
-  // separate module prevents one parse/evaluation task from absorbing it all.
+  // check below and by this build contract. The startup entry must request
+  // canvas/PDF code dynamically, so demo paint can schedule its parsing and
+  // frame work across browser turns instead of one startup task.
   const assets = await readdir('dist/assets');
   const entryName = assets.find((asset) => /^index-[A-Za-z0-9_-]+\.js$/.test(asset));
   expect(entryName).toBeTruthy();
   if (!entryName) throw new Error('The production entry asset is missing.');
   const entry = await readFile(`dist/assets/${entryName}`, 'utf8');
   expect(Buffer.byteLength(entry)).toBeLessThan(30_000);
-  expect(entry).toMatch(/from"\.\/core-[A-Za-z0-9_-]+\.js"/);
+  expect(entry).not.toMatch(/from"\.\/core-[A-Za-z0-9_-]+\.js"/);
+  expect(entry).toMatch(/import\("\.\/core-[A-Za-z0-9_-]+\.js"\)/);
   const coreName = entry.match(/\.\/(core-[A-Za-z0-9_-]+\.js)/)?.[1];
   expect(coreName).toBeTruthy();
   if (!coreName) throw new Error('The core canvas module is missing.');
@@ -437,7 +439,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.12 · Original generated artwork');
+  expect(page404).toContain('v1.0.13 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

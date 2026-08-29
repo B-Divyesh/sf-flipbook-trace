@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { defaultSettings, normalizeSettings } from './core';
+import { defaultSettings, normalizeSettings } from './settings';
 
 describe('normalizeSettings', () => {
   const imported = { fps: 12, threshold: 180, mode: 'gray', onion: true, quality: 1920, columns: 6 };
