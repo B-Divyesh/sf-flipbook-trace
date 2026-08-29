@@ -1,0 +1,97 @@
+[
+  {
+    "id": "clip-workflow",
+    "status": 0,
+    "seconds": 23.1
+  },
+  {
+    "id": "demo-ready",
+    "status": 0,
+    "seconds": 10
+  },
+  {
+    "id": "demo-workflow",
+    "status": 0,
+    "seconds": 13.6
+  },
+  {
+    "id": "demo-isolation",
+    "status": 0,
+    "seconds": 11.6
+  },
+  {
+    "id": "png-export",
+    "status": 0,
+    "seconds": 10.4
+  },
+  {
+    "id": "pdf-export",
+    "status": 0,
+    "seconds": 10.5
+  },
+  {
+    "id": "local-processing",
+    "status": 0,
+    "seconds": 12.3
+  },
+  {
+    "id": "ephemeral-project",
+    "status": 0,
+    "seconds": 15.3
+  },
+  {
+    "id": "trace-controls",
+    "status": 0,
+    "seconds": 13.5
+  },
+  {
+    "id": "settings-portability",
+    "status": 0,
+    "seconds": 11.3
+  },
+  {
+    "id": "offline-reload",
+    "status": 0,
+    "seconds": 10.3
+  },
+  {
+    "id": "pwa-installable",
+    "status": 0,
+    "seconds": 11
+  },
+  {
+    "id": "free-quality",
+    "status": 0,
+    "seconds": 11.6
+  },
+  {
+    "id": "studio-quality",
+    "status": 0,
+    "seconds": 16.9
+  },
+  {
+    "id": "studio-purchase",
+    "status": 0,
+    "seconds": 11.4
+  },
+  {
+    "id": "studio-license-check",
+    "status": 0,
+    "seconds": 10.3
+  },
+  {
+    "id": "studio-license-cache",
+    "status": 0,
+    "seconds": 13.7
+  },
+  {
+    "id": "browser-data-deletion",
+    "status": 0,
+    "seconds": 10.4
+  },
+  {
+    "id": "app-update-check",
+    "status": 0,
+    "seconds": 11.7
+  }
+]

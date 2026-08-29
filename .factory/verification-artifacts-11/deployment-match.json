@@ -1,0 +1,222 @@
+[
+  {
+    "path": "404.html",
+    "status": 200,
+    "localBytes": 5080,
+    "remoteBytes": 5080,
+    "localSha256": "db5e36a913eb351f1b2b8a9d258df286e2f55281ce5491ed7d94f519fd591c19",
+    "remoteSha256": "db5e36a913eb351f1b2b8a9d258df286e2f55281ce5491ed7d94f519fd591c19",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "assets/core-Boi7bCMM.js",
+    "status": 200,
+    "localBytes": 7381,
+    "remoteBytes": 7381,
+    "localSha256": "eb84ab0c3eddc8cfd98b7efa05aa020fd2fac387da8ff9e10325f5ddf7ea20c9",
+    "remoteSha256": "eb84ab0c3eddc8cfd98b7efa05aa020fd2fac387da8ff9e10325f5ddf7ea20c9",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/core-Boi7bCMM.js.map",
+    "status": 200,
+    "localBytes": 26348,
+    "remoteBytes": 26348,
+    "localSha256": "e3fc682b62fe424fd1fc30d1db482a870be9307f5254755092f4516bb2cd5589",
+    "remoteSha256": "e3fc682b62fe424fd1fc30d1db482a870be9307f5254755092f4516bb2cd5589",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/hero-worktable-640.webp",
+    "status": 200,
+    "localBytes": 44796,
+    "remoteBytes": 44796,
+    "localSha256": "6881a674a982bbdbaca459d49db32fa9c5b4cdb7dd5681f80b658a9dddd7adec",
+    "remoteSha256": "6881a674a982bbdbaca459d49db32fa9c5b4cdb7dd5681f80b658a9dddd7adec",
+    "match": true,
+    "cacheControl": "public, max-age=86400, must-revalidate"
+  },
+  {
+    "path": "assets/hero-worktable.webp",
+    "status": 200,
+    "localBytes": 174512,
+    "remoteBytes": 174512,
+    "localSha256": "6471a42d7a646541a038178337714ad3ebbb9a40b9ad0cc923ddf8a55adbee97",
+    "remoteSha256": "6471a42d7a646541a038178337714ad3ebbb9a40b9ad0cc923ddf8a55adbee97",
+    "match": true,
+    "cacheControl": "public, max-age=86400, must-revalidate"
+  },
+  {
+    "path": "assets/index--JfVlah0.js",
+    "status": 200,
+    "localBytes": 22758,
+    "remoteBytes": 22758,
+    "localSha256": "6986c6b64f19109d668c1e7a3722fef0920fe7bc48ace1ef96aa496b6cce75a3",
+    "remoteSha256": "6986c6b64f19109d668c1e7a3722fef0920fe7bc48ace1ef96aa496b6cce75a3",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/index--JfVlah0.js.map",
+    "status": 200,
+    "localBytes": 56115,
+    "remoteBytes": 56115,
+    "localSha256": "f390b9aeec26d300376d91e8cc5957600a3665b4fabbd90fbb43dcdcc97a9d44",
+    "remoteSha256": "f390b9aeec26d300376d91e8cc5957600a3665b4fabbd90fbb43dcdcc97a9d44",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/index-BpYogwV-.css",
+    "status": 200,
+    "localBytes": 16122,
+    "remoteBytes": 16122,
+    "localSha256": "22cf7a1e1f670bb5a785a125b0369031cf8f28d3215bd4ecaf80ef0fcbf52bd4",
+    "remoteSha256": "22cf7a1e1f670bb5a785a125b0369031cf8f28d3215bd4ecaf80ef0fcbf52bd4",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/social-card.webp",
+    "status": 200,
+    "localBytes": 129378,
+    "remoteBytes": 129378,
+    "localSha256": "3cdf483f3f8680b1a5f448940d02904276849e6d9ccb09da24a523489f0b82c5",
+    "remoteSha256": "3cdf483f3f8680b1a5f448940d02904276849e6d9ccb09da24a523489f0b82c5",
+    "match": true,
+    "cacheControl": "public, max-age=86400, must-revalidate"
+  },
+  {
+    "path": "assets/static-pages-CHlSct6_.js",
+    "status": 200,
+    "localBytes": 6471,
+    "remoteBytes": 6471,
+    "localSha256": "e0d52cfc9572c2cedb2bee3cd93436cbcb187c18c998b0083396cd862e0e6462",
+    "remoteSha256": "e0d52cfc9572c2cedb2bee3cd93436cbcb187c18c998b0083396cd862e0e6462",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "assets/static-pages-CHlSct6_.js.map",
+    "status": 200,
+    "localBytes": 8080,
+    "remoteBytes": 8080,
+    "localSha256": "d741f644dd097383f99d0445bcbd4fc2dba725a363625d811a127abb59b1e02c",
+    "remoteSha256": "d741f644dd097383f99d0445bcbd4fc2dba725a363625d811a127abb59b1e02c",
+    "match": true,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  {
+    "path": "favicon.svg",
+    "status": 200,
+    "localBytes": 357,
+    "remoteBytes": 357,
+    "localSha256": "0cab103c515e6cc54767ef6fbc035cdc78e2237d4291795b5f837b67c62934ff",
+    "remoteSha256": "0cab103c515e6cc54767ef6fbc035cdc78e2237d4291795b5f837b67c62934ff",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "icons/apple-touch-icon.png",
+    "status": 200,
+    "localBytes": 5378,
+    "remoteBytes": 5378,
+    "localSha256": "99d849cd1a3d7a0219c8539b8c04ce9f2c247c70dff1a32c8da9d82b03b51d54",
+    "remoteSha256": "99d849cd1a3d7a0219c8539b8c04ce9f2c247c70dff1a32c8da9d82b03b51d54",
+    "match": true,
+    "cacheControl": "public, max-age=86400"
+  },
+  {
+    "path": "icons/icon-192.png",
+    "status": 200,
+    "localBytes": 1449,
+    "remoteBytes": 1449,
+    "localSha256": "6aba07a8d03cead5ea569792740bc371715c5bd5a61b4eaa48752c6440719c08",
+    "remoteSha256": "6aba07a8d03cead5ea569792740bc371715c5bd5a61b4eaa48752c6440719c08",
+    "match": true,
+    "cacheControl": "public, max-age=86400"
+  },
+  {
+    "path": "icons/icon-512.png",
+    "status": 200,
+    "localBytes": 4122,
+    "remoteBytes": 4122,
+    "localSha256": "72f14613090d66d9bfad7bbe42547a165aa5cdb13dccdb1c2e109c5fc84c8302",
+    "remoteSha256": "72f14613090d66d9bfad7bbe42547a165aa5cdb13dccdb1c2e109c5fc84c8302",
+    "match": true,
+    "cacheControl": "public, max-age=86400"
+  },
+  {
+    "path": "icons/icon-maskable-512.png",
+    "status": 200,
+    "localBytes": 4264,
+    "remoteBytes": 4264,
+    "localSha256": "8971aa2c0d41d29d5b0d1c8c22340ee3774ba72ecccd8853a9fb75649411941b",
+    "remoteSha256": "8971aa2c0d41d29d5b0d1c8c22340ee3774ba72ecccd8853a9fb75649411941b",
+    "match": true,
+    "cacheControl": "public, max-age=86400"
+  },
+  {
+    "path": "index.html",
+    "status": 200,
+    "localBytes": 2045,
+    "remoteBytes": 2045,
+    "localSha256": "4c1f5b1e04f1003414d4a0821cf1553a6c50c433829fe358b76444d09101a9f9",
+    "remoteSha256": "4c1f5b1e04f1003414d4a0821cf1553a6c50c433829fe358b76444d09101a9f9",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "manifest.webmanifest",
+    "status": 200,
+    "localBytes": 561,
+    "remoteBytes": 561,
+    "localSha256": "438b8da53ade4898eda51076298076f0d32a996302b1d724bb6d648852c66f0c",
+    "remoteSha256": "438b8da53ade4898eda51076298076f0d32a996302b1d724bb6d648852c66f0c",
+    "match": true,
+    "cacheControl": "public, max-age=3600, must-revalidate"
+  },
+  {
+    "path": "offline.html",
+    "status": 200,
+    "localBytes": 561,
+    "remoteBytes": 561,
+    "localSha256": "ee804982f4240939113de6ad2286b6ea47a0b8262181a98f25dd68c22ed7f04a",
+    "remoteSha256": "ee804982f4240939113de6ad2286b6ea47a0b8262181a98f25dd68c22ed7f04a",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "robots.txt",
+    "status": 200,
+    "localBytes": 80,
+    "remoteBytes": 80,
+    "localSha256": "7d3587a26fd52d58cc5b31010d344d0ff90271cdda777dd95a0f1ed3dc5bce61",
+    "remoteSha256": "7d3587a26fd52d58cc5b31010d344d0ff90271cdda777dd95a0f1ed3dc5bce61",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "sitemap.xml",
+    "status": 200,
+    "localBytes": 366,
+    "remoteBytes": 366,
+    "localSha256": "3ceee3614423a1d51f2275537dcba101e04da29ce4174391ad75754e19f85498",
+    "remoteSha256": "3ceee3614423a1d51f2275537dcba101e04da29ce4174391ad75754e19f85498",
+    "match": true,
+    "cacheControl": "public, must-revalidate, max-age=30"
+  },
+  {
+    "path": "sw.js",
+    "status": 200,
+    "localBytes": 1934,
+    "remoteBytes": 1934,
+    "localSha256": "1d8e6f5b779a9d58c3ce395b3828affa8f35e0c9a9128d8274db8b14cb339a1c",
+    "remoteSha256": "1d8e6f5b779a9d58c3ce395b3828affa8f35e0c9a9128d8274db8b14cb339a1c",
+    "match": true,
+    "cacheControl": "no-cache, no-store, must-revalidate"
+  }
+]

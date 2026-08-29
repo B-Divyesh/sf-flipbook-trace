@@ -1,0 +1,109 @@
+
+> flipbook-trace@1.0.12 test
+> playwright test
+
+[WebServer] (node:4861) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4903) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 57 tests using 1 worker
+
+(node:4921) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4921) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/claims.spec.ts:197:1 › @claim:demo-ready opens twelve ready sample frames with one click (1.6s)
+  ✓   2 [chromium] › tests/claims.spec.ts:205:1 › @claim:demo-workflow regenerates the paper-bird sample for its selected section and rate (4.9s)
+  ✓   3 [chromium] › tests/claims.spec.ts:218:1 › @claim:demo-isolation never opens, reads, or changes real saved data (2.9s)
+  ✓   4 [chromium] › tests/claims.spec.ts:242:1 › @claim:clip-workflow accepts one to five seconds and rejects other lengths (12.4s)
+  ✓   5 [chromium] › tests/claims.spec.ts:248:1 › @claim:ephemeral-project keeps video and frames out of persistent browser stores (5.2s)
+  ✓   6 [chromium] › tests/claims.spec.ts:273:1 › @claim:trace-controls applies every trace style, frame rate, and previous-frame overlay (3.0s)
+  ✓   7 [chromium] › tests/claims.spec.ts:284:1 › @claim:settings-portability exports, imports, and persists control settings (1.9s)
+  ✓   8 [chromium] › tests/claims.spec.ts:289:1 › @claim:png-export exports twelve numbered PNGs in a ZIP (1.7s)
+  ✓   9 [chromium] › tests/claims.spec.ts:312:1 › @claim:pdf-export exports a non-blank twelve-frame printable PDF trace sheet (2.0s)
+  ✓  10 [chromium] › tests/claims.spec.ts:324:1 › @claim:free-quality exports free PNGs at 960 px (2.8s)
+  ✓  11 [chromium] › tests/claims.spec.ts:335:1 › @claim:local-processing sends no video or frame data to any server (3.5s)
+  ✓  12 [chromium] › tests/claims.spec.ts:348:1 › the local-processing request guard rejects a same-origin collection GET fixture (5ms)
+  ✓  13 [chromium] › tests/claims.spec.ts:352:1 › @claim:offline-reload reloads the demo without a network (1.3s)
+  ✓  14 [chromium] › tests/claims.spec.ts:356:1 › @claim:pwa-installable ships a standalone manifest and controlling service worker (693ms)
+  ✓  15 [chromium] › tests/claims.spec.ts:360:1 › @claim:studio-quality exports 1920 px, original-width PNGs, and six-column sheets (7.5s)
+  ✓  16 [chromium] › tests/claims.spec.ts:375:1 › @claim:studio-purchase shows USD 9 one-time checkout for Flipbook Trace Studio (2.7s)
+  ✓  17 [chromium] › tests/claims.spec.ts:397:1 › @claim:studio-license-check sends a pasted license only to Sociobot verification (1.7s)
+  ✓  18 [chromium] › tests/claims.spec.ts:412:1 › @claim:studio-license-cache restores valid, invalid, and revoked verdicts for 24 hours without another request (5.0s)
+  ✓  19 [chromium] › tests/claims.spec.ts:482:1 › the Studio-license request guard rejects a second token-bearing destination (3ms)
+  ✓  20 [chromium] › tests/claims.spec.ts:491:1 › @claim:browser-data-deletion clears settings and a saved license (1.9s)
+  ✓  21 [chromium] › tests/site.spec.ts:52:3 › / has the required page structure and no serious accessibility issues (2.7s)
+  ✓  22 [chromium] › tests/site.spec.ts:52:3 › /demo has the required page structure and no serious accessibility issues (2.3s)
+  ✓  23 [chromium] › tests/site.spec.ts:52:3 › /privacy has the required page structure and no serious accessibility issues (1.4s)
+  ✓  24 [chromium] › tests/site.spec.ts:52:3 › /terms has the required page structure and no serious accessibility issues (1.4s)
+  ✓  25 [chromium] › tests/site.spec.ts:52:3 › /missing-page has the required page structure and no serious accessibility issues (1.3s)
+  ✓  26 [chromium] › tests/site.spec.ts:68:3 › /privacy wraps its legal contact email without horizontal overflow at 200% text (649ms)
+  ✓  27 [chromium] › tests/site.spec.ts:68:3 › /terms wraps its legal contact email without horizontal overflow at 200% text (587ms)
+  ✓  28 [chromium] › tests/site.spec.ts:117:3 › / keeps every visible action at least 44 by 44 px at 390 px (1.4s)
+  ✓  29 [chromium] › tests/site.spec.ts:117:3 › /demo keeps every visible action at least 44 by 44 px at 390 px (1.4s)
+  ✓  30 [chromium] › tests/site.spec.ts:117:3 › /privacy keeps every visible action at least 44 by 44 px at 390 px (799ms)
+  ✓  31 [chromium] › tests/site.spec.ts:117:3 › /terms keeps every visible action at least 44 by 44 px at 390 px (740ms)
+  ✓  32 [chromium] › tests/site.spec.ts:117:3 › /missing-page keeps every visible action at least 44 by 44 px at 390 px (742ms)
+  ✓  33 [chromium] › tests/site.spec.ts:138:1 › the static 404 keeps every visible action at least 44 by 44 px at 390 px (392ms)
+  ✓  34 [chromium] › tests/site.spec.ts:155:1 › the 390 px landing screen keeps all three facts above the fold (609ms)
+  ✓  35 [chromium] › tests/site.spec.ts:165:3 › desktop 1366x768 keeps all three facts in the first screen (999ms)
+  ✓  36 [chromium] › tests/site.spec.ts:165:3 › desktop 1440x900 keeps all three facts in the first screen (1.1s)
+  ✓  37 [chromium] › tests/site.spec.ts:176:1 › keyboard controls reach exports and operate a range (2.5s)
+  ✓  38 [chromium] › tests/site.spec.ts:191:1 › PNG export packs all twelve frames in browser-sized chunks (3.3s)
+  ✓  39 [chromium] › tests/site.spec.ts:227:3 › Line detail stays inside the 200 ms interaction budget with 12 frames at 390px (1.8s)
+  ✓  40 [chromium] › tests/site.spec.ts:227:3 › Line detail stays inside the 200 ms interaction budget with 12 frames at 1440px (2.0s)
+  ✓  41 [chromium] › tests/site.spec.ts:242:1 › all supported demo rebuild interactions stay inside the 200 ms budget at 390px (7.2s)
+  ✓  42 [chromium] › tests/site.spec.ts:270:1 › build output uses hashed immutable assets and a revalidated service worker (45ms)
+  ✓  43 [chromium] › tests/site.spec.ts:282:1 › the production entry keeps canvas and export code out of the startup bundle (43ms)
+  ✓  44 [chromium] › tests/site.spec.ts:302:1 › landing discovers the responsive LCP image in the document before app rendering (788ms)
+  ✘  45 [chromium] › tests/site.spec.ts:323:1 › demo startup chunks the initial layout and canvas preparation below the mobile interaction threshold (2.2s)
+(node:5587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  46 [chromium] › tests/site.spec.ts:360:1 › @claim:app-update-check a new service worker activates, replaces its cache, and announces the update (2.2s)
+  ✓  47 [chromium] › tests/site.spec.ts:406:1 › internal navigation uses real URLs and restores page focus (1.8s)
+  ✓  48 [chromium] › tests/site.spec.ts:416:3 › / updates Open Graph and Twitter route metadata (1.3s)
+  ✓  49 [chromium] › tests/site.spec.ts:416:3 › /?demo=1 updates Open Graph and Twitter route metadata (956ms)
+  ✓  50 [chromium] › tests/site.spec.ts:416:3 › /privacy updates Open Graph and Twitter route metadata (785ms)
+  ✓  51 [chromium] › tests/site.spec.ts:416:3 › /terms updates Open Graph and Twitter route metadata (992ms)
+  ✓  52 [chromium] › tests/site.spec.ts:416:3 › /missing-page updates Open Graph and Twitter route metadata (806ms)
+  ✓  53 [chromium] › tests/site.spec.ts:425:1 › the deployment configuration returns the designed 404 artifact for unknown URLs (54ms)
+  ✓  54 [chromium] › tests/site.spec.ts:443:1 › the SPA not-found route names the error and its destination in plain words (623ms)
+  ✓  55 [chromium] › tests/site.spec.ts:450:1 › the designed static 404 artifact is served with HTTP 404 (68ms)
+  ✓  56 [chromium] › tests/site.spec.ts:473:3 › the one-click demo shows a sample frame in the 390px first viewport (1.5s)
+  ✓  57 [chromium] › tests/site.spec.ts:473:3 › the one-click demo shows a sample frame in the 1440px first viewport (1.8s)
+
+
+  1) [chromium] › tests/site.spec.ts:323:1 › demo startup chunks the initial layout and canvas preparation below the mobile interaction threshold 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m200[39m
+    Received:   [31m304[39m
+
+      346 |       const longestTask = await page.evaluate(() => Math.max(0, ...(window as typeof window & { __startupLongTasks: number[] }).__startupLongTasks));
+      347 |       longestTasks.push(longestTask);
+    > 348 |       expect(longestTask).toBeLessThan(200);
+          |                           ^
+      349 |     } finally {
+      350 |       await context.close();
+      351 |     }
+        at /work/repo/tests/site.spec.ts:348:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-demo-startup-chunks-t-58f47-obile-interaction-threshold-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-demo-startup-chunks-t-58f47-obile-interaction-threshold-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-demo-startup-chunks-t-58f47-obile-interaction-threshold-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/site.spec.ts:323:1 › demo startup chunks the initial layout and canvas preparation below the mobile interaction threshold 
+  56 passed (2.1m)

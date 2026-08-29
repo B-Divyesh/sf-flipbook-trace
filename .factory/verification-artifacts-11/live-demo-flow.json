@@ -1,0 +1,50 @@
+{
+  "homeStatus": 200,
+  "generated": 60,
+  "resetCount": 12,
+  "zip": {
+    "name": "flipbook-trace-frames.zip",
+    "bytes": 199926,
+    "signature": "504b0304"
+  },
+  "pdf": {
+    "name": "flipbook-trace-sheet.pdf",
+    "bytes": 688243,
+    "signature": "%PDF-1.4"
+  },
+  "workflowRequests": [],
+  "allRequests": [
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable.webp",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index--JfVlah0.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/core-Boi7bCMM.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-BpYogwV-.css",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/static-pages-CHlSct6_.js",
+      "body": null
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": []
+}

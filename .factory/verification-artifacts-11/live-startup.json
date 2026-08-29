@@ -1,0 +1,57 @@
+[
+  {
+    "attempt": 1,
+    "status": 200,
+    "elapsedMs": 1421,
+    "count": 12,
+    "longestTaskMs": 276,
+    "tasks": [
+      276
+    ]
+  },
+  {
+    "attempt": 2,
+    "status": 200,
+    "elapsedMs": 1465,
+    "count": 12,
+    "longestTaskMs": 242,
+    "tasks": [
+      242,
+      53
+    ]
+  },
+  {
+    "attempt": 3,
+    "status": 200,
+    "elapsedMs": 1496,
+    "count": 12,
+    "longestTaskMs": 271,
+    "tasks": [
+      271,
+      57
+    ]
+  },
+  {
+    "attempt": 4,
+    "status": 200,
+    "elapsedMs": 1680,
+    "count": 12,
+    "longestTaskMs": 181,
+    "tasks": [
+      181,
+      56
+    ]
+  },
+  {
+    "attempt": 5,
+    "status": 200,
+    "elapsedMs": 1704,
+    "count": 12,
+    "longestTaskMs": 207,
+    "tasks": [
+      207,
+      50,
+      97
+    ]
+  }
+]

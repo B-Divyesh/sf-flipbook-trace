@@ -1,0 +1,21 @@
+{
+  "firstStatus": 200,
+  "before": {
+    "controller": true,
+    "active": "https://flipbook-trace.sociobot.in/sw.js",
+    "state": "activated",
+    "caches": [
+      "flipbook-trace-v1.0.12-257be505d9e8-shell"
+    ]
+  },
+  "offlineStatus": 200,
+  "count": 12,
+  "after": {
+    "controller": true,
+    "caches": [
+      "flipbook-trace-v1.0.12-257be505d9e8-shell"
+    ],
+    "online": false
+  },
+  "errors": []
+}

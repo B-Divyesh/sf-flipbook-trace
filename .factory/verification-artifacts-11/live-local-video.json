@@ -1,0 +1,40 @@
+{
+  "cases": [
+    {
+      "end": "1",
+      "status": "2 frames ready",
+      "count": 2
+    },
+    {
+      "end": "5",
+      "status": "10 frames ready",
+      "count": 10
+    },
+    {
+      "end": "0.5",
+      "error": "The selected section must be 1–5 seconds inside the video. Change the start or end time."
+    },
+    {
+      "end": "5.1",
+      "error": "The selected section must be 1–5 seconds inside the video. Change the start or end time."
+    }
+  ],
+  "invalid": {
+    "error": "That file is not a video. Choose a video this browser can play.",
+    "status": "10 frames ready"
+  },
+  "recovery": {
+    "url": "https://flipbook-trace.sociobot.in/?demo=1",
+    "status": "12 frames ready",
+    "count": 12
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "url": "blob:https://flipbook-trace.sociobot.in/d6befa2b-ed3f-40eb-8aa9-b9253970e1f6",
+      "body": null
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": []
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "attempt": 1,
+    "status": 200,
+    "retryAfter": null,
+    "after": null
+  },
+  {
+    "attempt": 2,
+    "status": 200,
+    "retryAfter": null,
+    "after": null
+  },
+  {
+    "attempt": 3,
+    "status": 429,
+    "retryAfter": "1",
+    "after": "1"
+  }
+]

@@ -1,0 +1,440 @@
+
+===== CLAIM clip-workflow: Turns a 1–5 second section of a local video into tracing frames. =====
+$ npm test -- --grep @claim:clip-workflow
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:clip-workflow
+
+[WebServer] (node:723) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:765) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:783) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:783) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:242:1 › @claim:clip-workflow accepts one to five seconds and rejects other lengths (13.6s)
+
+  1 passed (21.4s)
+===== RESULT clip-workflow: PASS (23.1s) =====
+
+===== CLAIM demo-ready: Try a ready twelve-frame paper-bird sample with one click. =====
+$ npm test -- --grep @claim:demo-ready
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:demo-ready
+
+[WebServer] (node:916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:959) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:977) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:977) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:197:1 › @claim:demo-ready opens twelve ready sample frames with one click (1.5s)
+
+  1 passed (8.4s)
+===== RESULT demo-ready: PASS (10s) =====
+
+===== CLAIM demo-workflow: The paper-bird sample regenerates frames for the selected 1–5 second section and frame rate. =====
+$ npm test -- --grep @claim:demo-workflow
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:demo-workflow
+
+[WebServer] (node:1123) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1166) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:205:1 › @claim:demo-workflow regenerates the paper-bird sample for its selected section and rate (5.1s)
+
+  1 passed (12.0s)
+===== RESULT demo-workflow: PASS (13.6s) =====
+
+===== CLAIM demo-isolation: Demo sample data is not saved and demo mode does not read or change real settings or licenses. =====
+$ npm test -- --grep @claim:demo-isolation
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:demo-isolation
+
+[WebServer] (node:1319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1362) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:218:1 › @claim:demo-isolation never opens, reads, or changes real saved data (3.2s)
+
+  1 passed (10.1s)
+===== RESULT demo-isolation: PASS (11.6s) =====
+
+===== CLAIM png-export: Exports numbered PNGs as a ZIP pack. =====
+$ npm test -- --grep @claim:png-export
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:png-export
+
+[WebServer] (node:1507) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1586) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1586) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:289:1 › @claim:png-export exports twelve numbered PNGs in a ZIP (1.9s)
+
+  1 passed (8.8s)
+===== RESULT png-export: PASS (10.4s) =====
+
+===== CLAIM pdf-export: Exports a printable PDF trace sheet. =====
+$ npm test -- --grep @claim:pdf-export
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:pdf-export
+
+[WebServer] (node:1717) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1761) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:312:1 › @claim:pdf-export exports a non-blank twelve-frame printable PDF trace sheet (2.2s)
+
+  1 passed (9.0s)
+===== RESULT pdf-export: PASS (10.5s) =====
+
+===== CLAIM local-processing: Video and frame processing stay in the browser. =====
+$ npm test -- --grep @claim:local-processing
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:local-processing
+
+[WebServer] (node:1908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:335:1 › @claim:local-processing sends no video or frame data to any server (3.7s)
+
+  1 passed (10.7s)
+===== RESULT local-processing: PASS (12.3s) =====
+
+===== CLAIM ephemeral-project: The source video and generated frames stay in page memory and disappear on reload. =====
+$ npm test -- --grep @claim:ephemeral-project
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:ephemeral-project
+
+[WebServer] (node:2104) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2146) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:248:1 › @claim:ephemeral-project keeps video and frames out of persistent browser stores (5.7s)
+
+  1 passed (13.8s)
+===== RESULT ephemeral-project: PASS (15.3s) =====
+
+===== CLAIM trace-controls: Offers five frame rates, three trace styles, and an optional previous-frame overlay. =====
+$ npm test -- --grep @claim:trace-controls
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:trace-controls
+
+[WebServer] (node:2314) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2358) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:273:1 › @claim:trace-controls applies every trace style, frame rate, and previous-frame overlay (3.7s)
+
+  1 passed (11.9s)
+===== RESULT trace-controls: PASS (13.5s) =====
+
+===== CLAIM settings-portability: Exports and imports settings as JSON and keeps imported settings after reload. =====
+$ npm test -- --grep @claim:settings-portability
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:settings-portability
+
+[WebServer] (node:2506) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2567) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2567) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:284:1 › @claim:settings-portability exports, imports, and persists control settings (2.6s)
+
+  1 passed (9.6s)
+===== RESULT settings-portability: PASS (11.3s) =====
+
+===== CLAIM offline-reload: Works offline after the first visit. =====
+$ npm test -- --grep @claim:offline-reload
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:offline-reload
+
+[WebServer] (node:2696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2738) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:352:1 › @claim:offline-reload reloads the demo without a network (1.7s)
+
+  1 passed (8.6s)
+===== RESULT offline-reload: PASS (10.3s) =====
+
+===== CLAIM pwa-installable: Installs as a standalone PWA. =====
+$ npm test -- --grep @claim:pwa-installable
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:pwa-installable
+
+[WebServer] (node:2901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2944) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:356:1 › @claim:pwa-installable ships a standalone manifest and controlling service worker (956ms)
+
+  1 passed (9.3s)
+===== RESULT pwa-installable: PASS (11s) =====
+
+===== CLAIM free-quality: The free version exports PNGs at 960 px. =====
+$ npm test -- --grep @claim:free-quality
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:free-quality
+
+[WebServer] (node:3093) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3135) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3153) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3153) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:324:1 › @claim:free-quality exports free PNGs at 960 px (3.0s)
+
+  1 passed (10.0s)
+===== RESULT free-quality: PASS (11.6s) =====
+
+===== CLAIM studio-quality: Studio adds 1920 px, original-video-width exports, and six-column PDF trace sheets. =====
+$ npm test -- --grep @claim:studio-quality
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:studio-quality
+
+[WebServer] (node:3287) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3330) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:360:1 › @claim:studio-quality exports 1920 px, original-width PNGs, and six-column sheets (8.5s)
+
+  1 passed (15.3s)
+===== RESULT studio-quality: PASS (16.9s) =====
+
+===== CLAIM studio-purchase: Studio costs USD 9 once and opens Flipbook Trace Studio in Sociobot's hosted checkout. =====
+$ npm test -- --grep @claim:studio-purchase
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:studio-purchase
+
+[WebServer] (node:3500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3561) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3561) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:375:1 › @claim:studio-purchase shows USD 9 one-time checkout for Flipbook Trace Studio (3.0s)
+
+  1 passed (9.8s)
+===== RESULT studio-purchase: PASS (11.4s) =====
+
+===== CLAIM studio-license-check: A pasted Studio license is sent to Sociobot only to verify that license. =====
+$ npm test -- --grep @claim:studio-license-check
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:studio-license-check
+
+[WebServer] (node:3695) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3737) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:397:1 › @claim:studio-license-check sends a pasted license only to Sociobot verification (1.9s)
+
+  1 passed (8.8s)
+===== RESULT studio-license-check: PASS (10.3s) =====
+
+===== CLAIM studio-license-cache: Valid, invalid, and revoked Studio verdicts are cached for 24 hours and restored on reload without another request. =====
+$ npm test -- --grep @claim:studio-license-cache
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:studio-license-cache
+
+[WebServer] (node:3885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:412:1 › @claim:studio-license-cache restores valid, invalid, and revoked verdicts for 24 hours without another request (5.3s)
+
+  1 passed (12.2s)
+===== RESULT studio-license-cache: PASS (13.7s) =====
+
+===== CLAIM browser-data-deletion: Clearing this site's browser data removes settings and a saved license. =====
+$ npm test -- --grep @claim:browser-data-deletion
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:browser-data-deletion
+
+[WebServer] (node:4121) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:491:1 › @claim:browser-data-deletion clears settings and a saved license (2.1s)
+
+  1 passed (8.9s)
+===== RESULT browser-data-deletion: PASS (10.4s) =====
+
+===== CLAIM app-update-check: The installed app checks this site for updates. =====
+$ npm test -- --grep @claim:app-update-check
+
+> flipbook-trace@1.0.12 test
+> playwright test --grep @claim:app-update-check
+
+[WebServer] (node:4314) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4357) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4375) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4375) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/site.spec.ts:360:1 › @claim:app-update-check a new service worker activates, replaces its cache, and announces the update (3.1s)
+
+  1 passed (10.2s)
+===== RESULT app-update-check: PASS (11.7s) =====
+
+CLAIM SUMMARY
+clip-workflow	PASS	23.1s
+demo-ready	PASS	10s
+demo-workflow	PASS	13.6s
+demo-isolation	PASS	11.6s
+png-export	PASS	10.4s
+pdf-export	PASS	10.5s
+local-processing	PASS	12.3s
+ephemeral-project	PASS	15.3s
+trace-controls	PASS	13.5s
+settings-portability	PASS	11.3s
+offline-reload	PASS	10.3s
+pwa-installable	PASS	11s
+free-quality	PASS	11.6s
+studio-quality	PASS	16.9s
+studio-purchase	PASS	11.4s
+studio-license-check	PASS	10.3s
+studio-license-cache	PASS	13.7s
+browser-data-deletion	PASS	10.4s
+app-update-check	PASS	11.7s
+TOTAL 19; PASS 19; FAIL 0

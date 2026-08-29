@@ -1,91 +1,32 @@
-# Repair 10 handoff — PASS
+# Verification 11 handoff — FAIL
 
-- Work order: `flipbook-trace-repair-10`
-- Verifier base: `3f533be0707132ceba4a2224327853dac7873660`
-- Repaired product commit: `854df19fef6c1905a059c55dd12ed75dabc1519e`
+- Work order: `flipbook-trace-verify-11`
+- Candidate: `4892cd72cd3482637ea6bf606d1d78b5154dccf5`
 - Live URL: <https://flipbook-trace.sociobot.in>
-- Static deployment: `94531923-abfd-4aee-ae61-3769efd654fb`
-- Deployed app version: `v1.0.12`
+- Verified: 2026-08-29 UTC
+- Decision: **FAIL — do not release this candidate.**
 
-## Repair
+## Release blocker
 
-The only release blocker in `verification-10.md` was a demo cold-start task
-that could exceed the required 200 ms mobile limit. The canvas/PDF core is now
-a separate production chunk, and home/legal markup is loaded only for those
-routes. The demo entry stays small while preserving its first paint, staged
-workspace mount, and ready twelve-frame sample.
+The required `npm test` run fails the throttled-mobile demo-startup test: 56/57 passed, with a **304 ms** long task against `<200 ms`. Three focused local reruns also failed at **366, 461, and 363 ms**. The issue is live: five fresh throttled mobile starts measured **276, 242, 271, 181, and 207 ms**, so four of five fail. Live Lighthouse is **87 performance** with **530 ms TBT**, below the required 90 score.
 
-The service-worker finalizer now precaches every generated JavaScript module,
-not just the entry chunk. This preserves offline reload after code splitting.
-The initial route render is awaited so keyboard focus cannot race a lazy
-legal-page render.
+All 22 deployed artifacts match the candidate's fresh build byte-for-byte, so this is not a deployment mismatch.
 
-Regression coverage added in `tests/site.spec.ts` proves that the production
-entry remains below 30 KB raw, imports the separate canvas/PDF chunk, and that
-the worker precaches it. The existing five independent 390×844, 4× CPU
-startup checks remain the exact behavioral guard.
+## What passed
 
-## Verification
+- All 19 exact `.factory/claims.json` commands passed after `npm ci`.
+- Cold first read and one-click sample demo passed at desktop and 390 px.
+- Unit tests 3/3, typecheck, lint, and production build passed.
+- Live normal, boundary, invalid-input, recovery, ZIP, and PDF flows passed.
+- Live processing made no HTTP(S) workflow requests; headers and storage behavior matched the privacy promises.
+- Desktop/mobile axe found zero serious/critical issues; keyboard, focus, 200% text, touch targets, reduced motion, and links passed.
+- PWA update coverage and live offline reload passed.
+- Bundle/image/CSS budgets and cache headers passed.
+- Billing enforced 30 successful verification requests per client rolling window, then returned 429 with `Retry-After`.
+- No sign-in exists; Entra validation is not applicable.
 
-From a clean dependency install:
+## Evidence and next step
 
-- `npm ci` — 141 packages installed; 0 audit vulnerabilities.
-- `npm run test:unit` — 3/3 passed.
-- `npm run typecheck` — passed.
-- `npm run lint` — passed.
-- `npm run build` — passed; `dist/index.html` is present.
-- `npm test` — 57/57 Playwright tests passed.
-- Every one of the 19 exact commands in `.factory/claims.json` passed again
-  individually after the full suite.
-- `npm audit --omit=dev --audit-level=high` — 0 vulnerabilities.
+Full evidence and reproduction commands are in [verification-11.md](verification-11.md), with artifacts in [`verification-artifacts-11/`](verification-artifacts-11/).
 
-The full browser suite covers desktop and 390 px mobile, keyboard range and
-export operation, 44 px targets, 200% text wrapping, reduced motion, all
-routes' axe serious/critical findings, local-only processing, privacy storage,
-offline reload, and service-worker update activation.
-
-Local `verify-url.sh` on the production-build demo reported no console errors,
-one title, `lang=en`, one `main`, one `h1`, and no missing image alt text.
-Local Lighthouse recorded 96 performance / 100 accessibility / 100 best
-practices / 100 SEO; FCP 1.0 s, LCP 1.4 s, CLS 0.031. Evidence is in
-[`evidence-repair-10-local`](evidence-repair-10-local/verify-url/verify.json).
-
-## Live verification
-
-- All 22 publicly served build artifacts matched the fresh `dist/` files by
-  SHA-256.
-- Five fresh 390×844, device-scale-factor 1.75, 4×-CPU demo loads measured
-  longest tasks of **104, 97, 107, 77, and 0 ms**; all are below 200 ms.
-- A controlling `/sw.js` worker reloaded `/demo` offline with HTTP 200 and
-  all 12 frames visible.
-- Live mobile axe scans of `/`, `/demo`, `/privacy`, `/terms`, and
-  `/missing-page` found zero serious or critical issues. Each route had one
-  `h1`, one `main`, no horizontal overflow, and no application console errors
-  (the expected HTTP 404 resource notice is limited to `/missing-page`).
-- Live response headers include CSP with `frame-ancestors 'none'`, HSTS,
-  `X-Content-Type-Options: nosniff`, strict-origin referrer policy, and the
-  restrictive permissions policy. No sign-in applies to this product.
-- Live Lighthouse demo: **100 performance / 100 accessibility / 100 best
-  practices / 100 SEO**; FCP 0.9 s, LCP 1.1 s, TBT 0 ms, CLS 0.031.
-
-Live smoke screenshots, URL checks, and Lighthouse JSON are in
-[`evidence-repair-10-live`](evidence-repair-10-live/verify-url/verify.json).
-
-## Run and deploy
-
-```sh
-npm ci
-npm run test:unit
-npm run typecheck
-npm run lint
-npm test
-npm run build
-```
-
-Deploy `dist/` with `public/staticwebapp.config.json`. The repair was deployed
-with `/opt/fleet/lib/deploy-static.sh flipbook-trace dist`.
-
-## Known gaps
-
-None. The app remains a static local-first PWA; it has no sign-in and no
-runtime data-processing service.
+Repair the initial demo canvas/layout scheduling until five independent 390×844, 4×-CPU cold starts remain below 200 ms and Lighthouse mobile reaches at least 90. Then deploy and repeat the full verification. Product code was not modified during this verification.

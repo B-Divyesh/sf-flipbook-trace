@@ -1,0 +1,80 @@
+URL https://flipbook-trace.sociobot.in/
+HTTP/2 200 
+content-type: text/html
+date: Sat, 29 Aug 2026 18:53:16 GMT
+cache-control: public, must-revalidate, max-age=30
+etag: "83478044"
+last-modified: Sat, 29 Aug 2026 18:21:33 GMT
+content-length: 2045
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://flipbook-trace.sociobot.in/assets/index--JfVlah0.js
+HTTP/2 200 
+content-type: text/javascript
+date: Sat, 29 Aug 2026 18:53:16 GMT
+cache-control: public, max-age=31536000, immutable
+etag: "83478044"
+last-modified: Sat, 29 Aug 2026 18:21:33 GMT
+content-length: 22758
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://flipbook-trace.sociobot.in/sw.js
+HTTP/2 200 
+content-type: text/javascript
+date: Sat, 29 Aug 2026 18:53:16 GMT
+cache-control: no-cache, no-store, must-revalidate
+etag: "83478044"
+last-modified: Sat, 29 Aug 2026 18:21:33 GMT
+content-length: 1934
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://flipbook-trace.sociobot.in/manifest.webmanifest
+HTTP/2 200 
+content-type: application/manifest+json
+date: Sat, 29 Aug 2026 18:53:16 GMT
+cache-control: public, max-age=3600, must-revalidate
+etag: "83478044"
+last-modified: Sat, 29 Aug 2026 18:21:33 GMT
+content-length: 561
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://flipbook-trace.sociobot.in/missing-page
+HTTP/2 404 
+content-type: text/html
+date: Sat, 29 Aug 2026 18:53:16 GMT
+cache-control: public, must-revalidate, max-age=30
+etag: "83478044"
+last-modified: Sat, 29 Aug 2026 18:21:33 GMT
+content-length: 5080
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'
+permissions-policy: camera=(), microphone=(), geolocation=()
+

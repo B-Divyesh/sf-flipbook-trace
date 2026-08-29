@@ -1,0 +1,186 @@
+{
+  "firstFocus": {
+    "text": "Skip to main content",
+    "tag": "A",
+    "outline": "rgb(173, 53, 45) solid 3px",
+    "box": [
+      224.03125,
+      48.796875
+    ]
+  },
+  "range": {
+    "before": "142",
+    "after": "143"
+  },
+  "exportFocus": {
+    "text": "Export PNG pack",
+    "outline": "rgb(173, 53, 45) solid 3px",
+    "box": [
+      310,
+      52.796875
+    ]
+  },
+  "download": "flipbook-trace-frames.zip",
+  "reducedMotionNonzero": [
+    {
+      "tag": "HTML",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "HEAD",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "TITLE",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "META",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "SCRIPT",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "LINK",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "BODY",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    {
+      "tag": "DIV",
+      "cls": "",
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    }
+  ],
+  "zoom": {
+    "scrollWidth": 390,
+    "innerWidth": 390
+  }
+}
