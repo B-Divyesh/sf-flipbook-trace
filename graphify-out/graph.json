@@ -16,6 +16,18 @@
       "source_location": "L26"
     },
     {
+      "id": "tests_site_spec_targetbox",
+      "label": "TargetBox",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "file_type": "code",
+      "norm_label": "targetbox",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L23"
+    },
+    {
       "id": "src_core_filtermode",
       "label": "FilterMode",
       "_callable": true,
@@ -52,18 +64,6 @@
       "source_location": "L5"
     },
     {
-      "id": "tests_site_spec_targetbox",
-      "label": "TargetBox",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "targetbox",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L23"
-    },
-    {
       "id": "src_core_loadpreferences",
       "label": "loadPreferences()",
       "_callable": true,
@@ -73,17 +73,6 @@
       "norm_label": "loadpreferences()",
       "source_file": "src/core.ts",
       "source_location": "L318"
-    },
-    {
-      "id": "src_core_savepreferences",
-      "label": "savePreferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "savepreferences()",
-      "source_file": "src/core.ts",
-      "source_location": "L304"
     },
     {
       "id": "src_main_applylicenseverdict",
@@ -328,15 +317,15 @@
       "source_location": "L72"
     },
     {
-      "id": "factory_evidence_verify_3_live_audit_loadrecordedvideo",
-      "label": "loadRecordedVideo()",
+      "id": "tests_site_spec_visibleactiontargets",
+      "label": "visibleActionTargets()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "loadrecordedvideo()",
-      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
-      "source_location": "L8"
+      "norm_label": "visibleactiontargets()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L25"
     },
     {
       "id": "src_core_ascii",
@@ -469,6 +458,17 @@
       "norm_label": "downloadblob()",
       "source_file": "src/core.ts",
       "source_location": "L294"
+    },
+    {
+      "id": "src_core_savepreferences",
+      "label": "savePreferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "file_type": "code",
+      "norm_label": "savepreferences()",
+      "source_file": "src/core.ts",
+      "source_location": "L304"
     },
     {
       "id": "src_main_bindworkspace",
@@ -812,15 +812,15 @@
       "source_location": "L493"
     },
     {
-      "id": "tests_site_spec_visibleactiontargets",
-      "label": "visibleActionTargets()",
+      "id": "factory_evidence_verify_3_live_audit_loadrecordedvideo",
+      "label": "loadRecordedVideo()",
       "_callable": true,
       "_origin": "ast",
       "community": 9,
       "file_type": "code",
-      "norm_label": "visibleactiontargets()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L25"
+      "norm_label": "loadrecordedvideo()",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L8"
     },
     {
       "id": "src_main",
@@ -1093,24 +1093,14 @@
       "source_location": "L18"
     },
     {
-      "id": "factory_evidence_verify_3_live_audit",
-      "label": "evidence-verify-3/live-audit.mjs",
+      "id": "tests_site_spec",
+      "label": "site.spec.ts",
       "_origin": "ast",
       "community": 10,
       "file_type": "code",
-      "norm_label": "evidence-verify-3/live-audit.mjs",
-      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "norm_label": "site.spec.ts",
+      "source_file": "tests/site.spec.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "factory_evidence_verify_3_live_audit_result",
-      "label": "result",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "result",
-      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
-      "source_location": "L6"
     },
     {
       "id": "factory_evidence_repair_2_live_audit",
@@ -1623,24 +1613,24 @@
       "source_location": "L5"
     },
     {
-      "id": "test",
-      "label": "@playwright/test",
+      "id": "factory_evidence_verify_3_live_audit",
+      "label": "evidence-verify-3/live-audit.mjs",
       "_origin": "ast",
       "community": 9,
-      "confidence": "EXTRACTED",
       "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "@playwright/test"
+      "norm_label": "evidence-verify-3/live-audit.mjs",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L1"
     },
     {
-      "id": "tests_site_spec",
-      "label": "site.spec.ts",
+      "id": "factory_evidence_verify_3_live_audit_result",
+      "label": "result",
       "_origin": "ast",
       "community": 9,
       "file_type": "code",
-      "norm_label": "site.spec.ts",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L1"
+      "norm_label": "result",
+      "source_file": ".factory/evidence-verify-3/live-audit.mjs",
+      "source_location": "L6"
     }
   ],
   "links": [
@@ -4593,15 +4583,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_site_spec",
-      "target": "test",
-      "relation": "dynamic_import",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/site.spec.ts"
-    },
-    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -4627,5 +4608,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "30c6c2bca48ffa46ed6de765ef75c61ec17200eb"
+  "built_at_commit": "7658d2e56cdd84d3a18f051458825f8fab9ea984"
 }

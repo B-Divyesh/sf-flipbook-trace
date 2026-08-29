@@ -2,7 +2,6 @@
   "communities": {
     "0": [
       "src_core_loadpreferences",
-      "src_core_savepreferences",
       "src_main",
       "src_main_applylicenseverdict",
       "src_main_approot",
@@ -98,6 +97,7 @@
     ],
     "4": [
       "src_core_downloadblob",
+      "src_core_savepreferences",
       "src_main_bindworkspace",
       "src_main_clearerror",
       "src_main_exportpdf",
@@ -159,15 +159,14 @@
       "src_main_rebuildoutputframes"
     ],
     "9": [
-      "test",
-      "tests_site_spec",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "10": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
+    ],
+    "10": [
+      "tests_site_spec",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
     ],
     "11": [
       "factory_evidence_repair_2_live_audit",
@@ -194,16 +193,16 @@
     ]
   },
   "cohesion": {
-    "0": 0.14482758620689656,
+    "0": 0.15024630541871922,
     "1": 0.09090909090909091,
     "2": 0.10526315789473684,
     "3": 0.20588235294117646,
-    "4": 0.31666666666666665,
+    "4": 0.29411764705882354,
     "5": 0.15384615384615385,
     "6": 0.16666666666666666,
     "7": 0.4,
     "8": 0.4,
-    "9": 0.5,
+    "9": 0.6666666666666666,
     "10": 0.6666666666666666,
     "11": 1.0,
     "12": 1.0,
@@ -240,16 +239,6 @@
       "degree": 8
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
-    },
-    {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 8
-    },
-    {
       "id": "src_main_importsettings",
       "label": "importSettings()",
       "degree": 8
@@ -263,9 +252,41 @@
       "id": "src_main_showerror",
       "label": "showError()",
       "degree": 8
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 8
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
     }
   ],
   "surprises": [
+    {
+      "source": "applyLicenseVerdict()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "render()",
+      "target": "normalizeSettings()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
     {
       "source": "exportPdf()",
       "target": "makePdf()",
@@ -291,28 +312,6 @@
     {
       "source": "importSettings()",
       "target": "normalizeSettings()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "render()",
-      "target": "normalizeSettings()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "importSettings()",
-      "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
