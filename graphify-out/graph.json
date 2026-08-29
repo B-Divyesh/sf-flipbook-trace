@@ -28,6 +28,18 @@
       "source_location": "L3"
     },
     {
+      "id": "tests_claims_spec_capturedrequest",
+      "label": "CapturedRequest",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "capturedrequest",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L5"
+    },
+    {
       "id": "tests_site_spec_targetbox",
       "label": "TargetBox",
       "_callable": true,
@@ -315,17 +327,6 @@
       "source_location": "L63"
     },
     {
-      "id": "tests_claims_spec_storage_getitem",
-      "label": ".getItem()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "file_type": "code",
-      "norm_label": ".getitem()",
-      "source_file": "tests/claims.spec.ts",
-      "source_location": "L111"
-    },
-    {
       "id": "src_core_ascii",
       "label": "ascii()",
       "_callable": true,
@@ -425,6 +426,17 @@
       "source_location": "L21"
     },
     {
+      "id": "src_core_savepreferences",
+      "label": "savePreferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "savepreferences()",
+      "source_file": "src/core.ts",
+      "source_location": "L304"
+    },
+    {
       "id": "src_core_u16",
       "label": "u16()",
       "_callable": true,
@@ -456,17 +468,6 @@
       "norm_label": "downloadblob()",
       "source_file": "src/core.ts",
       "source_location": "L294"
-    },
-    {
-      "id": "src_core_savepreferences",
-      "label": "savePreferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "file_type": "code",
-      "norm_label": "savepreferences()",
-      "source_file": "src/core.ts",
-      "source_location": "L304"
     },
     {
       "id": "src_main_bindworkspace",
@@ -634,6 +635,28 @@
       "source_location": "L270"
     },
     {
+      "id": "tests_claims_spec_assertnoworkflowrequests",
+      "label": "assertNoWorkflowRequests()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "assertnoworkflowrequests()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L28"
+    },
+    {
+      "id": "tests_claims_spec_assertonlylicenseverification",
+      "label": "assertOnlyLicenseVerification()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "assertonlylicenseverification()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L33"
+    },
+    {
       "id": "tests_claims_spec_expectrenderedcells",
       "label": "expectRenderedCells()",
       "_callable": true,
@@ -642,7 +665,7 @@
       "file_type": "code",
       "norm_label": "expectrenderedcells()",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L43"
+      "source_location": "L159"
     },
     {
       "id": "tests_claims_spec_extractrenderedsheet",
@@ -653,7 +676,7 @@
       "file_type": "code",
       "norm_label": "extractrenderedsheet()",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L32"
+      "source_location": "L148"
     },
     {
       "id": "tests_claims_spec_idbvalue",
@@ -664,7 +687,7 @@
       "file_type": "code",
       "norm_label": "idbvalue()",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L74"
+      "source_location": "L190"
     },
     {
       "id": "tests_claims_spec_loadrecordedvideo",
@@ -675,7 +698,18 @@
       "file_type": "code",
       "norm_label": "loadrecordedvideo()",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L5"
+      "source_location": "L7"
+    },
+    {
+      "id": "tests_claims_spec_persistentsnapshot",
+      "label": "persistentSnapshot()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "persistentsnapshot()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L50"
     },
     {
       "id": "tests_claims_spec_pngdimensionsinzip",
@@ -686,7 +720,40 @@
       "file_type": "code",
       "norm_label": "pngdimensionsinzip()",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L25"
+      "source_location": "L141"
+    },
+    {
+      "id": "tests_claims_spec_settleshell",
+      "label": "settleShell()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "settleshell()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L42"
+    },
+    {
+      "id": "tests_claims_spec_sourcefingerprint",
+      "label": "sourceFingerprint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "sourcefingerprint()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L129"
+    },
+    {
+      "id": "tests_claims_spec_storage_getitem",
+      "label": ".getItem()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": ".getitem()",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L227"
     },
     {
       "id": "tests_site_spec_visibleactiontargets",
@@ -1003,7 +1070,7 @@
       "id": "vite_config",
       "label": "vite.config.ts",
       "_origin": "ast",
-      "community": 14,
+      "community": 13,
       "file_type": "code",
       "norm_label": "vite.config.ts",
       "source_file": "vite.config.ts",
@@ -1013,7 +1080,7 @@
       "id": "vitest_config",
       "label": "vitest.config.ts",
       "_origin": "ast",
-      "community": 15,
+      "community": 14,
       "file_type": "code",
       "norm_label": "vitest.config.ts",
       "source_file": "vitest.config.ts",
@@ -1438,6 +1505,16 @@
       "norm_label": "workerpath",
       "source_file": "scripts/finalize-build.mjs",
       "source_location": "L5"
+    },
+    {
+      "id": "test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 8,
+      "confidence": "EXTRACTED",
+      "file_type": "code",
+      "norm_label": "@playwright/test",
+      "source_file": "@playwright/test"
     },
     {
       "id": "tests_site_spec",
@@ -2584,7 +2661,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L44",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec_persistentsnapshot",
+      "target": "tests_claims_spec_storage_getitem",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -3893,13 +3982,24 @@
     },
     {
       "source": "tests_claims_spec",
+      "target": "tests_claims_spec_sourcefingerprint",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
       "target": "tests_claims_spec_pngdimensionsinzip",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L25",
+      "source_location": "L141",
       "weight": 1.0
     },
     {
@@ -3910,7 +4010,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L32",
+      "source_location": "L148",
       "weight": 1.0
     },
     {
@@ -3921,18 +4021,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L43",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_claims_spec",
-      "target": "tests_claims_spec_loadrecordedvideo",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/claims.spec.ts",
-      "source_location": "L5",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -3943,7 +4032,73 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/claims.spec.ts",
-      "source_location": "L74",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_assertnoworkflowrequests",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_assertonlylicenseverification",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_settleshell",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_capturedrequest",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_persistentsnapshot",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_claims_spec",
+      "target": "tests_claims_spec_loadrecordedvideo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/claims.spec.ts",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -4145,6 +4300,15 @@
       "weight": 1.0
     },
     {
+      "source": "tests_site_spec",
+      "target": "test",
+      "relation": "dynamic_import",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/site.spec.ts"
+    },
+    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -4170,5 +4334,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2b1664fbdb98d3b5b5c0d4cfd0d527c725ced1cb"
+  "built_at_commit": "bd8f6b791388fa12754f96f8ed98bfe5afd0dd9a"
 }

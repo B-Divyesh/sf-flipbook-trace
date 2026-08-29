@@ -92,13 +92,13 @@
       "src_core_makepdf",
       "src_core_makepngzip",
       "src_core_normalizesettings",
+      "src_core_savepreferences",
       "src_core_test",
       "src_core_u16",
       "src_core_u32"
     ],
     "4": [
       "src_core_downloadblob",
-      "src_core_savepreferences",
       "src_main_bindworkspace",
       "src_main_clearerror",
       "src_main_exportpdf",
@@ -132,11 +132,18 @@
     ],
     "6": [
       "tests_claims_spec",
+      "tests_claims_spec_assertnoworkflowrequests",
+      "tests_claims_spec_assertonlylicenseverification",
+      "tests_claims_spec_capturedrequest",
       "tests_claims_spec_expectrenderedcells",
       "tests_claims_spec_extractrenderedsheet",
       "tests_claims_spec_idbvalue",
       "tests_claims_spec_loadrecordedvideo",
-      "tests_claims_spec_pngdimensionsinzip"
+      "tests_claims_spec_persistentsnapshot",
+      "tests_claims_spec_pngdimensionsinzip",
+      "tests_claims_spec_settleshell",
+      "tests_claims_spec_sourcefingerprint",
+      "tests_claims_spec_storage_getitem"
     ],
     "7": [
       "scripts_finalize_build",
@@ -146,6 +153,7 @@
       "scripts_finalize_build_workerpath"
     ],
     "8": [
+      "test",
       "tests_site_spec",
       "tests_site_spec_targetbox",
       "tests_site_spec_visibleactiontargets"
@@ -164,12 +172,9 @@
       "src_vite_env_d"
     ],
     "13": [
-      "tests_claims_spec_storage_getitem"
-    ],
-    "14": [
       "vite_config"
     ],
-    "15": [
+    "14": [
       "vitest_config"
     ]
   },
@@ -177,19 +182,18 @@
     "0": 0.13793103448275862,
     "1": 0.09090909090909091,
     "2": 0.10526315789473684,
-    "3": 0.20588235294117646,
-    "4": 0.29411764705882354,
+    "3": 0.1895424836601307,
+    "4": 0.31666666666666665,
     "5": 0.15384615384615385,
-    "6": 0.4,
+    "6": 0.16666666666666666,
     "7": 0.4,
-    "8": 0.6666666666666666,
+    "8": 0.5,
     "9": 1.0,
     "10": 1.0,
     "11": 1.0,
     "12": 1.0,
     "13": 1.0,
-    "14": 1.0,
-    "15": 1.0
+    "14": 1.0
   },
   "gods": [
     {
@@ -218,6 +222,16 @@
       "degree": 8
     },
     {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 8
+    },
+    {
       "id": "src_main_importsettings",
       "label": "importSettings()",
       "degree": 8
@@ -230,16 +244,6 @@
     {
       "id": "src_main_showerror",
       "label": "showError()",
-      "degree": 8
-    },
-    {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 8
-    },
-    {
-      "id": "package_scripts",
-      "label": "scripts",
       "degree": 8
     }
   ],
@@ -278,26 +282,26 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "rebuildOutputFrames()",
-      "target": "applyTraceFilter()",
+      "source": "importSettings()",
+      "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "why": "cross-file semantic connection"
+      "why": "bridges separate communities"
     },
     {
-      "source": "loadDemoFrames()",
-      "target": "drawDemoFrame()",
+      "source": "updateSettings()",
+      "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "why": "cross-file semantic connection"
+      "why": "bridges separate communities"
     }
   ],
   "tokens": {
