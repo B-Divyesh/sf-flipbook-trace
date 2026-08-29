@@ -2,43 +2,65 @@
   "communities": {
     "0": [
       "src_main",
+      "src_main_applylicenseverdict",
       "src_main_approot",
+      "src_main_bindlicense",
+      "src_main_bindnavigation",
+      "src_main_cancelpreviewrender",
+      "src_main_cleanupvideo",
+      "src_main_demobanner",
+      "src_main_demopage",
+      "src_main_initlicense",
+      "src_main_licensestatustext",
+      "src_main_licenseverdict",
+      "src_main_mountdemoworkspace",
+      "src_main_navlink",
+      "src_main_outputframes",
+      "src_main_paintdemopeek",
+      "src_main_readlicenseverdict",
+      "src_main_render",
+      "src_main_routepath",
+      "src_main_seek",
+      "src_main_settings",
+      "src_main_shell",
+      "src_main_sourceframes",
+      "src_main_start",
+      "src_main_updatemeta",
+      "src_main_verifylicense",
+      "src_main_workspacecontrolstemplate",
+      "src_main_workspaceheadingtemplate",
+      "src_main_workspacepreviewtemplate",
+      "src_main_workspacetemplate",
+      "src_main_yieldforpaint"
+    ],
+    "1": [
       "src_main_bindworkspace",
       "src_main_buildexportframes",
       "src_main_buildexportframestream",
-      "src_main_cancelpreviewrender",
       "src_main_clearerror",
       "src_main_exportpdf",
       "src_main_exportpng",
       "src_main_hasstudioaccess",
       "src_main_importsettings",
-      "src_main_licenseverdict",
       "src_main_loaddemoframes",
       "src_main_loadprocessor",
       "src_main_loadvideo",
       "src_main_makedemoframes",
       "src_main_makeframesfromvideo",
-      "src_main_outputframes",
-      "src_main_paintdemopeek",
       "src_main_paintframes",
       "src_main_rebuildoutputframes",
       "src_main_schedulepreviewrender",
-      "src_main_seek",
       "src_main_setexportbuttonsdisabled",
       "src_main_setstatus",
-      "src_main_settings",
       "src_main_showerror",
-      "src_main_sourceframes",
       "src_main_traceframe",
       "src_main_updatesettings",
       "src_main_value",
       "src_main_yieldafterinteraction",
-      "src_main_yieldforpaint",
       "src_main_yieldtobrowser",
-      "src_settings_downloadblob",
-      "src_settings_savepreferences"
+      "src_settings_downloadblob"
     ],
-    "1": [
+    "2": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -62,30 +84,31 @@
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
     ],
-    "2": [
-      "src_main_applylicenseverdict",
-      "src_main_bindlicense",
-      "src_main_bindnavigation",
-      "src_main_cleanupvideo",
-      "src_main_demobanner",
-      "src_main_demopage",
-      "src_main_initlicense",
-      "src_main_licensestatustext",
-      "src_main_mountdemoworkspace",
-      "src_main_navlink",
-      "src_main_readlicenseverdict",
-      "src_main_render",
-      "src_main_routepath",
-      "src_main_shell",
-      "src_main_start",
-      "src_main_updatemeta",
-      "src_main_verifylicense",
-      "src_main_workspacecontrolstemplate",
-      "src_main_workspaceheadingtemplate",
-      "src_main_workspacepreviewtemplate",
-      "src_main_workspacetemplate"
-    ],
     "3": [
+      "src_core",
+      "src_core_applytracefilter",
+      "src_core_ascii",
+      "src_core_canvasblob",
+      "src_core_crc32",
+      "src_core_crctable",
+      "src_core_drawcontactsheet",
+      "src_core_drawdemoframe",
+      "src_core_joinbytes",
+      "src_core_makecontactsheets",
+      "src_core_makepdf",
+      "src_core_makepngzip",
+      "src_core_test",
+      "src_core_u16",
+      "src_core_u32",
+      "src_settings",
+      "src_settings_defaultsettings",
+      "src_settings_filtermode",
+      "src_settings_framesettings",
+      "src_settings_loadpreferences",
+      "src_settings_normalizesettings",
+      "src_settings_savepreferences"
+    ],
+    "4": [
       "axe_core_playwright",
       "eslint",
       "eslint_js",
@@ -105,22 +128,6 @@
       "typescript_eslint",
       "vite",
       "vitest"
-    ],
-    "4": [
-      "src_core",
-      "src_core_applytracefilter",
-      "src_core_ascii",
-      "src_core_canvasblob",
-      "src_core_crc32",
-      "src_core_crctable",
-      "src_core_drawcontactsheet",
-      "src_core_drawdemoframe",
-      "src_core_joinbytes",
-      "src_core_makecontactsheets",
-      "src_core_makepdf",
-      "src_core_makepngzip",
-      "src_core_u16",
-      "src_core_u32"
     ],
     "5": [
       "package",
@@ -153,16 +160,6 @@
       "tests_claims_spec_storage_getitem"
     ],
     "7": [
-      "test",
-      "tests_site_spec",
-      "tests_site_spec_expectinteractionswithinbudget",
-      "tests_site_spec_installinteractionobserver",
-      "tests_site_spec_interactiontiming",
-      "tests_site_spec_measuredinteraction",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "8": [
       "scripts_finalize_build",
       "scripts_finalize_build_appmodules",
       "scripts_finalize_build_assetdirectory",
@@ -171,16 +168,7 @@
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "9": [
-      "src_core_test",
-      "src_settings",
-      "src_settings_defaultsettings",
-      "src_settings_filtermode",
-      "src_settings_framesettings",
-      "src_settings_loadpreferences",
-      "src_settings_normalizesettings"
-    ],
-    "10": [
+    "8": [
       "src_static_pages",
       "src_static_pages_homecontent",
       "src_static_pages_notfoundcontent",
@@ -189,84 +177,93 @@
       "src_static_pages_privacycontent",
       "src_static_pages_termscontent"
     ],
-    "11": [
+    "9": [
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
+    ],
+    "10": [
       "factory_evidence_repair_3_interaction_audit",
       "factory_evidence_repair_3_interaction_audit_measure",
       "factory_evidence_repair_3_interaction_audit_mobilelinedetail",
       "factory_evidence_repair_3_interaction_audit_opendemo",
       "factory_evidence_repair_3_interaction_audit_result"
     ],
-    "12": [
+    "11": [
       "factory_qa_artifacts_live_qa",
       "factory_qa_artifacts_live_qa_makevideo",
       "factory_qa_artifacts_live_qa_output",
       "factory_qa_artifacts_live_qa_report",
       "factory_qa_artifacts_live_qa_watch"
     ],
-    "13": [
+    "12": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "14": [
+    "13": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "15": [
+    "14": [
       "factory_evidence_repair_3_live_audit",
       "factory_evidence_repair_3_live_audit_result"
     ],
-    "16": [
+    "15": [
       "factory_evidence_repair_7_live_audit",
       "factory_evidence_repair_7_live_audit_result"
     ],
-    "17": [
+    "16": [
       "factory_evidence_repair_8_live_audit",
       "factory_evidence_repair_8_live_audit_result"
     ],
-    "18": [
+    "17": [
       "factory_evidence_repair_9_live_audit",
       "factory_evidence_repair_9_live_audit_result"
     ],
-    "19": [
+    "18": [
       "factory_evidence_verify_10_live_audit",
       "factory_evidence_verify_10_live_audit_result"
     ],
-    "20": [
+    "19": [
       "public_sw",
       "public_sw_precache"
     ],
-    "21": [
+    "20": [
       "eslint_config"
     ],
-    "22": [
+    "21": [
       "playwright_config"
     ],
-    "23": [
+    "22": [
       "src_vite_env_d"
     ],
-    "24": [
+    "23": [
       "vite_config"
     ],
-    "25": [
+    "24": [
       "vitest_config"
     ]
   },
   "cohesion": {
-    "0": 0.1761904761904762,
-    "1": 0.09090909090909091,
-    "2": 0.14285714285714285,
-    "3": 0.10526315789473684,
-    "4": 0.25274725274725274,
+    "0": 0.13548387096774195,
+    "1": 0.23,
+    "2": 0.09090909090909091,
+    "3": 0.1471861471861472,
+    "4": 0.10526315789473684,
     "5": 0.15384615384615385,
     "6": 0.16666666666666666,
-    "7": 0.25,
+    "7": 0.2857142857142857,
     "8": 0.2857142857142857,
-    "9": 0.38095238095238093,
-    "10": 0.2857142857142857,
+    "9": 0.2857142857142857,
+    "10": 0.4,
     "11": 0.4,
-    "12": 0.4,
-    "13": 0.6666666666666666,
+    "12": 0.6666666666666666,
+    "13": 1.0,
     "14": 1.0,
     "15": 1.0,
     "16": 1.0,
@@ -277,8 +274,7 @@
     "21": 1.0,
     "22": 1.0,
     "23": 1.0,
-    "24": 1.0,
-    "25": 1.0
+    "24": 1.0
   },
   "gods": [
     {
@@ -307,18 +303,8 @@
       "degree": 11
     },
     {
-      "id": "src_main_mountdemoworkspace",
-      "label": "mountDemoWorkspace()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_value",
-      "label": "value()",
-      "degree": 9
-    },
-    {
-      "id": "src_main_makedemoframes",
-      "label": "makeDemoFrames()",
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
       "degree": 9
     },
     {
@@ -327,25 +313,24 @@
       "degree": 9
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
+      "id": "src_main_makedemoframes",
+      "label": "makeDemoFrames()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_value",
+      "label": "value()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_mountdemoworkspace",
+      "label": "mountDemoWorkspace()",
       "degree": 9
     }
   ],
   "surprises": [
     {
-      "source": "render()",
-      "target": "loadPreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/settings.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "render()",
+      "source": "importSettings()",
       "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
@@ -357,7 +342,18 @@
     },
     {
       "source": "importSettings()",
-      "target": "normalizeSettings()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "updateSettings()",
+      "target": "savePreferences()",
       "source_files": [
         "src/main.ts",
         "src/settings.ts"
@@ -378,15 +374,15 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "bindWorkspace()",
-      "target": "downloadBlob()",
+      "source": "render()",
+      "target": "loadPreferences()",
       "source_files": [
         "src/main.ts",
         "src/settings.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "why": "cross-file semantic connection"
+      "why": "bridges separate communities"
     }
   ],
   "tokens": {
