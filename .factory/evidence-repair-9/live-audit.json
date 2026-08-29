@@ -1,0 +1,79 @@
+{
+  "headers": {
+    "home": {
+      "status": 200,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload"
+    },
+    "worker": {
+      "status": 200,
+      "cacheControl": "no-cache, no-store, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload"
+    },
+    "asset": {
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload"
+    },
+    "missing": {
+      "status": 404,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload"
+    }
+  },
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "seriousOrCriticalAxe": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    },
+    "/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "seriousOrCriticalAxe": []
+    }
+  },
+  "exports": {
+    "pngBytes": 40056,
+    "pdfBytes": 150014,
+    "runtimeRequests": []
+  },
+  "keyboard": {
+    "firstTab": "Skip to main content",
+    "before": 142,
+    "after": 143,
+    "outline": "3px"
+  },
+  "offline": {
+    "frames": 12
+  },
+  "startup": {
+    "longestTasks": [
+      93,
+      102,
+      87,
+      95,
+      94
+    ],
+    "maximumMs": 102
+  }
+}
