@@ -33,33 +33,6 @@
       "src_main_workspacetemplate"
     ],
     "1": [
-      "src_core_downloadblob",
-      "src_core_drawdemoframe",
-      "src_core_savepreferences",
-      "src_main_bindworkspace",
-      "src_main_buildexportframes",
-      "src_main_clearerror",
-      "src_main_exportpdf",
-      "src_main_exportpng",
-      "src_main_hasstudioaccess",
-      "src_main_importsettings",
-      "src_main_loaddemoframes",
-      "src_main_loadvideo",
-      "src_main_makedemoframes",
-      "src_main_makeframesfromvideo",
-      "src_main_paintdemopeek",
-      "src_main_paintframes",
-      "src_main_rebuildoutputframes",
-      "src_main_schedulepreviewrender",
-      "src_main_seek",
-      "src_main_setstatus",
-      "src_main_showerror",
-      "src_main_updatesettings",
-      "src_main_value",
-      "src_main_yieldafterinteraction",
-      "src_main_yieldtobrowser"
-    ],
-    "2": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -82,6 +55,28 @@
       "tsconfig_compileroptions_target",
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
+    ],
+    "2": [
+      "src_core_downloadblob",
+      "src_core_savepreferences",
+      "src_main_bindworkspace",
+      "src_main_buildexportframes",
+      "src_main_clearerror",
+      "src_main_exportpdf",
+      "src_main_exportpng",
+      "src_main_hasstudioaccess",
+      "src_main_importsettings",
+      "src_main_loaddemoframes",
+      "src_main_loadvideo",
+      "src_main_makedemoframes",
+      "src_main_makeframesfromvideo",
+      "src_main_schedulepreviewrender",
+      "src_main_seek",
+      "src_main_setstatus",
+      "src_main_showerror",
+      "src_main_updatesettings",
+      "src_main_value",
+      "src_main_yieldafterinteraction"
     ],
     "3": [
       "axe_core_playwright",
@@ -106,13 +101,13 @@
     ],
     "4": [
       "src_core",
-      "src_core_applytracefilter",
       "src_core_ascii",
       "src_core_canvasblob",
       "src_core_crc32",
       "src_core_crctable",
       "src_core_defaultsettings",
       "src_core_drawcontactsheet",
+      "src_core_drawdemoframe",
       "src_core_filtermode",
       "src_core_framesettings",
       "src_core_joinbytes",
@@ -122,8 +117,7 @@
       "src_core_normalizesettings",
       "src_core_test",
       "src_core_u16",
-      "src_core_u32",
-      "src_main_traceframe"
+      "src_core_u32"
     ],
     "5": [
       "package",
@@ -156,6 +150,7 @@
       "tests_claims_spec_storage_getitem"
     ],
     "7": [
+      "test",
       "tests_site_spec",
       "tests_site_spec_expectinteractionswithinbudget",
       "tests_site_spec_installinteractionobserver",
@@ -165,80 +160,89 @@
       "tests_site_spec_visibleactiontargets"
     ],
     "8": [
+      "src_core_applytracefilter",
+      "src_main_paintdemopeek",
+      "src_main_paintframes",
+      "src_main_rebuildoutputframes",
+      "src_main_traceframe",
+      "src_main_yieldtobrowser"
+    ],
+    "9": [
       "factory_evidence_repair_3_interaction_audit",
       "factory_evidence_repair_3_interaction_audit_measure",
       "factory_evidence_repair_3_interaction_audit_mobilelinedetail",
       "factory_evidence_repair_3_interaction_audit_opendemo",
       "factory_evidence_repair_3_interaction_audit_result"
     ],
-    "9": [
+    "10": [
       "factory_qa_artifacts_live_qa",
       "factory_qa_artifacts_live_qa_makevideo",
       "factory_qa_artifacts_live_qa_output",
       "factory_qa_artifacts_live_qa_report",
       "factory_qa_artifacts_live_qa_watch"
     ],
-    "10": [
+    "11": [
       "scripts_finalize_build",
       "scripts_finalize_build_buildhash",
       "scripts_finalize_build_finalized",
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "11": [
+    "12": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "12": [
+    "13": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "13": [
+    "14": [
       "factory_evidence_repair_3_live_audit",
       "factory_evidence_repair_3_live_audit_result"
     ],
-    "14": [
+    "15": [
       "public_sw",
       "public_sw_precache"
     ],
-    "15": [
+    "16": [
       "eslint_config"
     ],
-    "16": [
+    "17": [
       "playwright_config"
     ],
-    "17": [
+    "18": [
       "src_vite_env_d"
     ],
-    "18": [
+    "19": [
       "vite_config"
     ],
-    "19": [
+    "20": [
       "vitest_config"
     ]
   },
   "cohesion": {
     "0": 0.14482758620689656,
-    "1": 0.20333333333333334,
-    "2": 0.09090909090909091,
+    "1": 0.09090909090909091,
+    "2": 0.2736842105263158,
     "3": 0.10526315789473684,
-    "4": 0.17543859649122806,
+    "4": 0.1895424836601307,
     "5": 0.15384615384615385,
     "6": 0.16666666666666666,
-    "7": 0.2857142857142857,
-    "8": 0.4,
+    "7": 0.25,
+    "8": 0.4666666666666667,
     "9": 0.4,
     "10": 0.4,
-    "11": 0.6666666666666666,
-    "12": 1.0,
+    "11": 0.4,
+    "12": 0.6666666666666666,
     "13": 1.0,
     "14": 1.0,
     "15": 1.0,
     "16": 1.0,
     "17": 1.0,
     "18": 1.0,
-    "19": 1.0
+    "19": 1.0,
+    "20": 1.0
   },
   "gods": [
     {
@@ -247,13 +251,13 @@
       "degree": 20
     },
     {
-      "id": "src_main_bindworkspace",
-      "label": "bindWorkspace()",
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
       "degree": 15
     },
     {
-      "id": "tsconfig_compileroptions",
-      "label": "compilerOptions",
+      "id": "src_main_bindworkspace",
+      "label": "bindWorkspace()",
       "degree": 15
     },
     {
@@ -267,46 +271,35 @@
       "degree": 11
     },
     {
-      "id": "src_main_exportpdf",
-      "label": "exportPdf()",
-      "degree": 9
-    },
-    {
       "id": "src_main_makedemoframes",
       "label": "makeDemoFrames()",
       "degree": 9
     },
     {
-      "id": "src_main_importsettings",
-      "label": "importSettings()",
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
+      "degree": 9
+    },
+    {
+      "id": "src_core_makepngzip",
+      "label": "makePngZip()",
       "degree": 8
     },
     {
-      "id": "src_main_exportpng",
-      "label": "exportPng()",
+      "id": "package_scripts",
+      "label": "scripts",
       "degree": 8
     },
     {
-      "id": "src_main_loadvideo",
-      "label": "loadVideo()",
+      "id": "src_main_value",
+      "label": "value()",
       "degree": 8
     }
   ],
   "surprises": [
     {
-      "source": "importSettings()",
-      "target": "normalizeSettings()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "render()",
-      "target": "normalizeSettings()",
+      "source": "loadDemoFrames()",
+      "target": "drawDemoFrame()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -340,6 +333,17 @@
     {
       "source": "exportPng()",
       "target": "makePngZip()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "importSettings()",
+      "target": "normalizeSettings()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
