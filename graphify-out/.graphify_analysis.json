@@ -1,16 +1,19 @@
 {
   "communities": {
     "0": [
-      "src_core_loadpreferences",
+      "src_core_normalizesettings",
+      "src_core_savepreferences",
       "src_main",
       "src_main_applylicenseverdict",
       "src_main_approot",
       "src_main_bindlicense",
       "src_main_bindnavigation",
+      "src_main_cancelpreviewrender",
       "src_main_cleanupvideo",
       "src_main_demobanner",
       "src_main_demopage",
       "src_main_homepage",
+      "src_main_importsettings",
       "src_main_initlicense",
       "src_main_licensestatustext",
       "src_main_licenseverdict",
@@ -77,6 +80,27 @@
       "vitest"
     ],
     "3": [
+      "src_core_downloadblob",
+      "src_main_bindworkspace",
+      "src_main_buildexportframes",
+      "src_main_clearerror",
+      "src_main_exportpdf",
+      "src_main_exportpng",
+      "src_main_hasstudioaccess",
+      "src_main_loaddemoframes",
+      "src_main_loadvideo",
+      "src_main_makedemoframes",
+      "src_main_makeframesfromvideo",
+      "src_main_paintframes",
+      "src_main_schedulepreviewrender",
+      "src_main_seek",
+      "src_main_setstatus",
+      "src_main_showerror",
+      "src_main_updatesettings",
+      "src_main_value",
+      "src_main_yieldafterinteraction"
+    ],
+    "4": [
       "src_core",
       "src_core_ascii",
       "src_core_canvasblob",
@@ -84,35 +108,17 @@
       "src_core_crctable",
       "src_core_defaultsettings",
       "src_core_drawcontactsheet",
+      "src_core_drawdemoframe",
       "src_core_filtermode",
       "src_core_framesettings",
       "src_core_joinbytes",
+      "src_core_loadpreferences",
       "src_core_makecontactsheets",
       "src_core_makepdf",
       "src_core_makepngzip",
-      "src_core_normalizesettings",
       "src_core_test",
       "src_core_u16",
       "src_core_u32"
-    ],
-    "4": [
-      "src_core_downloadblob",
-      "src_core_savepreferences",
-      "src_main_bindworkspace",
-      "src_main_clearerror",
-      "src_main_exportpdf",
-      "src_main_exportpng",
-      "src_main_hasstudioaccess",
-      "src_main_importsettings",
-      "src_main_loadvideo",
-      "src_main_makedemoframes",
-      "src_main_makeframesfromvideo",
-      "src_main_paintframes",
-      "src_main_seek",
-      "src_main_setstatus",
-      "src_main_showerror",
-      "src_main_updatesettings",
-      "src_main_value"
     ],
     "5": [
       "package",
@@ -145,78 +151,96 @@
       "tests_claims_spec_storage_getitem"
     ],
     "7": [
+      "test",
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
+    ],
+    "8": [
+      "factory_evidence_repair_3_interaction_audit",
+      "factory_evidence_repair_3_interaction_audit_measure",
+      "factory_evidence_repair_3_interaction_audit_mobilelinedetail",
+      "factory_evidence_repair_3_interaction_audit_opendemo",
+      "factory_evidence_repair_3_interaction_audit_result"
+    ],
+    "9": [
       "scripts_finalize_build",
       "scripts_finalize_build_buildhash",
       "scripts_finalize_build_finalized",
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "8": [
+    "10": [
       "src_core_applytracefilter",
-      "src_core_drawdemoframe",
-      "src_main_loaddemoframes",
       "src_main_paintdemopeek",
-      "src_main_rebuildoutputframes"
+      "src_main_rebuildoutputframes",
+      "src_main_traceframe",
+      "src_main_yieldtobrowser"
     ],
-    "9": [
+    "11": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "10": [
-      "tests_site_spec",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "11": [
+    "12": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "12": [
+    "13": [
+      "factory_evidence_repair_3_live_audit",
+      "factory_evidence_repair_3_live_audit_result"
+    ],
+    "14": [
       "public_sw",
       "public_sw_precache"
     ],
-    "13": [
+    "15": [
       "eslint_config"
     ],
-    "14": [
+    "16": [
       "playwright_config"
     ],
-    "15": [
+    "17": [
       "src_vite_env_d"
     ],
-    "16": [
+    "18": [
       "vite_config"
     ],
-    "17": [
+    "19": [
       "vitest_config"
     ]
   },
   "cohesion": {
-    "0": 0.15024630541871922,
+    "0": 0.14112903225806453,
     "1": 0.09090909090909091,
     "2": 0.10526315789473684,
-    "3": 0.20588235294117646,
-    "4": 0.29411764705882354,
+    "3": 0.2807017543859649,
+    "4": 0.1830065359477124,
     "5": 0.15384615384615385,
     "6": 0.16666666666666666,
-    "7": 0.4,
+    "7": 0.25,
     "8": 0.4,
-    "9": 0.6666666666666666,
-    "10": 0.6666666666666666,
-    "11": 1.0,
+    "9": 0.4,
+    "10": 0.4,
+    "11": 0.6666666666666666,
     "12": 1.0,
     "13": 1.0,
     "14": 1.0,
     "15": 1.0,
     "16": 1.0,
-    "17": 1.0
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
   },
   "gods": [
     {
       "id": "src_main_render",
       "label": "render()",
-      "degree": 19
+      "degree": 20
     },
     {
       "id": "tsconfig_compileroptions",
@@ -226,7 +250,7 @@
     {
       "id": "src_main_bindworkspace",
       "label": "bindWorkspace()",
-      "degree": 13
+      "degree": 15
     },
     {
       "id": "src_main_makeframesfromvideo",
@@ -234,62 +258,40 @@
       "degree": 11
     },
     {
+      "id": "src_main_setstatus",
+      "label": "setStatus()",
+      "degree": 10
+    },
+    {
+      "id": "src_main_makedemoframes",
+      "label": "makeDemoFrames()",
+      "degree": 9
+    },
+    {
+      "id": "src_main_exportpdf",
+      "label": "exportPdf()",
+      "degree": 9
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
+    },
+    {
       "id": "src_core_makepngzip",
       "label": "makePngZip()",
-      "degree": 8
-    },
-    {
-      "id": "src_main_importsettings",
-      "label": "importSettings()",
-      "degree": 8
-    },
-    {
-      "id": "src_main_loadvideo",
-      "label": "loadVideo()",
-      "degree": 8
-    },
-    {
-      "id": "src_main_showerror",
-      "label": "showError()",
       "degree": 8
     },
     {
       "id": "src_main_value",
       "label": "value()",
       "degree": 8
-    },
-    {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 8
     }
   ],
   "surprises": [
     {
-      "source": "applyLicenseVerdict()",
-      "target": "savePreferences()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "render()",
-      "target": "normalizeSettings()",
-      "source_files": [
-        "src/main.ts",
-        "src/core.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
-    {
-      "source": "exportPdf()",
-      "target": "makePdf()",
+      "source": "loadDemoFrames()",
+      "target": "drawDemoFrame()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
@@ -310,8 +312,30 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "importSettings()",
-      "target": "normalizeSettings()",
+      "source": "exportPdf()",
+      "target": "makePdf()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "updateSettings()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/main.ts",
+        "src/core.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "render()",
+      "target": "loadPreferences()",
       "source_files": [
         "src/main.ts",
         "src/core.ts"
