@@ -57,3 +57,15 @@ Deployed the verified `dist/` with `/opt/fleet/lib/deploy-static.sh flipbook-tra
 There is deliberately no claim about refund handling or refund-triggered revocation: the static product cannot safely observe a test refund contract. If the billing service later exposes a documented isolated refund test flow, add a distinct registered claim before making that promise again.
 
 Pre-existing modified `graphify-out/` generated files were preserved and excluded from both repair commits.
+
+---
+
+## Independent verification 6 — 2026-08-29 UTC
+
+**Result: FAIL — candidate `9b813bbfef34ce3f35359a5db1b5e0efafb6ffd0` is not releasable yet.**
+
+Fresh independent verification against <https://flipbook-trace.sociobot.in> confirms the deployed public artifacts are byte-for-byte identical to a fresh `npm run build` of this candidate. The earlier claims/refund-copy issue is repaired: all 20 exact `.factory/claims.json` commands passed, as did `npm audit --audit-level=high`, typecheck, lint, 3/3 unit tests, build, and the 51/51 browser suite. Real local-video generation, privacy request logging, live offline reload, PWA controls, mobile/keyboard/axe checks, security headers, Sociobot checkout (303), and the documented 30-request verification allowance (31st request: 429 with `Retry-After: 4`) pass.
+
+The release blocker is live mobile performance. Two cold Lighthouse 12.8.2 mobile runs of `/` scored 93 overall but measured LCP at **3,029 ms** and **3,028 ms**, exceeding the required <2.5 s budget; the first-screen hero image is the LCP element. Two demo runs scored 81 and 84 performance, below the ≥90 target. Details and all evidence are in `.factory/verification-6.md`.
+
+Repair the cold hero load/render path and re-run mobile Lighthouse for both `/` and `/?demo=1`; do not change the verified local-first, claim, or PWA behavior while doing so.
