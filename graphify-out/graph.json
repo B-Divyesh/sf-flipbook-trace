@@ -21,11 +21,35 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "pagemeta",
       "source_file": "src/static-pages.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_site_spec_interactiontiming",
+      "label": "InteractionTiming",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "interactiontiming",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "tests_site_spec_targetbox",
+      "label": "TargetBox",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "targetbox",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L86"
     },
     {
       "id": "tests_claims_spec_capturedrequest",
@@ -62,30 +86,6 @@
       "norm_label": "framesettings",
       "source_file": "src/settings.ts",
       "source_location": "L3"
-    },
-    {
-      "id": "tests_site_spec_interactiontiming",
-      "label": "InteractionTiming",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "interactiontiming",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L7"
-    },
-    {
-      "id": "tests_site_spec_targetbox",
-      "label": "TargetBox",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "targetbox",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L86"
     },
     {
       "id": "src_main_buildexportframes",
@@ -356,7 +356,7 @@
       "label": "homeContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "homecontent()",
       "source_file": "src/static-pages.ts",
@@ -367,7 +367,7 @@
       "label": "notFoundContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "notfoundcontent()",
       "source_file": "src/static-pages.ts",
@@ -378,7 +378,7 @@
       "label": "paidContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "paidcontent()",
       "source_file": "src/static-pages.ts",
@@ -389,7 +389,7 @@
       "label": "privacyContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "privacycontent()",
       "source_file": "src/static-pages.ts",
@@ -400,11 +400,55 @@
       "label": "termsContent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "termscontent()",
       "source_file": "src/static-pages.ts",
       "source_location": "L75"
+    },
+    {
+      "id": "tests_site_spec_expectinteractionswithinbudget",
+      "label": "expectInteractionsWithinBudget()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "expectinteractionswithinbudget()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "tests_site_spec_installinteractionobserver",
+      "label": "installInteractionObserver()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "installinteractionobserver()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_site_spec_measuredinteraction",
+      "label": "measuredInteraction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "measuredinteraction()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "tests_site_spec_visibleactiontargets",
+      "label": "visibleActionTargets()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "visibleactiontargets()",
+      "source_file": "tests/site.spec.ts",
+      "source_location": "L88"
     },
     {
       "id": "factory_evidence_repair_3_interaction_audit_measure",
@@ -1056,50 +1100,6 @@
       "source_location": "L765"
     },
     {
-      "id": "tests_site_spec_expectinteractionswithinbudget",
-      "label": "expectInteractionsWithinBudget()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "expectinteractionswithinbudget()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "tests_site_spec_installinteractionobserver",
-      "label": "installInteractionObserver()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "installinteractionobserver()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_site_spec_measuredinteraction",
-      "label": "measuredInteraction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "measuredinteraction()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L32"
-    },
-    {
-      "id": "tests_site_spec_visibleactiontargets",
-      "label": "visibleActionTargets()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 9,
-      "file_type": "code",
-      "norm_label": "visibleactiontargets()",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L88"
-    },
-    {
       "id": "src_main",
       "label": "main.ts",
       "_origin": "ast",
@@ -1370,83 +1370,23 @@
       "source_location": "L18"
     },
     {
-      "id": "scripts_finalize_build",
-      "label": "finalize-build.mjs",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "finalize-build.mjs",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "scripts_finalize_build_appmodules",
-      "label": "appModules",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "appmodules",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L14"
-    },
-    {
-      "id": "scripts_finalize_build_assetdirectory",
-      "label": "assetDirectory",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "assetdirectory",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L13"
-    },
-    {
-      "id": "scripts_finalize_build_buildhash",
-      "label": "buildHash",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "buildhash",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L17"
-    },
-    {
-      "id": "scripts_finalize_build_finalized",
-      "label": "finalized",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "finalized",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L18"
-    },
-    {
-      "id": "scripts_finalize_build_indexpath",
-      "label": "indexPath",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "indexpath",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L4"
-    },
-    {
-      "id": "scripts_finalize_build_workerpath",
-      "label": "workerPath",
-      "_origin": "ast",
-      "community": 10,
-      "file_type": "code",
-      "norm_label": "workerpath",
-      "source_file": "scripts/finalize-build.mjs",
-      "source_location": "L5"
-    },
-    {
       "id": "src_static_pages",
       "label": "static-pages.ts",
       "_origin": "ast",
-      "community": 11,
+      "community": 10,
       "file_type": "code",
       "norm_label": "static-pages.ts",
       "source_file": "src/static-pages.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_site_spec",
+      "label": "site.spec.ts",
+      "_origin": "ast",
+      "community": 11,
+      "file_type": "code",
+      "norm_label": "site.spec.ts",
+      "source_file": "tests/site.spec.ts",
       "source_location": "L1"
     },
     {
@@ -2110,24 +2050,74 @@
       "source_location": "L12"
     },
     {
-      "id": "test",
-      "label": "@playwright/test",
+      "id": "scripts_finalize_build",
+      "label": "finalize-build.mjs",
       "_origin": "ast",
       "community": 9,
-      "confidence": "EXTRACTED",
       "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "@playwright/test"
+      "norm_label": "finalize-build.mjs",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L1"
     },
     {
-      "id": "tests_site_spec",
-      "label": "site.spec.ts",
+      "id": "scripts_finalize_build_appmodules",
+      "label": "appModules",
       "_origin": "ast",
       "community": 9,
       "file_type": "code",
-      "norm_label": "site.spec.ts",
-      "source_file": "tests/site.spec.ts",
-      "source_location": "L1"
+      "norm_label": "appmodules",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L14"
+    },
+    {
+      "id": "scripts_finalize_build_assetdirectory",
+      "label": "assetDirectory",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "assetdirectory",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L13"
+    },
+    {
+      "id": "scripts_finalize_build_buildhash",
+      "label": "buildHash",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "buildhash",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L17"
+    },
+    {
+      "id": "scripts_finalize_build_finalized",
+      "label": "finalized",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "finalized",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L18"
+    },
+    {
+      "id": "scripts_finalize_build_indexpath",
+      "label": "indexPath",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "indexpath",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L4"
+    },
+    {
+      "id": "scripts_finalize_build_workerpath",
+      "label": "workerPath",
+      "_origin": "ast",
+      "community": 9,
+      "file_type": "code",
+      "norm_label": "workerpath",
+      "source_file": "scripts/finalize-build.mjs",
+      "source_location": "L5"
     }
   ],
   "links": [
@@ -5902,15 +5892,6 @@
       "source_file": "src/main.ts"
     },
     {
-      "source": "tests_site_spec",
-      "target": "test",
-      "relation": "dynamic_import",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/site.spec.ts"
-    },
-    {
       "source": "src_main_bindworkspace",
       "target": "src_main_exportpng",
       "relation": "indirect_call",
@@ -5936,5 +5917,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "05b66078cc04e57d0f7a9a336c73ea4fb871b06f"
+  "built_at_commit": "a17870d8a03ca5601523cd3ce933f83ce3274b76"
 }
