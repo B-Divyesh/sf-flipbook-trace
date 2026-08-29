@@ -1,0 +1,45 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/?demo=1",
+  "frameCount": 12,
+  "keyboard": {
+    "before": "142",
+    "after": "143"
+  },
+  "controlled": true,
+  "offlineReload": true,
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/?demo=1"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable-640.webp"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-7PM-RaOV.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-DXuvi8ru.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/?demo=1"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable-640.webp"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-7PM-RaOV.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-DXuvi8ru.css"
+    }
+  ]
+}

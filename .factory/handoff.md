@@ -2,6 +2,7 @@
 
 - Work order: `flipbook-trace-repair-5`
 - Repair base: verifier commit `7d415c3c5c8ac40fdee19fd69b8e307c22a26a3e`, candidate `9b813bbfef34ce3f35359a5db1b5e0efafb6ffd0`
+- Repair implementation commit: `03b344dfd10a3477c4a8123ac1d08bf966089cfe`
 - Product: local-first offline PWA, static deployment from `dist/`
 - Live URL: <https://flipbook-trace.sociobot.in>
 - Release build: `v1.0.8`
@@ -60,7 +61,21 @@ Exact JSON evidence is in `.factory/evidence-repair-5/final-local-*.json`; the l
 
 ## Deployment and live follow-up
 
-The static deployment and public-domain identity check are recorded after the release artifact is deployed. Compare the final `dist/index.html`, service worker, manifest, and hashed JS/CSS SHA-256 hashes against the live URL before accepting the release.
+Deployed the verified `dist/` with `/opt/fleet/lib/deploy-static.sh flipbook-trace dist` on 2026-08-29 UTC. Azure Static Web Apps accepted deployment `551bac5d-412a-4cd3-b371-4563bdac8923`; the configured custom domain returned HTTPS 200.
+
+- `index.html`, `/assets/index-7PM-RaOV.js`, `/assets/index-DXuvi8ru.css`, `sw.js`, and `manifest.webmanifest` each match the deployed public file byte-for-byte by SHA-256.
+- Live `verify-url.sh` passed at desktop and 390 px with the correct title, language, H1/main, image alternatives, button labels, and no console/page errors. Evidence: `.factory/evidence-repair-5/verify-url-live/verify.json`.
+- A fresh 390 px live demo run had no errors or cross-origin requests, changed Line detail from 142 to 143 by keyboard, received the controlling service worker, then reloaded offline with all 12 frames. Evidence: `.factory/evidence-repair-5/live-demo-mobile.json` and `.factory/evidence-repair-5/live-demo-mobile.png`.
+- The public JS and CSS responses are one-year immutable; `sw.js` is no-store/revalidatable. HTML, manifest, HSTS, `nosniff`, strict-origin referrer policy, restrictive permissions policy, and the self/Sociobot CSP all match the static deployment configuration. `/`, `/privacy`, and `/terms` return 200; the designed `/missing-page` returns 404.
+
+Fresh live mobile Lighthouse 12.8.2 results:
+
+| Route | Run 1 | Run 2 |
+| --- | --- | --- |
+| `/` | Performance 98; Accessibility/Best Practices/SEO 100; LCP 1,870 ms; TBT 0 ms; CLS 0 | Performance 99; Accessibility/Best Practices/SEO 100; LCP 1,649 ms; TBT 0 ms; CLS 0 |
+| `/?demo=1` | Performance 99; Accessibility/Best Practices/SEO 100; LCP 1,547 ms; TBT 45 ms; CLS 0.030 | Performance 99; Accessibility/Best Practices/SEO 100; LCP 1,551 ms; TBT 43 ms; CLS 0.030 |
+
+Exact live reports are in `.factory/evidence-repair-5/final-live-*.json`.
 
 ## Known gaps
 
