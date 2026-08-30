@@ -1,0 +1,13 @@
+
+> flipbook-trace@1.0.16 test:unit
+> vitest run
+
+
+ RUN  v3.2.7 /work/repo
+
+ ✓ src/core.test.ts (3 tests) 5ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:46:29
+   Duration  1.04s (transform 103ms, setup 0ms, collect 50ms, tests 5ms, environment 0ms, prepare 203ms)

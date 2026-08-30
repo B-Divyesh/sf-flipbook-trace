@@ -1,0 +1,18 @@
+{
+  "tested_at_utc": "2026-08-30",
+  "outage": {
+    "checkout_attempts": 3,
+    "checkout_statuses": [503, 503, 503],
+    "verify_attempts": 40,
+    "verify_statuses": { "503": 40 },
+    "retry_after_present": false
+  },
+  "after_recovery": {
+    "checkout_attempts": 3,
+    "checkout_statuses": [303, 303, 303],
+    "redirect_host": "checkout.dodopayments.com",
+    "verify_allowance": 30,
+    "first_429_request": 31,
+    "retry_after_seconds_on_first_429": 3
+  }
+}

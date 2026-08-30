@@ -1,0 +1,10 @@
+{
+  "candidate": "94a6e74b6a9d8aa2332d09a5268f5af66d84866f",
+  "url": "https://flipbook-trace.sociobot.in",
+  "public_build_files_checked": 30,
+  "sha256_matches": 30,
+  "mismatches": 0,
+  "missing": 0,
+  "excluded": ["staticwebapp.config.json"],
+  "note": "Deployment configuration is consumed by the host and is not a public artifact."
+}

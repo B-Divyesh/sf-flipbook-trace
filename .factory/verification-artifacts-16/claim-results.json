@@ -1,0 +1,16 @@
+{
+  "candidate": "94a6e74b6a9d8aa2332d09a5268f5af66d84866f",
+  "tested_at_utc": "2026-08-30",
+  "individual_claim_run": {
+    "total": 19,
+    "passed": 18,
+    "failed": 1,
+    "failed_id": "studio-purchase",
+    "expected_status": 303,
+    "observed_status": 503
+  },
+  "aggregate_runs": [
+    { "result": "failed", "passed": 58, "failed": 1, "failed_id": "studio-purchase" },
+    { "result": "passed_after_gateway_recovery", "passed": 59, "failed": 0 }
+  ]
+}

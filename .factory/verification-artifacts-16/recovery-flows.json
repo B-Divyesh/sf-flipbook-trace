@@ -1,0 +1,30 @@
+{
+  "paidWithoutLicense": {
+    "value": "960",
+    "alert": "That export width needs Studio. Buy or restore a license below."
+  },
+  "invalidSettings": {
+    "alert": "Those settings could not be imported. Choose a Flipbook Trace settings file."
+  },
+  "validSettings": {
+    "fps": "8",
+    "threshold": "177",
+    "gray": true,
+    "onion": true,
+    "errorHidden": true
+  },
+  "persistedSettings": {
+    "fps": "8",
+    "threshold": "177"
+  },
+  "emptyLicense": {
+    "status": "Paste a license token first."
+  },
+  "gatewayUnavailable": {
+    "status": "The license could not be checked. The free exports still work."
+  },
+  "errors": [
+    "console: Access to fetch at 'https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=qa16-browser-invalid' from origin 'https://flipbook-trace.sociobot.in' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "console: Failed to load resource: net::ERR_FAILED"
+  ]
+}

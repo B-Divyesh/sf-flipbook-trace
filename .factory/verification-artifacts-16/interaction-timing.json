@@ -1,0 +1,62 @@
+[
+  {
+    "name": "12-frame threshold",
+    "timings": [
+      {
+        "name": "keydown",
+        "duration": 40,
+        "processing": 2.7999999998137355,
+        "interactionId": 7488
+      },
+      {
+        "name": "keyup",
+        "duration": 32,
+        "processing": 0,
+        "interactionId": 7488
+      }
+    ],
+    "slowestMs": 40
+  },
+  {
+    "name": "60-frame regeneration",
+    "timings": [
+      {
+        "name": "pointerdown",
+        "duration": 64,
+        "processing": 1.8999999999068677,
+        "interactionId": 7495
+      },
+      {
+        "name": "pointerup",
+        "duration": 64,
+        "processing": 0.10000000009313226,
+        "interactionId": 7495
+      },
+      {
+        "name": "click",
+        "duration": 64,
+        "processing": 0.39999999990686774,
+        "interactionId": 7495
+      }
+    ],
+    "slowestMs": 64
+  },
+  {
+    "name": "60-frame threshold",
+    "timings": [
+      {
+        "name": "keydown",
+        "duration": 24,
+        "processing": 0.8000000002793968,
+        "interactionId": 7502
+      },
+      {
+        "name": "keyup",
+        "duration": 24,
+        "processing": 0,
+        "interactionId": 7502
+      }
+    ],
+    "slowestMs": 24
+  }
+]

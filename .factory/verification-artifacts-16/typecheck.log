@@ -1,0 +1,3 @@
+
+> flipbook-trace@1.0.16 typecheck
+> tsc --noEmit

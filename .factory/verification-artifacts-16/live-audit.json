@@ -1,0 +1,405 @@
+{
+  "testedAt": "2026-08-30T02:49:47.346Z",
+  "base": "https://flipbook-trace.sociobot.in",
+  "routes": {
+    "desktop:/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": [
+        "Turn your video into tracing frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "desktop:/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Trace a paper bird in twelve frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "desktop:/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Privacy without an upload"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "desktop:/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Terms for making trace sheets"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "desktop:/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Page not found"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    },
+    "mobile:/": {
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1": [
+        "Turn your video into tracing frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "mobile:/demo": {
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Trace a paper bird in twelve frames"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "mobile:/privacy": {
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Privacy without an upload"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "mobile:/terms": {
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Terms for making trace sheets"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": []
+    },
+    "mobile:/missing-page": {
+      "status": 404,
+      "title": "Page not found — Flipbook Trace",
+      "lang": "en",
+      "h1": [
+        "Page not found"
+      ],
+      "mainCount": 1,
+      "horizontalOverflow": false,
+      "seriousOrCritical": [],
+      "undersizedTargets": [],
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    }
+  },
+  "firstRead": {
+    "desktop": {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "h1": "Turn your video into tracing frames",
+      "audience": "For short-form creators making a hand-drawn flipbook without uploading their video.",
+      "action": "Try it with sample data",
+      "outcome": "It opens a ready 12-frame paper-bird sample.",
+      "facts": [
+        "Video stays in this browser.",
+        "Works offline after the first visit.",
+        "Free: PNG pack and PDF trace sheet."
+      ],
+      "actionBottom": 628.171875,
+      "factsBottom": 794.5625
+    },
+    "mobile": {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "h1": "Turn your video into tracing frames",
+      "audience": "For short-form creators making a hand-drawn flipbook without uploading their video.",
+      "action": "Try it with sample data",
+      "outcome": "It opens a ready 12-frame paper-bird sample.",
+      "facts": [
+        "Video stays in this browser.",
+        "Works offline after the first visit.",
+        "Free: PNG pack and PDF trace sheet."
+      ],
+      "actionBottom": 475.796875,
+      "factsBottom": 733.15625
+    }
+  },
+  "demoFlow": {
+    "banner": "Demo — sample data, nothing is saved\nReset demo\nStart for real",
+    "coldRequestCount": 7,
+    "coldRequests": [
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/?demo=1"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable.webp"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/index-4WJ-mQuz.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/index-akiwrH7p.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/demo-usHD92nC.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/demo-runtime-Cg_ClWPt.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/frame-processor-B3kBjuqS.js"
+      }
+    ],
+    "allColdRequestsSameOrigin": true,
+    "runtimeRequests": [
+      {
+        "method": "GET",
+        "url": "https://flipbook-trace.sociobot.in/assets/core-nBFmSFRJ.js"
+      }
+    ],
+    "maximumFrames": 60,
+    "invalidError": "The selected section must be 1–5 seconds inside the paper-bird sample. Change the start or end time.",
+    "framesAfterInvalid": 60,
+    "recoveryErrorHidden": true,
+    "resetFrames": 12,
+    "png": {
+      "filename": "flipbook-trace-frames.zip",
+      "bytes": 16797,
+      "signature": "504b0304"
+    },
+    "pdf": {
+      "filename": "flipbook-trace-sheet.pdf",
+      "bytes": 122419,
+      "signature": "%PDF-1.4"
+    },
+    "errors": []
+  },
+  "keyboard": {
+    "firstTab": {
+      "text": "Skip to main content",
+      "href": "#main"
+    },
+    "before": 142,
+    "after": 143,
+    "focus": {
+      "outlineColor": "rgb(173, 53, 45)",
+      "outlineStyle": "solid",
+      "outlineWidth": "3px",
+      "outlineOffset": "4px"
+    },
+    "download": "flipbook-trace-frames.zip"
+  },
+  "reducedMotion": {
+    "matches": true,
+    "maximumAnimationMs": 0.01,
+    "maximumTransitionMs": 0.01,
+    "elementsAboveOneMs": 0
+  },
+  "textResize": {
+    "/": {
+      "horizontalOverflow": false,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "/demo": {
+      "horizontalOverflow": false,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "/privacy": {
+      "horizontalOverflow": false,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "/terms": {
+      "horizontalOverflow": false,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  },
+  "pwa": {
+    "immediateControllerAfterReady": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "online": {
+      "controller": "https://flipbook-trace.sociobot.in/sw.js",
+      "caches": [
+        "flipbook-trace-v1.0.16-4e5020ee4e67-shell"
+      ],
+      "frames": 12
+    },
+    "offline": {
+      "responseStatus": 200,
+      "frames": 12,
+      "status": "12 frames ready"
+    },
+    "errors": []
+  },
+  "startup": {
+    "longestTasks": [
+      77,
+      114,
+      72,
+      52,
+      61
+    ],
+    "medianMs": 72,
+    "maximumMs": 114,
+    "allUnder200": true,
+    "medianUnder150": true
+  },
+  "headers": {
+    "document": {
+      "url": "https://flipbook-trace.sociobot.in/",
+      "status": 200,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "worker": {
+      "url": "https://flipbook-trace.sociobot.in/sw.js",
+      "status": 200,
+      "cacheControl": "no-cache, no-store, must-revalidate",
+      "contentType": "text/javascript",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "manifest": {
+      "url": "https://flipbook-trace.sociobot.in/manifest.webmanifest",
+      "status": 200,
+      "cacheControl": "public, max-age=3600, must-revalidate",
+      "contentType": "application/manifest+json",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "asset": {
+      "url": "https://flipbook-trace.sociobot.in/assets/index-4WJ-mQuz.js",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/javascript",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+      "hsts": "max-age=10886400; includeSubDomains; preload",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    "browserDocumentStatus": 200
+  },
+  "links": [
+    {
+      "href": "https://flipbook-trace.sociobot.in/#main",
+      "skipped": true
+    },
+    {
+      "href": "https://flipbook-trace.sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://flipbook-trace.sociobot.in/?demo=1",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://flipbook-trace.sociobot.in/#how",
+      "skipped": true
+    },
+    {
+      "href": "https://flipbook-trace.sociobot.in/privacy",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://api.sociobot.in/api/v1/products/flipbook-trace/checkout",
+      "status": 503,
+      "location": null
+    },
+    {
+      "href": "https://flipbook-trace.sociobot.in/terms",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://sociobot.in/",
+      "status": 200,
+      "location": null
+    }
+  ]
+}

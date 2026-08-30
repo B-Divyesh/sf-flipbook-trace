@@ -1,0 +1,50 @@
+
+> flipbook-trace@1.0.16 test
+> playwright test --grep @claim:studio-purchase
+
+[WebServer] (node:4072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4115) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/claims.spec.ts:391:1 › @claim:studio-purchase shows USD 9 one-time checkout and merchant/refund terms for Flipbook Trace Studio (1.8s)
+
+
+  1) [chromium] › tests/claims.spec.ts:391:1 › @claim:studio-purchase shows USD 9 one-time checkout and merchant/refund terms for Flipbook Trace Studio
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m303[39m
+    Received: [31m503[39m
+
+      398 |   const checkout = page.getByRole('link', { name: 'Buy Studio for $9' });
+      399 |   const response = await request.get(await checkout.getAttribute('href') as string, { maxRedirects: 0 });
+    > 400 |   expect(response.status()).toBe(303);
+          |                             ^
+      401 |   const location = response.headers().location!;
+      402 |   expect(location).toMatch(/^https:\/\/checkout\.dodopayments\.com\/session\//);
+      403 |   const body = await (await request.get(location)).text();
+        at /work/repo/tests/claims.spec.ts:400:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/claims--claim-studio-purch-48ef6-s-for-Flipbook-Trace-Studio-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/claims--claim-studio-purch-48ef6-s-for-Flipbook-Trace-Studio-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/claims--claim-studio-purch-48ef6-s-for-Flipbook-Trace-Studio-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/claims--claim-studio-purch-48ef6-s-for-Flipbook-Trace-Studio-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/claims.spec.ts:391:1 › @claim:studio-purchase shows USD 9 one-time checkout and merchant/refund terms for Flipbook Trace Studio

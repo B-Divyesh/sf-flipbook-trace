@@ -1,0 +1,92 @@
+{
+  "testedAt": "2026-08-30T02:53:35.806Z",
+  "results": {
+    "oneSecond": {
+      "status": "2 frames ready",
+      "frames": 2
+    },
+    "fiveSeconds": {
+      "status": "10 frames ready",
+      "frames": 10
+    },
+    "invalid-0.5": {
+      "error": "The selected section must be 1–5 seconds inside the video. Change the start or end time.",
+      "framesRetained": 10
+    },
+    "invalid-5.1": {
+      "error": "The selected section must be 1–5 seconds inside the video. Change the start or end time.",
+      "framesRetained": 10
+    },
+    "recovery": {
+      "status": "2 PNGs exported",
+      "errorHidden": true,
+      "download": "flipbook-trace-frames.zip"
+    },
+    "afterReload": {
+      "frames": 0,
+      "fileValue": ""
+    },
+    "invalidFile": {
+      "error": "That file is not a video. Choose a video this browser can play.",
+      "status": "Waiting for a video"
+    }
+  },
+  "workflowRequests": [
+    {
+      "method": "GET",
+      "url": "blob:https://flipbook-trace.sociobot.in/9355b00e-8b67-4d58-8cca-6cfe385787e3",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/hero-worktable.webp",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-4WJ-mQuz.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/index-akiwrH7p.css",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/app-Czm79Xs1.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/static-pages-BFaFwStQ.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/frame-processor-B3kBjuqS.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://flipbook-trace.sociobot.in/assets/core-nBFmSFRJ.js",
+      "body": null
+    }
+  ],
+  "storesBeforeReload": {
+    "local": {},
+    "session": {},
+    "dbs": [
+      {
+        "name": "flipbook-trace",
+        "version": 1
+      }
+    ]
+  },
+  "errors": []
+}
