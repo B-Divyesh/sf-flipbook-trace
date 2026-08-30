@@ -1,23 +1,128 @@
-# Review 8 handoff — FAIL
+# Flipbook Trace — polish round 8 handoff
 
-- Reviewed commit: `330edde6dae00dfe73308eb8ea8872ae2f5b8f7a`
-- Live URL: <https://flipbook-trace.sociobot.in>
-- Full report: [`.factory/review-8.md`](review-8.md)
+Status: complete. Release candidate `ed08fdd86c3fdc11b7cf8ba78dbfc7d037816899`
+was repaired against every finding through review commit
+`6e82b3eb4dcf039da3a71b476c3836ca8b6f52a5`.
 
-No product code was changed. Only this review and handoff were added.
+Live site: <https://flipbook-trace.sociobot.in>
 
-## Decision
+Direct demo: <https://flipbook-trace.sociobot.in/?demo=1>
 
-**FAIL — do not release this candidate.**
+Deployment ID: `63de9570-2f5a-4fd9-a3bc-70befccfe754`
 
-1. **F-8-1, blocking:** normal Tab navigation on the hydrated mobile demo skips every workspace control and both export buttons. `content-visibility: auto` on `.demo-main .preview-zone` excludes the focusable export subtree. Remove or narrow that optimization and test real Tab traversal.
-2. **F-8-2, major:** `studio-purchase` remains untested in this review because its registered test contacts external checkout hosts prohibited by this work order. Use a local contract fixture so every claim is sandbox-runnable.
+Release build: `v1.0.19`
 
-## Verification completed
+## What changed
 
-- Fresh live mobile and desktop cold reads: clear job, audience, and one-click sample action.
-- Live demo, reset, Start for real, same-origin request log, routes, metadata, link crawl, and Axe checks.
-- Clean clone: `npm ci`; 18 locally-contained registered claim tests passed; `npm run test:unit` (3/3), lint, typecheck, and build passed; `dist/` produced.
-- `studio-purchase` and therefore full `npm test` were not run, to comply with the explicit no-external-resource restriction.
+- Fixed the blocking keyboard regression by keeping `content-visibility` off
+  the interactive demo preview. Sequential Tab now reaches every control and
+  both exports; Enter downloads both files.
+- Replaced the Studio purchase claim's external requests with the versioned
+  local fixture `tests/fixtures/studio-checkout-contract.v1.json`. The test
+  proves the published endpoint and its USD 9.00, one-time, Dodo-hosted
+  contract without contacting billing.
+- Retained the plain first screen, one-click `?demo=1` path, persistent demo
+  banner, reset, Start for real, isolated in-memory sample data, route titles,
+  metadata, designed 404, legal links, responsive layout, and risograph visual
+  identity.
+- Updated `.factory/claims.json`, the copy audit, the version, the ≤120-character
+  verb-first catalog description, and the cumulative finding map in
+  `.factory/polish-8.md`.
+- Added a repeatable round-8 browser audit that checks route status and
+  structure, internal links, legal links, Axe, console errors, the build ID,
+  first-screen layout, checkout-link contract, sequential keyboard downloads,
+  demo reset, same-origin privacy, and offline reload.
 
-Pre-existing `graphify-out/` changes remain unstaged and untouched.
+## Clean-clone verification
+
+Clone: `/tmp/flipbook-polish8-clean.OvCN7i/repo` at product repair `4963ac1`.
+Logs are in `/tmp/flipbook-polish8-clean.OvCN7i/logs/`.
+
+- `npm ci`: passed; 141 packages, zero vulnerabilities.
+- Every one of the 19 exact test commands in `.factory/claims.json`: passed
+  independently, including `@claim:studio-purchase` with no external request.
+- `npm run test:unit`: 3/3 passed.
+- `npm run lint`: passed.
+- `npm run typecheck`: passed.
+- `npm test`: 64/64 passed.
+- `npm run build`: passed and produced `dist/index.html`.
+- Initial production assets: CSS 16.88 KB raw / 4.63 KB gzip; landing entry
+  JavaScript 3.66 KB raw plus 23.99 KB raw app chunk. The largest mobile hero
+  is 44.80 KB.
+
+The later commits contain only repeatable evidence tooling and this handoff;
+the product code exercised in the clean clone is unchanged.
+
+## Local browser evidence
+
+- `verify-url.sh` passed `/` and `/?demo=1`: correct title, `lang=en`, one
+  `<main>`, one H1, image alternatives, named buttons, and no console errors.
+- `.factory/evidence-polish-8-local/audit.json`: `pass: true` for `/`,
+  `/?demo=1`, `/demo`, `/privacy`, `/terms`, and the SPA not-found route.
+- Sequential Tab reached `threshold`, all following controls, `export-png`,
+  and `export-pdf`; Enter produced both downloads.
+- Demo regeneration and reset produced 12 → 60 → 12 frames.
+- The demo request log was same-origin only. Offline reload restored 12 frames
+  and the demo banner.
+- Local Lighthouse: home 100/100/100/100 and demo 99/100/100/100 for
+  Performance/Accessibility/Best Practices/SEO.
+
+Screenshots and reports are in `.factory/evidence-polish-8-local/`.
+
+## Deployment and cold-live verification
+
+Built `dist/` was deployed with:
+
+```sh
+/opt/fleet/lib/deploy-static.sh flipbook-trace dist
+```
+
+Only the allowed static product target `sf-flipbook-trace` was addressed. No
+other service, database, key vault, app setting, or secret was read or changed.
+
+After deployment, fresh browser contexts re-opened every route from the live
+origin. `.factory/evidence-polish-8-live/audit.json` records:
+
+- 200 for `/`, `/?demo=1`, `/demo`, `/privacy`, and `/terms`; 404 for
+  `/missing-page`.
+- Correct per-route title and canonical, `lang=en`, one H1, one main landmark,
+  legal links, and visible `v1.0.19` build ID on all six routes.
+- No dead same-origin link, no browser console error, and zero serious or
+  critical Axe violations.
+- All three facts inside the 390×844 first screen and a ready demo frame inside
+  the first demo screen at both mobile and desktop widths.
+- Sequential Tab access through the controls and successful keyboard PNG and
+  PDF downloads.
+- Functional 12 → 60 → 12 demo reset, only same-origin demo requests, and a
+  successful offline reload with all 12 frames.
+- The live buy link exactly matches the fixture's product endpoint. No checkout
+  or billing host was contacted.
+
+Cold live Lighthouse results:
+
+| Route | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `/` | 100 | 100 | 100 | 100 | 1,201 ms | 0 | 80 ms |
+| `/?demo=1` | 99 | 100 | 100 | 100 | 1,061 ms | 0.062 | 9 ms |
+
+Live screenshots, route captures, verification output, and Lighthouse JSON are
+in `.factory/evidence-polish-8-live/`. The finding-by-finding acceptance record
+is `.factory/polish-8.md`.
+
+## Run and verify
+
+```sh
+npm ci
+npm run test:unit
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run preview
+node scripts/polish-8-audit.mjs http://127.0.0.1:4173 .factory/evidence-polish-8-local local
+```
+
+## Known gaps
+
+None within the product contract or cumulative review findings. There are no
+TODOs or deferred minor findings.

@@ -1,6 +1,6 @@
 {
-  "baseUrl": "http://127.0.0.1:4173",
-  "mode": "local",
+  "baseUrl": "https://flipbook-trace.sociobot.in",
+  "mode": "live",
   "routes": [
     {
       "path": "/",
@@ -99,12 +99,12 @@
     },
     {
       "path": "/missing-page",
-      "status": 200,
+      "status": 404,
       "title": "Page not found — Flipbook Trace",
       "h1": 1,
       "main": 1,
       "lang": "en",
-      "canonical": "https://flipbook-trace.sociobot.in/missing-page",
+      "canonical": "https://flipbook-trace.sociobot.in/404.html",
       "build": true,
       "legalLinks": true,
       "axeSeriousOrCritical": 0,
@@ -151,14 +151,14 @@
     "banner": true
   },
   "requests": [
-    "http://127.0.0.1:4173/demo",
-    "http://127.0.0.1:4173/assets/hero-worktable-640.webp",
-    "http://127.0.0.1:4173/assets/index-BGaqZF94.js",
-    "http://127.0.0.1:4173/assets/index-g92mjG77.css",
-    "http://127.0.0.1:4173/assets/demo-BDcWYL2k.js",
-    "http://127.0.0.1:4173/assets/demo-runtime-DmUibRKO.js",
-    "http://127.0.0.1:4173/assets/frame-processor-B3kBjuqS.js",
-    "http://127.0.0.1:4173/assets/core-nBFmSFRJ.js"
+    "https://flipbook-trace.sociobot.in/demo",
+    "https://flipbook-trace.sociobot.in/assets/hero-worktable-640.webp",
+    "https://flipbook-trace.sociobot.in/assets/index-BGaqZF94.js",
+    "https://flipbook-trace.sociobot.in/assets/index-g92mjG77.css",
+    "https://flipbook-trace.sociobot.in/assets/demo-BDcWYL2k.js",
+    "https://flipbook-trace.sociobot.in/assets/demo-runtime-DmUibRKO.js",
+    "https://flipbook-trace.sociobot.in/assets/frame-processor-B3kBjuqS.js",
+    "https://flipbook-trace.sociobot.in/assets/core-nBFmSFRJ.js"
   ],
   "pass": true,
   "purchase": {

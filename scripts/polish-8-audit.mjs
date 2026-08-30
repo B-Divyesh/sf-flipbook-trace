@@ -1,13 +1,14 @@
 import AxeBuilder from '@axe-core/playwright';
 import { chromium } from '@playwright/test';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const [baseUrl, evidenceDir, mode = 'local'] = process.argv.slice(2);
 if (!baseUrl || !evidenceDir) throw new Error('Usage: node scripts/polish-8-audit.mjs <base-url> <evidence-dir> [local|live]');
 
 await mkdir(evidenceDir, { recursive: true });
 const browser = await chromium.launch();
-const results = { baseUrl, mode, routes: [], keyboard: {}, demo: {}, offline: {}, requests: [] };
+const results = { baseUrl, mode, routes: [], keyboard: {}, demo: {}, offline: {}, requests: [], pass: false };
+const checkoutContract = JSON.parse(await readFile(new URL('../tests/fixtures/studio-checkout-contract.v1.json', import.meta.url), 'utf8'));
 const expectedRoutes = [
   ['/', 200, 'Flipbook Trace — Turn video into tracing frames', '/'],
   ['/?demo=1', 200, 'Demo — Flipbook Trace', '/demo'],
@@ -35,13 +36,23 @@ try {
       main: await page.locator('main').count(),
       lang: await page.locator('html').getAttribute('lang'),
       canonical: await page.locator('link[rel="canonical"]').getAttribute('href'),
+      build: (await page.locator('body').innerText()).includes('v1.0.19 · Original generated artwork'),
+      legalLinks: await page.locator('a[href="/privacy"]').count() > 0 && await page.locator('a[href="/terms"]').count() > 0,
       axeSeriousOrCritical: serious.length,
       consoleErrors: errors,
     };
     if (route.status !== expectedStatus) throw new Error(`${path} returned ${route.status}; expected ${expectedStatus}`);
-    if (route.title !== title || route.h1 !== 1 || route.main !== 1 || route.lang !== 'en') throw new Error(`${path} structure or title failed: ${JSON.stringify(route)}`);
+    if (route.title !== title || route.h1 !== 1 || route.main !== 1 || route.lang !== 'en' || !route.build || !route.legalLinks) throw new Error(`${path} structure, title, build id, or legal links failed: ${JSON.stringify(route)}`);
     if (route.canonical !== `https://flipbook-trace.sociobot.in${canonicalPath}`) throw new Error(`${path} canonical failed: ${route.canonical}`);
     if (serious.length || errors.length) throw new Error(`${path} accessibility or console failure: ${JSON.stringify({ serious, errors })}`);
+    const internalLinks = await page.locator('a[href]').evaluateAll((links) => [...new Set(links.filter((link) => !link.getAttribute('href')?.startsWith('#')).map((link) => new URL(link.href)).filter((url) => url.origin === location.origin).map((url) => `${url.pathname}${url.search}`))]);
+    for (const href of internalLinks) {
+      const linked = await context.request.get(new URL(href, baseUrl).href);
+      if (linked.status() >= 400) throw new Error(`${path} has a dead internal link: ${href} returned ${linked.status()}`);
+    }
+    route.internalLinks = internalLinks;
+    const routeName = path === '/' ? 'home' : path.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
+    await page.screenshot({ path: `${evidenceDir}/route-${routeName}.png`, fullPage: true });
     results.routes.push(route);
     await context.close();
   }
@@ -50,6 +61,12 @@ try {
     const context = await browser.newContext({ viewport });
     const page = await context.newPage();
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
+    if (viewport.name === 'mobile') {
+      const checkoutHref = await page.getByRole('link', { name: 'Buy Studio for $9' }).getAttribute('href');
+      const expectedCheckout = `https://api.sociobot.in/api/v1/products/${checkoutContract.productSlug}/checkout`;
+      if (checkoutHref !== expectedCheckout) throw new Error(`Checkout link mismatch: ${checkoutHref}`);
+      results.purchase = { href: checkoutHref, fixture: checkoutContract };
+    }
     const facts = await page.locator('.fact-list').boundingBox();
     if (!facts || facts.y + facts.height > viewport.height) throw new Error(`${viewport.name} facts fall below the first screen`);
     await page.screenshot({ path: `${evidenceDir}/home-${viewport.name}.png`, fullPage: true });
@@ -123,6 +140,7 @@ try {
   if (results.offline.frames !== 12 || !results.offline.banner) throw new Error(`Offline demo failed: ${JSON.stringify(results.offline)}`);
   await offlineContext.close();
 
+  results.pass = true;
   await writeFile(`${evidenceDir}/audit.json`, `${JSON.stringify(results, null, 2)}\n`);
 } finally {
   await browser.close();
