@@ -227,16 +227,6 @@
       "src_settings_normalizesettings"
     ],
     "8": [
-      "test",
-      "tests_site_spec",
-      "tests_site_spec_expectinteractionswithinbudget",
-      "tests_site_spec_installinteractionobserver",
-      "tests_site_spec_interactiontiming",
-      "tests_site_spec_measuredinteraction",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "9": [
       "scripts_finalize_build",
       "scripts_finalize_build_appmodules",
       "scripts_finalize_build_assetdirectory",
@@ -245,7 +235,7 @@
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "10": [
+    "9": [
       "src_static_pages",
       "src_static_pages_homecontent",
       "src_static_pages_notfoundcontent",
@@ -253,6 +243,15 @@
       "src_static_pages_paidcontent",
       "src_static_pages_privacycontent",
       "src_static_pages_termscontent"
+    ],
+    "10": [
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
     ],
     "11": [
       "factory_evidence_repair_3_interaction_audit",
@@ -332,7 +331,7 @@
     "5": 0.15384615384615385,
     "6": 0.3181818181818182,
     "7": 0.26666666666666666,
-    "8": 0.25,
+    "8": 0.2857142857142857,
     "9": 0.2857142857142857,
     "10": 0.2857142857142857,
     "11": 0.4,
@@ -389,13 +388,13 @@
       "degree": 11
     },
     {
-      "id": "src_demo_runtime_loaddemoframes",
-      "label": "loadDemoFrames()",
+      "id": "src_demo_runtime_exportpng",
+      "label": "exportPng()",
       "degree": 11
     },
     {
-      "id": "src_demo_runtime_exportpng",
-      "label": "exportPng()",
+      "id": "src_demo_runtime_loaddemoframes",
+      "label": "loadDemoFrames()",
       "degree": 11
     },
     {
@@ -428,6 +427,17 @@
       "why": "bridges separate communities"
     },
     {
+      "source": "applyLicenseVerdict()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/app.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
       "source": "bindWorkspace()",
       "target": "downloadBlob()",
       "source_files": [
@@ -440,17 +450,6 @@
     },
     {
       "source": "exportPdf()",
-      "target": "downloadBlob()",
-      "source_files": [
-        "src/app.ts",
-        "src/settings.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "cross-file semantic connection"
-    },
-    {
-      "source": "exportPng()",
       "target": "downloadBlob()",
       "source_files": [
         "src/app.ts",
