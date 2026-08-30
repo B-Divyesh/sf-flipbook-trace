@@ -1,0 +1,115 @@
+{
+  "baseUrl": "http://127.0.0.1:4173",
+  "mode": "local",
+  "routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    },
+    {
+      "path": "/?demo=1",
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/demo",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "title": "Demo — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/demo",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/privacy",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "title": "Terms — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/terms",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    },
+    {
+      "path": "/missing-page",
+      "status": 200,
+      "title": "Page not found — Flipbook Trace",
+      "h1": 1,
+      "main": 1,
+      "lang": "en",
+      "canonical": "https://flipbook-trace.sociobot.in/missing-page",
+      "axeSeriousOrCritical": 0,
+      "consoleErrors": []
+    }
+  ],
+  "keyboard": {
+    "visited": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "reset-demo",
+      "",
+      "trim-start",
+      "trim-end",
+      "fps",
+      "",
+      "threshold",
+      "onion",
+      "quality",
+      "columns",
+      "make-frames",
+      "",
+      "export-png",
+      "export-pdf"
+    ],
+    "png": true,
+    "pdf": true
+  },
+  "demo": {
+    "expanded": 60,
+    "reset": 12
+  },
+  "offline": {
+    "frames": 12,
+    "banner": true
+  },
+  "requests": [
+    "http://127.0.0.1:4173/demo",
+    "http://127.0.0.1:4173/assets/hero-worktable-640.webp",
+    "http://127.0.0.1:4173/assets/index-BGaqZF94.js",
+    "http://127.0.0.1:4173/assets/index-g92mjG77.css",
+    "http://127.0.0.1:4173/assets/demo-BDcWYL2k.js",
+    "http://127.0.0.1:4173/assets/demo-runtime-DmUibRKO.js",
+    "http://127.0.0.1:4173/assets/frame-processor-B3kBjuqS.js",
+    "http://127.0.0.1:4173/assets/core-nBFmSFRJ.js"
+  ]
+}
