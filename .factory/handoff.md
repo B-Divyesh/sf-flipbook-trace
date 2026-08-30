@@ -1,34 +1,50 @@
-# Review 7 handoff — FAIL
+# Polish round 7 handoff — PASS
 
-Reviewed commit: `6a56c433cba96a6b91911f555ab233c809aa9381`
-
+Base review: `6538086fd9bf752e72d4112a76697b062bf260d6`<br>
+Product copy repair: `5ffd7e744351ff63db3caeb0c2ce7270aa9e76db`<br>
+Test reliability repair: `8017ef5`<br>
+Deployment: `90e40fb5-41fd-45bc-bbdc-d2c639ae3cb6`<br>
 Live site: <https://flipbook-trace.sociobot.in>
 
-## What was done
+## What changed
 
-- Completed cold first-read checks at 390×844 and 1440×900.
-- Audited every landing and README sentence, plus headings, actions, list items, and visible fragments.
-- Exercised the live one-click demo, 12→60→12 reset flow, real-storage isolation, and request log.
-- Ran all 19 exact claim commands independently from a clean clone.
-- Rechecked every earlier review finding against current code, tests, and the live site.
-- Crawled live links and verified routes, metadata, 404 behavior, focus restoration, accessibility, security headers, and visual identity.
-- Recorded the complete result in `.factory/review-7.md` without changing product code.
+- Resolved F-7-1 through F-7-5: one name for the numbered PNG pack and
+  frames-each-second setting; explicit method headings; task-specific section
+  labels; Studio-only paid-tier language; and a result-naming license
+  disclosure.
+- Retained and rechecked every older review finding: one-click isolated demo,
+  real 404, privacy/request guards, data-memory boundaries, exports, routing,
+  legal copy, mobile targets, metadata, and offline/PWA behavior.
+- Hardened route tests for hosts with real 404 status responses and ephemeral
+  preview ports.
+- Updated `.factory/catalog-description.txt` to the verb-first 68-character
+  sentence: “Turn a video into a numbered PNG pack and printable PDF trace
+  sheet.”
 
 ## Verification
 
-- Clean clone: `/tmp/flipbook-review7-clean.B7icdv/repo` at the reviewed commit.
-- Claim logs: `/tmp/flipbook-review7-clean.B7icdv/claim-logs/`; 19/19 commands passed.
-- `npm run test:unit`: 3/3 passed.
-- `npm run lint`: passed.
-- `npm run typecheck`: passed.
-- `npm test`: 59/59 passed.
-- `npm run build`: passed and produced `dist/`.
-- Live axe: zero serious/critical violations on `/`, `/?demo=1`, `/demo`, `/privacy`, `/terms`, and `/missing-page`.
-- Live crawler: no dead valid link; missing route returned the designed HTTP 404.
-- Live demo: sample visible in the first viewport, reset worked, and pre-seeded real storage remained unchanged.
+- Fresh clone: `/tmp/flipbook-polish7-clean.rDynEx/repo` at `8017ef5`.
+- `npm ci`: passed with no vulnerabilities reported.
+- All 19 exact claim commands in `.factory/claims.json`: passed independently.
+- `npm run test:unit`: 3/3 passed; `npm run lint`: passed; `npm run
+  typecheck`: passed; `npm test`: 64/64 passed; `npm run build`: passed and
+  produced `dist/`.
+- Local visual evidence: `test-results/polish-7-demo-first-390.png`,
+  `test-results/polish-7-demo-first-1440.png`, and
+  `test-results/polish-7-targets-*.png`.
+- Post-deploy `verify-url.sh` evidence: `/tmp/flipbook-polish7-live.tSGh62`.
+  Both home and demo had one H1/main, `lang=en`, no missing image alternatives,
+  no unlabeled buttons, and no console errors.
+- Cold live Playwright checks: zero serious/critical axe violations across `/`,
+  `/?demo=1`, `/demo`, `/privacy`, `/terms`, and `/missing-page`; the unknown
+  route returned HTTP 404.
+- Cold live demo: one click opened `?demo=1`; the banner, 12 frames, reset,
+  real-mode exit, destination focus, and offline reload were verified.
+- Live Lighthouse: Performance 100, Accessibility 100, Best Practices 100,
+  SEO 100; LCP 1,209 ms, CLS 0, TBT 27.5 ms.
 
-## Known gaps and next steps
+## Known gaps
 
-Verdict is **FAIL** because five minor copy findings remain: standardize the PNG-download and frame-frequency terms, make the three method headings explicit, remove or rewrite generic section labels and **STUDIO PASS**, and rename **Have a license?** to a result-naming action. See F-7-1 through F-7-5 in `.factory/review-7.md`.
+None. Every review finding is closed in `.factory/polish-7.md`.
 
 Pre-existing `graphify-out/` changes were not modified or staged.
