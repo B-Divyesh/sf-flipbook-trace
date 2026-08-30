@@ -2,7 +2,7 @@ const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) throw new Error('App root is missing.');
 
 const app = appRoot;
-const BUILD_ID = 'v1.0.16';
+const BUILD_ID = 'v1.0.17';
 const FRAME_WIDTH = 120;
 const FRAME_HEIGHT = 75;
 let drawingGeneration = 0;

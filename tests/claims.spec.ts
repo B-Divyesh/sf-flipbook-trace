@@ -388,13 +388,11 @@ test('@claim:studio-quality exports 1920 px, original-width PNGs, and six-column
   expectRenderedCells(await readFile((await (await download).path())!), 6, 6);
 });
 
-test('@claim:studio-purchase shows USD 9 one-time checkout and merchant/refund terms for Flipbook Trace Studio', async ({ request, page }) => {
+test('@claim:studio-purchase shows a USD 9 one-time Flipbook Trace Studio checkout on Dodo', async ({ request, page }) => {
   await page.route('https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=returned-test', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok' }) }));
   await page.goto('/?license=returned-test');
   expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBe('returned-test');
-  await expect(page.getByText('Dodo is the merchant of record for Sociobot.')).toBeVisible();
-  await expect(page.getByText('Dodo handles refunds.')).toBeVisible();
-  await expect(page.getByText('A refund automatically revokes the Studio license.')).toBeVisible();
+  await expect(page.getByText('Dodo opens the checkout for Sociobot.')).toBeVisible();
   const checkout = page.getByRole('link', { name: 'Buy Studio for $9' });
   const response = await request.get(await checkout.getAttribute('href') as string, { maxRedirects: 0 });
   expect(response.status()).toBe(303);
@@ -406,17 +404,12 @@ test('@claim:studio-purchase shows USD 9 one-time checkout and merchant/refund t
   expect(body).toContain('One-time');
 
   await page.goto('/terms');
-  await expect(page.getByText('Dodo is the merchant of record for Sociobot.')).toBeVisible();
-  await expect(page.getByText('Dodo handles refunds.')).toBeVisible();
-  await expect(page.getByText('A refund automatically revokes the Studio license.')).toBeVisible();
+  await expect(page.getByText('Dodo opens the checkout for Sociobot.')).toBeVisible();
   const readme = await readFile('README.md', 'utf8');
   const publishedPurchaseTerms = `${await page.locator('main').innerText()}\n${readme}`;
-  expect(readme).toContain('Dodo is the merchant of record for Sociobot.');
-  expect(readme).toContain('Dodo handles refunds.');
-  expect(readme).toContain('A refund automatically revokes the Studio license.');
-  expect(publishedPurchaseTerms).toMatch(/Dodo is the merchant of record for Sociobot\./i);
-  expect(publishedPurchaseTerms).toMatch(/Dodo handles refunds\./i);
-  expect(publishedPurchaseTerms).toMatch(/A refund automatically revokes the Studio license\./i);
+  expect(readme).toContain('Dodo opens the checkout for Sociobot.');
+  expect(publishedPurchaseTerms).toMatch(/Dodo opens the checkout for Sociobot\./i);
+  expect(publishedPurchaseTerms).not.toMatch(/merchant of record|refund/i);
 });
 
 test('@claim:studio-license-check sends a pasted license only to Sociobot verification', async ({ page }) => {

@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-29 for repair round 8. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
+Audited 2026-08-30 for polish round 6. Counts treat hyphenated ranges and contractions as one word. Headings, action labels, field labels, and sentence fragments are included because visitors read them as product copy.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -36,9 +36,7 @@ Audited 2026-08-29 for repair round 8. Counts treat hyphenated ranges and contra
 | Trim the video before loading it if your device slows down. | 11 | Limitation |
 | $9 once. | 2 | Registered: `studio-purchase` |
 | Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet. | 16 | Registered: `studio-quality` |
-| Dodo is the merchant of record for Sociobot. | 8 | Registered: `studio-purchase` |
-| Dodo handles refunds. | 3 | Registered: `studio-purchase` |
-| A refund automatically revokes the Studio license. | 7 | Registered: `studio-purchase` |
+| Dodo opens the checkout for Sociobot. | 6 | Registered: `studio-purchase` |
 | This license is not active. | 5 | Persistent license state |
 | This Studio license was revoked. | 5 | Persistent license state |
 
@@ -57,4 +55,4 @@ No customer-facing sentence exceeds 22 words. No sentence uses a banned marketin
 | Paid tier | Studio |
 | Sample workspace | paper-bird sample |
 
-Catalog description: **Turn a local video into printable tracing frames without uploading it.** (11 words, 67 characters)
+Catalog description: **Turn local videos into printable tracing frames without uploads.** (9 words, 62 characters)
