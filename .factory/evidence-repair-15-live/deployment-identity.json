@@ -1,0 +1,13 @@
+{
+  "url": "https://flipbook-trace.sociobot.in",
+  "deploymentId": "5fcd8090-7981-4e21-a357-f10ae050752e",
+  "sourceCommit": "88c5db8",
+  "publicFilesChecked": 23,
+  "publicFilesMatched": 23,
+  "excluded": [
+    "staticwebapp.config.json"
+  ],
+  "manifestStartUrl": "/?source=pwa&v=16",
+  "serviceWorkerCache": "flipbook-trace-v1.0.16-4e5020ee4e67",
+  "entryAsset": "assets/index-4WJ-mQuz.js"
+}

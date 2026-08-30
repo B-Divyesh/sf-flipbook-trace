@@ -1,0 +1,23 @@
+{
+  "origin": "https://flipbook-trace.sociobot.in",
+  "before": {
+    "controller": true,
+    "workerScript": "https://flipbook-trace.sociobot.in/sw.js",
+    "footer": "Turn your video into printable tracing frames.PrivacyTermsBuilt by Param Factory (opens in a new tab)v1.0.16 · Original generated artwork",
+    "frameCount": 12,
+    "scrollWidth": 390
+  },
+  "keyboard": {
+    "active": "skip-link",
+    "skipFocused": true
+  },
+  "offline": {
+    "heading": "Trace a paper bird in twelve frames",
+    "frameCount": 12,
+    "status": "12 frames ready"
+  },
+  "requestOrigins": [
+    "https://flipbook-trace.sociobot.in"
+  ],
+  "errors": []
+}

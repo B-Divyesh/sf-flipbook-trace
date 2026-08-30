@@ -1,4 +1,4 @@
-# Repair 15 handoff — ready to deploy
+# Repair 15 handoff — deployed
 
 Repaired both release blockers in independent verification report commit `181f1e9f43b65b3a9b11908f797505d948791d6c` for candidate `7123baf0faa6c1abbb94ead54b4cb85f4a51dbc1`.
 
@@ -37,13 +37,18 @@ Open `http://127.0.0.1:4173/?demo=1` for the isolated sample demo.
 
 ## Deployment
 
-Static `dist/` is ready for deployment using:
+Deployed the `dist/` artifact from repair commit `88c5db8` using:
 
 ```bash
 /opt/fleet/lib/deploy-static.sh flipbook-trace dist
 ```
 
-Post-deployment identity, header, route, PWA/offline, and live browser evidence will be appended after publication.
+Azure Static Web Apps deployment `5fcd8090-7981-4e21-a357-f10ae050752e` succeeded. The published URL is [https://flipbook-trace.sociobot.in](https://flipbook-trace.sociobot.in).
+
+- Live identity: all **23/23** publicly served files from `dist/` matched the deployed bytes by SHA-256; deployment-only `staticwebapp.config.json` is deliberately excluded. The live entry is `index-4WJ-mQuz.js`, the manifest start URL is `/?source=pwa&v=16`, the worker cache is `flipbook-trace-v1.0.16-4e5020ee4e67`, and the live footer reports `v1.0.16`. Evidence: [`deployment-identity.json`](evidence-repair-15-live/deployment-identity.json).
+- Live browser routes: the factory verifier passed `/`, `/?demo=1`, `/privacy`, and `/terms` over HTTPS. Each had its correct title, `lang=en`, one H1, main landmark, no unlabelled buttons or missing image alternatives, and no console errors. Desktop screenshots and 390 px screenshots are in [`evidence-repair-15-live`](evidence-repair-15-live/). `/missing-page` returned the intended HTTP 404.
+- Live PWA/mobile: in a fresh 390×844 context, the demo was controlled by `https://flipbook-trace.sociobot.in/sw.js`, the first Tab focused the skip link, and—after network was disabled—reload restored the twelve-frame sample with `12 frames ready`. All observed cold-demo requests were same-origin and no console errors occurred. Evidence: [`pwa-offline.json`](evidence-repair-15-live/pwa-offline.json).
+- Live response policy: HTTPS replies supplied HSTS, `X-Content-Type-Options: nosniff`, strict referrer policy, camera/microphone/geolocation denial, and the restrictive self/Sociobot CSP including response-header `frame-ancestors 'none'`.
 
 ## Known gaps
 
