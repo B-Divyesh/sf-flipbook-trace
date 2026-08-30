@@ -1,0 +1,55 @@
+{
+  "candidate_commit": "5ffd7e744351ff63db3caeb0c2ce7270aa9e76db",
+  "verified_at": "2026-08-30",
+  "verify_url": {
+    "home": {
+      "load_ms": 648,
+      "title": "Flipbook Trace — Turn video into tracing frames",
+      "lang": "en",
+      "h1_count": 1,
+      "main": true,
+      "missing_alt_count": 0,
+      "unlabeled_button_count": 0,
+      "console_errors": []
+    },
+    "demo": {
+      "load_ms": 566,
+      "title": "Demo — Flipbook Trace",
+      "lang": "en",
+      "h1_count": 1,
+      "main": true,
+      "missing_alt_count": 0,
+      "unlabeled_button_count": 0,
+      "console_errors": []
+    }
+  },
+  "lighthouse_mobile": {
+    "home": {
+      "performance": 100,
+      "accessibility": 100,
+      "best_practices": 100,
+      "seo": 100,
+      "lcp_ms": 1546,
+      "cls": 0,
+      "tbt_ms": 47
+    },
+    "demo": {
+      "performance": 99,
+      "accessibility": 100,
+      "best_practices": 100,
+      "seo": 100,
+      "lcp_ms": 1504,
+      "cls": 0.06154,
+      "tbt_ms": 0
+    }
+  },
+  "automated_suite": {
+    "claims": "19/19 exact claim commands passed independently from a clean clone",
+    "unit": "3/3 passed",
+    "browser": "64/64 passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed; dist/index.html exists",
+    "axe": "zero serious or critical violations on home, demo, privacy, terms, and missing-page routes"
+  }
+}
