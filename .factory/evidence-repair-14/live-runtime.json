@@ -1,0 +1,20 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/demo",
+  "viewport": "390x844",
+  "online": {
+    "title": "Demo — Flipbook Trace",
+    "version": "v1.0.15",
+    "frames": 12,
+    "serviceWorkerControlled": true,
+    "skipLinkFocusedOnFirstTab": true
+  },
+  "offlineReload": {
+    "title": "Demo — Flipbook Trace",
+    "frames": 12,
+    "status": "12 frames ready"
+  },
+  "requestOrigins": [
+    "https://flipbook-trace.sociobot.in"
+  ],
+  "allRequestsSameOrigin": true
+}

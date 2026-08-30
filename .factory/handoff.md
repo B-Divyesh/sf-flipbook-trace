@@ -1,4 +1,4 @@
-# Repair 14 handoff — ready to release
+# Repair 14 handoff — deployed
 
 Repaired every release blocker from verifier report commit `15eea71a3004623f61e2fb4b521c938cab486d2c` for candidate `0b38b51ff3ec514b6973806c40e6805e4d89af2c`.
 
@@ -40,13 +40,19 @@ Open `http://127.0.0.1:4173/?demo=1` for the isolated sample demo.
 
 ## Deployment
 
-Static deployment is performed after this handoff is committed with:
+Deployed static `dist/` from repair commit `bfcf989` on 2026-08-30. Azure Static Web Apps deployment `8e2a44eb-a530-471c-ba2a-26af7d490561` completed successfully.
+
+- Live URL: https://flipbook-trace.sociobot.in
+- Live artifact identity: the fetched `/` SHA-256 was `8847ddc304bb92718cccdcc50cda826caf63cdc6b114b0af3d23ad936a1e90df`, exactly matching `dist/index.html`; both reference `assets/index-BX25q4jx.js`. The live footer reports `v1.0.15`.
+- Live route checks: `/`, `/demo`, `/privacy`, and `/terms` each returned 200 in `/opt/fleet/lib/verify-url.sh`; all had no console errors, one H1, a main landmark, `lang=en`, and no missing image alt attributes. Evidence: [`evidence-repair-14/live-home`](evidence-repair-14/live-home/), [`live-demo`](evidence-repair-14/live-demo/), [`live-privacy`](evidence-repair-14/live-privacy/), and [`live-terms`](evidence-repair-14/live-terms/).
+- Live PWA/privacy check at 390×844: after an online service-worker-controlled reload, the demo showed 12 frames and `v1.0.15`; an offline reload again showed 12 frames and `12 frames ready`. Captured requests used only `https://flipbook-trace.sociobot.in`; the first Tab focused the skip link. Evidence: [`live-runtime.json`](evidence-repair-14/live-runtime.json).
+- Live response policy: HTTPS responses include the expected CSP with `frame-ancestors 'none'`, HSTS, `X-Content-Type-Options: nosniff`, strict referrer policy, locked-down permissions policy, and `no-cache, no-store, must-revalidate` for `/sw.js`.
+
+Deployment command:
 
 ```bash
 /opt/fleet/lib/deploy-static.sh flipbook-trace dist
 ```
-
-Post-deploy URL and identity checks are recorded in this handoff after the deployment completes.
 
 ## Known gaps
 
