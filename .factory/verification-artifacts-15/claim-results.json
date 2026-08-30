@@ -1,0 +1,30 @@
+{
+  "candidate": "7123baf0faa6c1abbb94ead54b4cb85f4a51dbc1",
+  "checkout": "/tmp/flipbook-trace-verify-15",
+  "clean_before_install": true,
+  "install": "npm ci",
+  "declared_claim_count": 19,
+  "results": [
+    {"id":"clip-workflow","result":"pass"},
+    {"id":"demo-ready","result":"pass"},
+    {"id":"demo-workflow","result":"pass"},
+    {"id":"demo-isolation","result":"pass"},
+    {"id":"png-export","result":"pass"},
+    {"id":"pdf-export","result":"pass"},
+    {"id":"local-processing","result":"pass"},
+    {"id":"ephemeral-project","result":"pass"},
+    {"id":"trace-controls","result":"pass"},
+    {"id":"settings-portability","result":"pass"},
+    {"id":"offline-reload","result":"pass"},
+    {"id":"pwa-installable","result":"fail","evidence":"navigator.serviceWorker.ready resolved but navigator.serviceWorker.controller was false"},
+    {"id":"free-quality","result":"pass"},
+    {"id":"studio-quality","result":"pass"},
+    {"id":"studio-purchase","result":"pass"},
+    {"id":"studio-license-check","result":"pass"},
+    {"id":"studio-license-cache","result":"pass"},
+    {"id":"browser-data-deletion","result":"pass"},
+    {"id":"app-update-check","result":"pass"}
+  ],
+  "pwa_installable_immediate_rerun": "10/10 passed",
+  "release_rule": "Any failing declared claim test is release-blocking"
+}

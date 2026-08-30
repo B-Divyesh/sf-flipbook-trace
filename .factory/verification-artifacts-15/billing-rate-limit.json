@@ -1,0 +1,11 @@
+{
+  "tested_at": "2026-08-30T00:42:30Z",
+  "endpoint": "https://api.sociobot.in/api/v1/products/flipbook-trace/verify",
+  "credential": "deliberately invalid generated QA token",
+  "requests_1_through_30": 200,
+  "request_31": 429,
+  "retry_after": "4",
+  "x_ratelimit_after": "4",
+  "observed_allowance": 30,
+  "response_body": "Too Many Requests! Wait for 4s"
+}

@@ -1,0 +1,47 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/?demo=1",
+  "viewport": "390x844",
+  "deviceScaleFactor": 1.75,
+  "cpuThrottle": 4,
+  "batches": [
+    {
+      "batch": 1,
+      "values": [
+        161,
+        114,
+        119,
+        145,
+        123
+      ],
+      "median": 123,
+      "maximum": 161,
+      "passes": true
+    },
+    {
+      "batch": 2,
+      "values": [
+        133,
+        103,
+        114,
+        139,
+        136
+      ],
+      "median": 133,
+      "maximum": 139,
+      "passes": true
+    },
+    {
+      "batch": 3,
+      "values": [
+        133,
+        133,
+        116,
+        119,
+        116
+      ],
+      "median": 119,
+      "maximum": 133,
+      "passes": true
+    }
+  ]
+}

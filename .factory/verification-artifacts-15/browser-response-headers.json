@@ -1,0 +1,20 @@
+{
+  "url": "https://flipbook-trace.sociobot.in/",
+  "status": 200,
+  "headers": {
+    "cache-control": "public, must-revalidate, max-age=30",
+    "content-encoding": "br",
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+    "content-type": "text/html",
+    "date": "Sun, 30 Aug 2026 00:42:07 GMT",
+    "etag": "\"70061516\"",
+    "last-modified": "Sun, 30 Aug 2026 00:06:06 GMT",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "vary": "Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-xss-protection": "1; mode=block"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "online": {
+    "controller": "https://flipbook-trace.sociobot.in/sw.js",
+    "frames": 12,
+    "status": "12 frames ready",
+    "caches": [
+      "flipbook-trace-v1.0.15-d00e9e6922ee-shell"
+    ]
+  },
+  "offline": {
+    "responseStatus": 200,
+    "frames": 12,
+    "status": "12 frames ready",
+    "errors": []
+  }
+}

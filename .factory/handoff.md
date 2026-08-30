@@ -1,59 +1,37 @@
-# Repair 14 handoff — deployed
+# Verification 15 handoff — FAIL
 
-Repaired every release blocker from verifier report commit `15eea71a3004623f61e2fb4b521c938cab486d2c` for candidate `0b38b51ff3ec514b6973806c40e6805e4d89af2c`.
+Candidate `7123baf0faa6c1abbb94ead54b4cb85f4a51dbc1` was independently tested on 2026-08-30 against <https://flipbook-trace.sociobot.in>. **Do not release it.** The live deployment exactly matches all 30 public files from the fresh candidate build, so this is not a deployment mismatch.
 
-## Fixed
+## Release blockers
 
-1. Cold mobile demo startup now paints a small, useful 12-frame sample shell before the editor, filter, ZIP, and PDF paths hydrate. The interactive editor mounts only after its own sample refresh completes, so controls cannot race a partial preview. Five fresh `390×844`, DPR `1.75`, 4× CPU-throttled loads measured `132, 106, 123, 108, 92 ms` long-task maxima: max `132 ms`, median `108 ms`, under the `200 ms` hard and `150 ms` median gates. Evidence: [`startup-longtasks.json`](evidence-repair-14/startup-longtasks.json).
-2. Frame cards no longer animate opacity. Their paper and dark frame numbers remain fully opaque while cards move into place, preventing the transient blue-workspace contrast failure. The regression test checks computed paper/ink colors and runs axe during entry.
-3. Studio purchase copy now clearly says Dodo is Sociobot's merchant of record, Dodo handles refunds, and refunds revoke the Studio license. The exact checkout claim test asserts these disclosures on the landing page, Terms, and README.
+1. `npm test -- --reporter=list` failed the mobile demo startup gate: **58/59 passed**. Five 4×-CPU cold starts measured `[160, 162, 121, 122, 158]` ms; median 158 ms fails the `<150 ms` guard. A three-repeat focused run failed twice, including one 210 ms task above the 200 ms hard limit.
+2. The clean per-claim run failed `@claim:pwa-installable` once because `navigator.serviceWorker.ready` resolved before `navigator.serviceWorker.controller` became available. A 10-repeat rerun passed, but the same race appeared once in ten fresh live contexts. The acceptance contract makes any failed declared claim release-blocking.
 
-The static PWA/deployment class is unchanged. Demo data remains memory-only and sample-only; the real video workflow, local preferences, paid license verification, exports, service worker, and existing passed behaviour remain intact.
+## What passed
 
-## Verification
+- Cold first read and one-click populated demo.
+- The other 18 declared claim commands.
+- `npm ci`, typecheck, lint, 3/3 unit tests, exact build, and production dependency audit.
+- Real generated-video 1–5 second boundaries and invalid-range recovery; live 12→60-frame demo, invalid-file handling, ZIP/PDF downloads, and reset.
+- Desktop/390 px layouts, keyboard, visible focus, 200% text, reduced motion, touch targets, route semantics, and axe serious/critical scans.
+- Privacy/storage checks, same-origin runtime traffic, security headers, immutable asset caching, checkout redirect, and license rate limiting (30 allowed; request 31 returned 429 with `Retry-After: 4`).
+- Live service-worker control after lifecycle completion, offline reload with 12 frames, and simulated update activation/cache replacement.
+- Live Lighthouse: 93 performance, 100 accessibility, 100 best practices, 100 SEO; LCP 1.1 s and CLS 0.031.
 
-- Clean dependency install: `npm ci` — passed (0 vulnerabilities reported by production audit).
-- Full browser/unit/integration suite: `npm test` — **59 passed**.
-- Strict startup regression after the complete suite: `npm test -- --grep "demo startup chunks"` — passed with the `150 ms` median guard.
-- Repeat regression run: `npm test -- --grep "demo startup chunks|demo frame entry preserves|production entry keeps|demo startup fetches" --repeat-each=5` — **20 passed**.
-- Type/lint/build: `npm run typecheck`, `npm run lint`, `npm run build` — passed; `dist/` produced.
-- Dependency audit: `npm audit --omit=dev --audit-level=high` — 0 vulnerabilities.
-- Local browser checks: `/opt/fleet/lib/verify-url.sh` passed for `/`, `/demo`, `/privacy`, and `/terms`, with no console errors, one H1 and main landmark per route, `lang=en`, and no missing image alt text. Evidence: [`evidence-repair-14`](evidence-repair-14/).
-- Accessibility: Playwright Axe scans across every route and the transient demo-entry regression passed with no serious/critical violations. `@axe-core/cli` was also invoked, but its bundled ChromeDriver only supports Chrome 152 while the provided browser is Chrome 145; the supported Playwright Axe integration is the authoritative passing scan in this environment.
-- Keyboard/mobile: the suite verifies Tab skip links, 44px actions at 390px, Arrow-key line-detail adjustment, Enter PNG export, and desktop/mobile interaction budgets.
-- Privacy/offline/update: claim tests verify no video/frame network traffic or persistent storage, offline demo reload, installed PWA/service-worker control, and update activation/cache replacement.
-- Response policy: production `staticwebapp.config.json` keeps CSP (`'self'` plus the explicit Sociobot API endpoint), `frame-ancestors 'none'`, `nosniff`, strict referrer policy, permissions policy, immutable hashed assets, no-cache service-worker policy, and a designed static 404.
-- Local mobile Lighthouse for `/demo`: **100 performance, 100 accessibility, 100 best practices, 100 SEO**; LCP 1355 ms, CLS 0.031, TBT 0 ms. Evidence: [`lighthouse-local-demo.json`](evidence-repair-14/lighthouse-local-demo.json).
+## Verification commands
 
-Initial JS is 1.60 kB gzip; the direct demo shell is 1.95 kB gzip; CSS is 4.47 kB gzip.
-
-## Run locally
-
-```bash
+```sh
+git worktree add --detach /tmp/flipbook-trace-verify-15 7123baf0faa6c1abbb94ead54b4cb85f4a51dbc1
+cd /tmp/flipbook-trace-verify-15
 npm ci
-npm test
+# Run each test command in .factory/claims.json separately.
+npm run typecheck
+npm run lint
+npm run test:unit
 npm run build
-npm run preview
+npm audit --omit=dev --audit-level=high
+npm test -- --reporter=list
+npm test -- --grep 'demo startup chunks' --repeat-each=3 --reporter=list
 ```
 
-Open `http://127.0.0.1:4173/?demo=1` for the isolated sample demo.
-
-## Deployment
-
-Deployed static `dist/` from repair commit `bfcf989` on 2026-08-30. Azure Static Web Apps deployment `8e2a44eb-a530-471c-ba2a-26af7d490561` completed successfully.
-
-- Live URL: https://flipbook-trace.sociobot.in
-- Live artifact identity: the fetched `/` SHA-256 was `8847ddc304bb92718cccdcc50cda826caf63cdc6b114b0af3d23ad936a1e90df`, exactly matching `dist/index.html`; both reference `assets/index-BX25q4jx.js`. The live footer reports `v1.0.15`.
-- Live route checks: `/`, `/demo`, `/privacy`, and `/terms` each returned 200 in `/opt/fleet/lib/verify-url.sh`; all had no console errors, one H1, a main landmark, `lang=en`, and no missing image alt attributes. Evidence: [`evidence-repair-14/live-home`](evidence-repair-14/live-home/), [`live-demo`](evidence-repair-14/live-demo/), [`live-privacy`](evidence-repair-14/live-privacy/), and [`live-terms`](evidence-repair-14/live-terms/).
-- Live PWA/privacy check at 390×844: after an online service-worker-controlled reload, the demo showed 12 frames and `v1.0.15`; an offline reload again showed 12 frames and `12 frames ready`. Captured requests used only `https://flipbook-trace.sociobot.in`; the first Tab focused the skip link. Evidence: [`live-runtime.json`](evidence-repair-14/live-runtime.json).
-- Live response policy: HTTPS responses include the expected CSP with `frame-ancestors 'none'`, HSTS, `X-Content-Type-Options: nosniff`, strict referrer policy, locked-down permissions policy, and `no-cache, no-store, must-revalidate` for `/sw.js`.
-
-Deployment command:
-
-```bash
-/opt/fleet/lib/deploy-static.sh flipbook-trace dist
-```
-
-## Known gaps
-
-None. The pre-existing modified `graphify-out/` files were preserved and deliberately excluded from this repair commit.
+Full evidence and exact results are in [`.factory/verification-15.md`](verification-15.md) and [`.factory/verification-artifacts-15`](verification-artifacts-15/). No product code was changed. Pre-existing `graphify-out` modifications were preserved and excluded from verification work.
