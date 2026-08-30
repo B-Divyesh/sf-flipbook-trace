@@ -1,0 +1,12 @@
+[
+  {"viewport":"1440x900","route":"/","seriousOrCritical":[]},
+  {"viewport":"1440x900","route":"/?demo=1","seriousOrCritical":[]},
+  {"viewport":"1440x900","route":"/privacy","seriousOrCritical":[]},
+  {"viewport":"1440x900","route":"/terms","seriousOrCritical":[]},
+  {"viewport":"1440x900","route":"/missing-page","seriousOrCritical":[]},
+  {"viewport":"390x844","route":"/","seriousOrCritical":[]},
+  {"viewport":"390x844","route":"/?demo=1","seriousOrCritical":[]},
+  {"viewport":"390x844","route":"/privacy","seriousOrCritical":[]},
+  {"viewport":"390x844","route":"/terms","seriousOrCritical":[]},
+  {"viewport":"390x844","route":"/missing-page","seriousOrCritical":[]}
+]

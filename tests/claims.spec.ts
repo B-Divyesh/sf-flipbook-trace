@@ -47,6 +47,22 @@ async function settleShell(page: Page): Promise<void> {
   });
 }
 
+/**
+ * `ready` means an active registration exists, not that the current first
+ * page is controlled. A new worker claims that page in the following
+ * controllerchange task, so wait for that real lifecycle milestone.
+ */
+async function waitForServiceWorkerControl(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    if (!('serviceWorker' in navigator)) throw new Error('Service workers are unavailable.');
+    await navigator.serviceWorker.ready;
+    if (navigator.serviceWorker.controller) return;
+    await new Promise<void>((resolve) => {
+      navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true });
+    });
+  });
+}
+
 async function persistentSnapshot(page: Page): Promise<unknown> {
   return page.evaluate(async () => {
     const digest = async (bytes: ArrayBuffer): Promise<string> => {
@@ -354,7 +370,7 @@ test('@claim:offline-reload reloads the demo without a network', async ({ contex
 });
 
 test('@claim:pwa-installable ships a standalone manifest and controlling service worker', async ({ page }) => {
-  await page.goto('/?demo=1'); const manifest = await page.evaluate(async () => fetch('/manifest.webmanifest').then((response) => response.json())) as { display: string; start_url: string; icons: Array<{ sizes: string; purpose?: string }> }; expect(manifest.display).toBe('standalone'); expect(manifest.start_url).toMatch(/^\/\?source=pwa&v=/); expect(manifest.icons.some((icon) => icon.sizes === '192x192')).toBe(true); expect(manifest.icons.some((icon) => icon.sizes === '512x512')).toBe(true); expect(manifest.icons.some((icon) => icon.purpose === 'maskable')).toBe(true); await page.evaluate(async () => navigator.serviceWorker.ready); expect(await page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+  await page.goto('/?demo=1'); const manifest = await page.evaluate(async () => fetch('/manifest.webmanifest').then((response) => response.json())) as { display: string; start_url: string; icons: Array<{ sizes: string; purpose?: string }> }; expect(manifest.display).toBe('standalone'); expect(manifest.start_url).toMatch(/^\/\?source=pwa&v=/); expect(manifest.icons.some((icon) => icon.sizes === '192x192')).toBe(true); expect(manifest.icons.some((icon) => icon.sizes === '512x512')).toBe(true); expect(manifest.icons.some((icon) => icon.purpose === 'maskable')).toBe(true); await waitForServiceWorkerControl(page); expect(await page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 });
 
 test('@claim:studio-quality exports 1920 px, original-width PNGs, and six-column sheets', async ({ page }) => {

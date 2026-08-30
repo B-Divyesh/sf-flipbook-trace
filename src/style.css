@@ -200,6 +200,10 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .frame-strip figure { min-width: 0; margin: 0; padding: 8px 8px 4px; color: var(--ink); background: var(--paper-high); border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); transform: rotate(var(--tilt, -.5deg)); }
 .frame-strip figure:nth-child(even) { --tilt: .7deg; }
 .frame-strip canvas { width: 100%; height: auto; display: block; border-bottom: 2px solid var(--ink); }
+.sample-trace { position: relative; display: block; aspect-ratio: 120 / 75; overflow: hidden; background-color: var(--paper-high); background-image: linear-gradient(81deg, transparent 17%, #d4c6ab 17.5%, transparent 18%), linear-gradient(81deg, transparent 61%, #d4c6ab 61.5%, transparent 62%); border-bottom: 2px solid var(--ink); }
+.sample-trace::before, .sample-trace::after { content: ''; position: absolute; display: block; }
+.sample-trace::before { top: 37%; left: 38%; width: 19%; aspect-ratio: 1.4; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper-high); }
+.sample-trace::after { top: 45%; left: 54%; width: 14%; height: 10%; border-block: 2px solid var(--ink); border-right: 2px solid var(--ink); transform: skewX(-22deg); }
 .frame-strip figcaption { padding: 6px 2px 0; font-weight: 900; font-variant-numeric: tabular-nums; }
 .export-bar { margin-top: 28px; padding: 18px; display: flex; align-items: center; gap: 14px; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
 .export-bar > div { display: grid; margin-right: auto; }
