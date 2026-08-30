@@ -415,7 +415,7 @@ test('@claim:studio-purchase shows a USD 9 one-time Flipbook Trace Studio checko
 test('@claim:studio-license-check sends a pasted license only to Sociobot verification', async ({ page }) => {
   const token = 'pasted-test';
   const verification = `https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=${token}`;
-  await page.route(verification, (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'http://127.0.0.1:4173' }, body: JSON.stringify({ valid: true, reason: 'ok' }) }));
+  await page.route(verification, (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ valid: true, reason: 'ok' }) }));
   await page.goto('/');
   await settleShell(page);
   const requests: CapturedRequest[] = [];
@@ -507,5 +507,5 @@ test('the Studio-license request guard rejects a second token-bearing destinatio
 });
 
 test('@claim:browser-data-deletion clears settings and a saved license', async ({ context, page }) => {
-  await page.goto('/'); await page.locator('#threshold').fill('177'); await page.locator('#fps').selectOption('8'); await page.evaluate(() => localStorage.setItem('sb_license:flipbook-trace', 'saved-license')); const client = await context.newCDPSession(page); await client.send('Storage.clearDataForOrigin', { origin: 'http://127.0.0.1:4173', storageTypes: 'all' }); await page.reload(); await expect(page.locator('#threshold')).toHaveValue('142'); await expect(page.locator('#fps')).toHaveValue('6'); expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBeNull();
+  await page.goto('/'); await page.locator('#threshold').fill('177'); await page.locator('#fps').selectOption('8'); await page.evaluate(() => localStorage.setItem('sb_license:flipbook-trace', 'saved-license')); const origin = await page.evaluate(() => location.origin); const client = await context.newCDPSession(page); await client.send('Storage.clearDataForOrigin', { origin, storageTypes: 'all' }); await page.reload(); await expect(page.locator('#threshold')).toHaveValue('142'); await expect(page.locator('#fps')).toHaveValue('6'); expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBeNull();
 });

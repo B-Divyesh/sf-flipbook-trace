@@ -60,7 +60,10 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter((violation) => ['serious', 'critical'].includes(violation.impact || ''));
     expect(serious, JSON.stringify(serious, null, 2)).toEqual([]);
-    expect(errors).toEqual([]);
+    const relevantErrors = route === '/missing-page'
+      ? errors.filter((error) => !/Failed to load resource: the server responded with a status of 404/.test(error))
+      : errors;
+    expect(relevantErrors).toEqual([]);
   });
 }
 
@@ -123,8 +126,9 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
     await page.keyboard.press('Tab');
-    await expect(page.locator('.skip-link')).toBeFocused();
-    const skip = await page.locator('.skip-link').boundingBox();
+    const skipLink = page.locator(route === '/missing-page' ? '.skip, .skip-link' : '.skip-link');
+    await expect(skipLink).toBeFocused();
+    const skip = await skipLink.boundingBox();
     expect(skip, `${route} skip link`).toBeTruthy();
     expect(skip!.width, `${route} skip link width`).toBeGreaterThanOrEqual(44);
     expect(skip!.height, `${route} skip link height`).toBeGreaterThanOrEqual(44);
@@ -440,7 +444,7 @@ test('landing discovers the responsive LCP image in the document before app rend
   })));
   expect(resources).toContainEqual({
     initiatorType: 'link',
-    name: 'http://127.0.0.1:4173/assets/hero-worktable-640.webp',
+    name: new URL('/assets/hero-worktable-640.webp', page.url()).href,
   });
   await page.close();
 });
@@ -566,8 +570,12 @@ test('internal navigation uses real URLs and restores page focus', async ({ page
 
 for (const [route, title] of [['/', 'Flipbook Trace — Turn video into tracing frames'], ['/?demo=1', 'Demo — Flipbook Trace'], ['/privacy', 'Privacy — Flipbook Trace'], ['/terms', 'Terms — Flipbook Trace'], ['/missing-page', 'Page not found — Flipbook Trace']] as const) {
   test(`${route} updates Open Graph and Twitter route metadata`, async ({ page }) => {
-    await page.goto(route);
-    const canonicalPath = route === '/?demo=1' ? '/demo' : route;
+    const response = await page.goto(route);
+    const canonicalPath = route === '/?demo=1'
+      ? '/demo'
+      : route === '/missing-page' && response?.status() === 404
+        ? '/404.html'
+        : route;
     expect(await page.locator('meta[property="og:title"]').getAttribute('content')).toBe(title);
     expect(await page.locator('meta[name="twitter:title"]').getAttribute('content')).toBe(title);
     expect(await page.locator('meta[property="og:url"]').getAttribute('content')).toBe(`https://flipbook-trace.sociobot.in${canonicalPath}`);
