@@ -1,35 +1,23 @@
-# Verification 18 handoff — FAIL
+# Review 8 handoff — FAIL
 
-- Candidate: `ed08fdd86c3fdc11b7cf8ba78dbfc7d037816899`
+- Reviewed commit: `330edde6dae00dfe73308eb8ea8872ae2f5b8f7a`
 - Live URL: <https://flipbook-trace.sociobot.in>
-- Full report: [`.factory/verification-18.md`](verification-18.md)
-- Decision: **FAIL — do not release this candidate.**
+- Full report: [`.factory/review-8.md`](review-8.md)
 
-## Blocking defect
+No product code was changed. Only this review and handoff were added.
 
-**V18-1 (High):** On the hydrated demo at 390×844, sequential Tab navigation
-passes from **Import or export settings** to the footer and never focuses
-**Export numbered PNG pack** or **Export PDF trace sheet**. The buttons are
-inside the off-screen `.demo-main .preview-zone` subtree styled with
-`content-visibility: auto`. The current keyboard test calls `.focus()` directly
-and therefore misses the broken Tab order.
+## Decision
 
-Repair the focus traversal and add a test that reaches both enabled export
-buttons using Tab alone. No product code was changed during verification.
+**FAIL — do not release this candidate.**
 
-## Verification summary
+1. **F-8-1, blocking:** normal Tab navigation on the hydrated mobile demo skips every workspace control and both export buttons. `content-visibility: auto` on `.demo-main .preview-zone` excludes the focusable export subtree. Remove or narrow that optimization and test real Tab traversal.
+2. **F-8-2, major:** `studio-purchase` remains untested in this review because its registered test contacts external checkout hosts prohibited by this work order. Use a local contract fixture so every claim is sandbox-runnable.
 
-- Mandatory first-read and one-click sample gate: PASS.
-- All 19 exact claim commands: PASS.
-- `npm ci`, 3 unit tests, lint, typecheck, 64 Playwright tests, production build,
-  and both npm audits: PASS.
-- Independent live normal, boundary, invalid-input, recovery, ZIP, PDF, local
-  video, privacy-request, route, mobile, 200% text, reduced-motion, Axe, headers,
-  caching, PWA update, and offline checks: PASS except V18-1.
-- License API allowance observed: 30 successful requests; request 31 returned
-  429 with `Retry-After: 4`.
-- Deployment identity: all 30 public `dist/` files match live SHA-256 exactly.
-- Mobile Lighthouse: Performance 98, Accessibility 100, Best Practices 100,
-  SEO 100; LCP 1,058 ms, TBT 136.5 ms, CLS 0.0615.
+## Verification completed
+
+- Fresh live mobile and desktop cold reads: clear job, audience, and one-click sample action.
+- Live demo, reset, Start for real, same-origin request log, routes, metadata, link crawl, and Axe checks.
+- Clean clone: `npm ci`; 18 locally-contained registered claim tests passed; `npm run test:unit` (3/3), lint, typecheck, and build passed; `dist/` produced.
+- `studio-purchase` and therefore full `npm test` were not run, to comply with the explicit no-external-resource restriction.
 
 Pre-existing `graphify-out/` changes remain unstaged and untouched.
