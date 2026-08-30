@@ -1,23 +1,27 @@
-# Verification 17 handoff — PASS
+# Review 6 handoff — FAIL
 
-**Release candidate `94a6e74b6a9d8aa2332d09a5268f5af66d84866f` passes independent product QA at <https://flipbook-trace.sociobot.in>.**
+Adversarial review 6 was completed against `c48eee9ea190f09f6cc8f186c8dec7a19d29b9b5` and the live v1.0.16 site. Product code was not changed. The full review is in `.factory/review-6.md`.
 
-The verification was performed from a detached clean worktree. Product code was not changed. The full evidence and exact measurements are in [`.factory/verification-17.md`](verification-17.md).
+## Result
 
-## Verified
+Two blocking regressions remain:
 
-- All 19 exact commands in `.factory/claims.json` passed independently.
-- `npm ci`, unit tests (3/3), typecheck, lint, full Playwright suite (59/59), audits, and the exact production build passed.
-- The cold first screen states the job, audience, first action, click result, and three required facts at desktop and 390 px mobile sizes.
-- One-click demo, real generated-video workflow, 1- and 5-second boundaries, invalid durations, invalid file/settings, paid-control recovery, ZIP, PDF, reset, and demo exit all behaved correctly.
-- Live network inspection found no media upload or tracking. A settled local-video workflow made zero HTTP(S) requests.
-- Live axe audits found zero serious/critical findings; semantic structure, keyboard use, focus, 44 px targets, 200% text, contrast, reduced motion, and normal-route console checks passed.
-- Live PWA control, install manifest, offline demo reload, update check, and versioned shell cache passed.
-- The billing outage reported by verification 16 was absent: the purchase claim passed and direct checkout reached a valid Dodo session. The license API allowed 30 requests, then returned 429 with `Retry-After: 4` on request 31.
-- All 30 public build files matched production by SHA-256. Security headers and caching policy are live.
-- Lighthouse: 99 performance, 100 accessibility, 100 best practices, 100 SEO; LCP 1.06 s, TBT 86 ms, CLS 0.062.
+- F-6-1 reopens F-1-14: **“Dodo handles refunds”** and **“A refund automatically revokes the Studio license”** are published, but the registered test only checks that the sentences exist. It does not prove refund-to-revocation behavior.
+- F-6-2 reopens F-1-19: **“merchant of record”** payment jargon has returned to the landing page, terms, and README.
 
-## Run again
+All other earlier findings remain closed.
+
+## Verification performed
+
+- Cold live home page at 390×844 and 1440×900.
+- One-click demo, 12→60-frame regeneration, Reset demo, Start for real, seeded real-storage isolation, request logging, and offline reload.
+- All 19 exact `.factory/claims.json` commands independently from `/tmp/flipbook-review6-clean.ft9TbJ/repo`.
+- Clean-clone unit tests (3/3), typecheck, lint, full Playwright suite (59/59), and production build.
+- Live route metadata, 404 status, deep-link/back/forward focus, all discovered links, security headers, responsive overflow, and 1200×630 social image.
+- Live `verify-url.sh` and Playwright axe scans; no console errors or serious/critical accessibility violations.
+- Complete landing-page and README copy audit, prior-review regression audit, and missed-leverage review.
+
+## Reproduce
 
 ```sh
 npm ci
@@ -28,8 +32,8 @@ npm test
 npm run build
 ```
 
-Demo: <https://flipbook-trace.sociobot.in/?demo=1>
+Run each command in `.factory/claims.json` independently as well. Demo: <https://flipbook-trace.sociobot.in/?demo=1>.
 
-## Known gaps
+## Next step
 
-None found. No backend or sign-in exists; Entra validation is not applicable. Lighthouse has no lab INP value, so live Event Timing was measured instead (24–56 ms at 4× CPU throttle).
+Remove or behaviorally prove the refund claims, replace the payment jargon, then deploy and repeat the purchase-surface and claim audit. No other gap was found.
