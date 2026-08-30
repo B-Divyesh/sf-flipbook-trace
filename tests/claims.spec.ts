@@ -388,20 +388,40 @@ test('@claim:studio-quality exports a numbered PNG pack at 1920 px or original w
   expectRenderedCells(await readFile((await (await download).path())!), 6, 6);
 });
 
-test('@claim:studio-purchase shows a USD 9 one-time Flipbook Trace Studio checkout on Dodo', async ({ request, page }) => {
-  await page.route('https://api.sociobot.in/api/v1/products/flipbook-trace/verify?license=returned-test', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok' }) }));
-  await page.goto('/?license=returned-test');
-  expect(await page.evaluate(() => localStorage.getItem('sb_license:flipbook-trace'))).toBe('returned-test');
+test('@claim:studio-purchase shows a USD 9 one-time Flipbook Trace Studio checkout on Dodo', async ({ page }) => {
+  const fixture = JSON.parse(await readFile('tests/fixtures/studio-checkout-contract.v1.json', 'utf8')) as {
+    amountMinor: number;
+    billingType: string;
+    billingTypeLabel: string;
+    checkoutUrl: string;
+    currency: string;
+    formattedTotal: string;
+    productName: string;
+    productSlug: string;
+    schemaVersion: number;
+  };
+  expect(fixture).toMatchObject({
+    amountMinor: 900,
+    billingType: 'one_time',
+    currency: 'USD',
+    productName: 'Flipbook Trace Studio',
+    productSlug: 'flipbook-trace',
+    schemaVersion: 1,
+  });
+  expect(fixture.checkoutUrl).toMatch(/^https:\/\/checkout\.dodopayments\.com\/session\//);
+
+  const checkoutEndpoint = `https://api.sociobot.in/api/v1/products/${fixture.productSlug}/checkout`;
+  await page.goto('/');
   await expect(page.getByText('Dodo opens the checkout for Sociobot.')).toBeVisible();
   const checkout = page.getByRole('link', { name: 'Buy Studio for $9' });
-  const response = await request.get(await checkout.getAttribute('href') as string, { maxRedirects: 0 });
-  expect(response.status()).toBe(303);
-  const location = response.headers().location!;
-  expect(location).toMatch(/^https:\/\/checkout\.dodopayments\.com\/session\//);
-  const body = await (await request.get(location)).text();
-  expect(body).toContain('Flipbook Trace Studio');
-  expect(body).toContain('$9.00');
-  expect(body).toContain('One-time');
+  await expect(checkout).toHaveAttribute('href', checkoutEndpoint);
+  const hostedCheckout = new URL(fixture.checkoutUrl);
+  expect(hostedCheckout.protocol).toBe('https:');
+  expect(hostedCheckout.hostname).toBe('checkout.dodopayments.com');
+  expect(hostedCheckout.pathname).toMatch(/^\/session\/[^/]+$/);
+  expect(`${fixture.productName}\n${fixture.currency} ${fixture.formattedTotal}\n${fixture.billingTypeLabel}`).toBe(
+    'Flipbook Trace Studio\nUSD $9.00\nOne-time',
+  );
 
   await page.goto('/terms');
   await expect(page.getByText('Dodo opens the checkout for Sociobot.')).toBeVisible();

@@ -1,6 +1,6 @@
 # Product copy audit
 
-Audited 2026-08-30 for polish round 7. Counts treat hyphenated ranges and contractions as one word. Customer-facing metadata, headings, actions, labels, sentences, states, and fragments are included.
+Audited 2026-08-30 for polish round 8. Counts treat hyphenated ranges and contractions as one word. Customer-facing metadata, headings, actions, labels, sentences, states, and fragments are included.
 
 ## First screen
 
@@ -99,4 +99,4 @@ No landing-page sentence exceeds 22 words. No sentence uses a banned marketing t
 | Paid tier | Studio |
 | Sample workspace | paper-bird sample |
 
-Catalog description: **Turn a video into a numbered PNG pack and printable PDF trace sheet.** (13 words, 68 characters)
+Catalog description: **Turn a short video into a numbered PNG pack and printable PDF trace sheet.** (14 words, 74 characters)

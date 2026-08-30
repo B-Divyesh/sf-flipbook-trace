@@ -1,1 +1,1 @@
-Turn a video into a numbered PNG pack and printable PDF trace sheet.
+Turn a short video into a numbered PNG pack and printable PDF trace sheet.

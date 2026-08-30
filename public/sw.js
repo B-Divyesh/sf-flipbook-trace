@@ -1,4 +1,4 @@
-const VERSION = 'flipbook-trace-v1.0.18-__BUILD_HASH__';
+const VERSION = 'flipbook-trace-v1.0.19-__BUILD_HASH__';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const PRECACHE = [

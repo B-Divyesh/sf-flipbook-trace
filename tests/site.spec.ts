@@ -247,19 +247,45 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 1440, height: 900
   });
 }
 
-test('keyboard controls reach exports and operate a range', async ({ page }) => {
+test('sequential keyboard navigation reaches and activates both demo exports', async ({ browser }) => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto('/demo');
   await expect(page.locator('#work-status')).toHaveText('12 frames ready');
-  await page.locator('#threshold').focus();
+  await expect(page.locator('#controls')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Export numbered PNG pack' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Export PDF trace sheet' })).toBeEnabled();
+  const visited: string[] = [];
+  const tabTo = async (id: string): Promise<void> => {
+    for (let index = 0; index < 40; index += 1) {
+      await page.keyboard.press('Tab');
+      const activeId = await page.evaluate(() => (document.activeElement as HTMLElement | null)?.id || '');
+      visited.push(activeId);
+      if (activeId === id) return;
+    }
+    expect(visited, `Tab order never reached #${id}`).toContain(id);
+  };
+
+  await tabTo('threshold');
+  await expect(page.locator('#threshold')).toBeFocused();
   const before = Number(await page.locator('#threshold').inputValue());
   await page.keyboard.press('ArrowRight');
   expect(Number(await page.locator('#threshold').inputValue())).toBe(before + 1);
-  const downloadEvent = page.waitForEvent('download');
-  const exportButton = page.getByRole('button', { name: 'Export numbered PNG pack' });
-  await expect(exportButton).toBeEnabled();
-  await exportButton.focus();
+  await expect(page.getByRole('button', { name: 'Export numbered PNG pack' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Export PDF trace sheet' })).toBeEnabled();
+
+  await tabTo('export-png');
+  await expect(page.getByRole('button', { name: 'Export numbered PNG pack' })).toBeFocused();
+  let downloadEvent = page.waitForEvent('download');
   await page.keyboard.press('Enter');
   await downloadEvent;
+
+  await tabTo('export-pdf');
+  await expect(page.getByRole('button', { name: 'Export PDF trace sheet' })).toBeFocused();
+  downloadEvent = page.waitForEvent('download');
+  await page.keyboard.press('Enter');
+  await downloadEvent;
+  await page.screenshot({ path: 'test-results/polish-8-demo-keyboard-390.png', fullPage: true });
+  await page.close();
 });
 
 test('the numbered PNG pack processes all twelve frames in browser-sized chunks', async ({ browser }) => {
@@ -597,7 +623,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.18 · Original generated artwork');
+  expect(page404).toContain('v1.0.19 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

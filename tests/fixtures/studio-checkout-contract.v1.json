@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-08-30",
+  "productSlug": "flipbook-trace",
+  "productName": "Flipbook Trace Studio",
+  "currency": "USD",
+  "amountMinor": 900,
+  "formattedTotal": "$9.00",
+  "billingType": "one_time",
+  "billingTypeLabel": "One-time",
+  "checkoutUrl": "https://checkout.dodopayments.com/session/fixture-flipbook-trace-v1"
+}

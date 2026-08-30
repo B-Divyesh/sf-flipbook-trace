@@ -186,11 +186,9 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .settings-tools input[type="file"] { min-height: 44px; width: 100%; }
 
 .preview-zone { min-width: 0; }
-/* The full mobile preview sits below the controls. Let the browser defer its
-   layout until it nears the viewport so generating the ready sample cannot
-   monopolise the first interaction on a throttled phone. The compact,
-   visible overview above the workspace remains the immediate demo proof. */
-.demo-main .preview-zone { content-visibility: auto; contain-intrinsic-size: 1160px; }
+/* The full frame grid sits below the controls. Defer only that visual list:
+   the sibling export bar must remain in the sequential keyboard focus tree. */
+.demo-main .frame-strip { content-visibility: auto; contain-intrinsic-size: 1160px; }
 .empty-preview { min-height: 520px; padding: 40px; display: grid; place-items: center; align-content: center; text-align: center; color: var(--ink); background-color: var(--paper-high); background-image: linear-gradient(rgba(11,95,113,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(11,95,113,.1) 1px, transparent 1px); background-size: 32px 32px; border: 2px solid var(--ink); clip-path: polygon(0 1%, 99% 0, 100% 98%, 1% 100%); }
 .empty-preview h3 { font-size: 2rem; margin-bottom: 0; }
 .empty-preview p { margin: 6px 0 24px; }
