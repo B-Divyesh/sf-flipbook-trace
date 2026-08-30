@@ -21,7 +21,7 @@ export const defaultSettings: FrameSettings = {
 export function normalizeSettings(input: unknown, studio: boolean): FrameSettings {
   if (!input || typeof input !== 'object') throw new Error('Invalid settings');
   const incoming = input as Partial<FrameSettings>;
-  if (![2, 4, 6, 8, 12].includes(incoming.fps ?? 0)) throw new Error('Invalid frame rate');
+  if (![2, 4, 6, 8, 12].includes(incoming.fps ?? 0)) throw new Error('Choose 2, 4, 6, 8, or 12 frames each second');
   if (!['edges', 'threshold', 'gray'].includes(incoming.mode ?? '')) throw new Error('Invalid trace style');
   if (typeof incoming.threshold !== 'number' || incoming.threshold < 70 || incoming.threshold > 220) throw new Error('Invalid threshold');
   if (typeof incoming.onion !== 'boolean') throw new Error('Invalid onion setting');

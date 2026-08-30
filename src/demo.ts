@@ -2,7 +2,7 @@ const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) throw new Error('App root is missing.');
 
 const app = appRoot;
-const BUILD_ID = 'v1.0.17';
+const BUILD_ID = 'v1.0.18';
 const FRAME_WIDTH = 120;
 const FRAME_HEIGHT = 75;
 let drawingGeneration = 0;
@@ -124,7 +124,7 @@ async function boot(): Promise<void> {
   await yieldTask();
   const workspace = document.querySelector<HTMLDivElement>('#demo-workspace');
   if (!workspace) return;
-  workspace.innerHTML = `<section class="workspace" aria-labelledby="workspace-heading"><div class="section-kicker">01 / Prepare</div><div class="workspace-heading-row"><div><h2 id="workspace-heading">Make the tracing frames</h2><p>The paper-bird sample is ready. Frame controls will appear below.</p></div><output id="work-status" class="status-stamp" aria-live="polite">Preparing sample frames…</output></div><div class="preview-zone"><div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div></div></section>`;
+  workspace.innerHTML = `<section class="workspace" aria-labelledby="workspace-heading"><div class="section-kicker">1 / Choose a video</div><div class="workspace-heading-row"><div><h2 id="workspace-heading">Make the tracing frames</h2><p>The paper-bird sample is ready. Frame controls will appear below.</p></div><output id="work-status" class="status-stamp" aria-live="polite">Preparing sample frames…</output></div><div class="preview-zone"><div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div></div></section>`;
   const readyFrames = drawFrames();
   void readyFrames.then(queueOverview);
   document.querySelector<HTMLButtonElement>('#reset-demo')?.addEventListener('click', () => { void drawFrames().then(queueOverview); });

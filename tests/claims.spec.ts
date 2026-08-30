@@ -218,7 +218,7 @@ test('@claim:demo-ready opens twelve ready sample frames with one click', async 
   const frame = await page.locator('#demo-strip canvas').first().boundingBox(); expect(frame!.y + frame!.height).toBeLessThanOrEqual(844);
 });
 
-test('@claim:demo-workflow regenerates the paper-bird sample for its selected section and rate', async ({ page }) => {
+test('@claim:demo-workflow regenerates the paper-bird sample for its selected section and frames each second choice', async ({ page }) => {
   await page.goto('/?demo=1');
   await expect(page.locator('#work-status')).toHaveText('12 frames ready');
   await page.locator('#trim-end').fill('5');
@@ -286,7 +286,7 @@ test('@claim:ephemeral-project keeps video and frames out of persistent browser 
   expect(await persistentSnapshot(page), 'Reload must not add or retain a source video or generated frame.').toEqual(baseline);
 });
 
-test('@claim:trace-controls applies every trace style, frame rate, and previous-frame overlay', async ({ page }) => {
+test('@claim:trace-controls applies every trace style, frames each second choice, and previous-frame overlay', async ({ page }) => {
   await page.goto('/?demo=1'); await expect(page.locator('#frame-strip figure')).toHaveCount(12); await expect(page.locator('#fps')).toBeVisible(); expect(await page.locator('#fps option').evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value))).toEqual(['2', '4', '6', '8', '12']);
   const image = async () => page.locator('#frame-strip canvas').nth(1).evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL());
   const waitForPreview = () => expect(page.locator('#work-status')).toHaveText('12 frames ready');
@@ -302,7 +302,7 @@ test('@claim:settings-portability exports, imports, and persists control setting
   const event = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export settings' }).click(); const path = await (await event).path(); await page.locator('#fps').selectOption('2'); await page.getByRole('radio', { name: 'Pencil edges' }).check(); await page.locator('#import-settings').setInputFiles(path!); await expect(page.locator('#fps')).toHaveValue('8'); await expect(page.getByRole('radio', { name: 'Grayscale' })).toBeChecked(); await expect(page.locator('#threshold')).toHaveValue('177'); await page.reload(); await expect(page.locator('#fps')).toHaveValue('8');
 });
 
-test('@claim:png-export exports twelve numbered PNGs in a ZIP', async ({ browser }) => {
+test('@claim:png-export exports a numbered PNG pack with all twelve frames', async ({ browser }) => {
   test.setTimeout(90_000);
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -310,12 +310,12 @@ test('@claim:png-export exports twelve numbered PNGs in a ZIP', async ({ browser
     await page.goto('/?demo=1', { waitUntil: 'domcontentloaded', timeout: 30_000 });
     await expect(page.locator('#frame-strip figure')).toHaveCount(12, { timeout: 30_000 });
     await expect(page.locator('#work-status')).toHaveText('12 frames ready', { timeout: 30_000 });
-    const exportButton = page.getByRole('button', { name: 'Export PNG pack' });
+    const exportButton = page.getByRole('button', { name: 'Export numbered PNG pack' });
     await expect(exportButton).toBeEnabled({ timeout: 30_000 });
     const event = page.waitForEvent('download', { timeout: 60_000 });
     await exportButton.click();
     const download = await event;
-    await expect(page.locator('#work-status')).toHaveText('12 PNGs exported', { timeout: 10_000 });
+    await expect(page.locator('#work-status')).toHaveText('Numbered PNG pack exported (12 files)', { timeout: 10_000 });
     const bytes = await readFile((await download.path())!);
     expect(download.suggestedFilename()).toBe('flipbook-trace-frames.zip');
     expect(bytes.subarray(0, 4).toString('latin1')).toBe('PK\x03\x04');
@@ -337,14 +337,14 @@ test('@claim:pdf-export exports a non-blank twelve-frame printable PDF trace she
   expect(bytes.length).toBeGreaterThan(20_000);
 });
 
-test('@claim:free-quality exports free PNGs at 960 px', async ({ page }) => {
+test('@claim:free-quality exports 960 px images in the free numbered PNG pack', async ({ page }) => {
   test.setTimeout(60_000);
   await page.goto('/');
   await page.locator('#fps').selectOption('2');
   await loadRecordedVideo(page, { name: 'free-960.webm', seconds: 1.3, width: 320, height: 200 });
   await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 30_000 });
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  await page.getByRole('button', { name: 'Export numbered PNG pack' }).click();
   expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 960, height: 600 });
 });
 
@@ -356,7 +356,7 @@ test('@claim:local-processing sends no video or frame data to any server', async
   await loadRecordedVideo(page, { name: 'local-only.webm' });
   await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 20_000 });
   const event = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  await page.getByRole('button', { name: 'Export numbered PNG pack' }).click();
   await event;
   assertNoWorkflowRequests(requests);
 });
@@ -373,16 +373,16 @@ test('@claim:pwa-installable ships a standalone manifest and controlling service
   await page.goto('/?demo=1'); const manifest = await page.evaluate(async () => fetch('/manifest.webmanifest').then((response) => response.json())) as { display: string; start_url: string; icons: Array<{ sizes: string; purpose?: string }> }; expect(manifest.display).toBe('standalone'); expect(manifest.start_url).toMatch(/^\/\?source=pwa&v=/); expect(manifest.icons.some((icon) => icon.sizes === '192x192')).toBe(true); expect(manifest.icons.some((icon) => icon.sizes === '512x512')).toBe(true); expect(manifest.icons.some((icon) => icon.purpose === 'maskable')).toBe(true); await waitForServiceWorkerControl(page); expect(await page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 });
 
-test('@claim:studio-quality exports 1920 px, original-width PNGs, and six-column sheets', async ({ page }) => {
+test('@claim:studio-quality exports a numbered PNG pack at 1920 px or original width plus six-column sheets', async ({ page }) => {
   test.setTimeout(60_000);
   await page.addInitScript(() => { localStorage.setItem('sb_license:flipbook-trace', 'test-license'); localStorage.setItem('sb_license:flipbook-trace:verdict', JSON.stringify({ valid: true, checked: Date.now() })); });
   await page.goto('/'); await page.locator('#fps').selectOption('2'); await page.locator('#columns').selectOption('6'); await page.getByRole('radio', { name: 'High contrast' }).check();
   await loadRecordedVideo(page, { name: 'source-width.webm', seconds: 3.1, width: 320, height: 200 }); await expect(page.locator('#frame-strip figure').first()).toBeVisible({ timeout: 30_000 });
   await page.locator('#quality').selectOption('1920'); await page.locator('#trim-end').fill('1'); await page.getByRole('button', { name: 'Make tracing frames' }).click(); await expect(page.locator('#work-status')).toHaveText('2 frames ready', { timeout: 30_000 });
-  let download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  let download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export numbered PNG pack' }).click();
   expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 1920, height: 1200 });
   await page.locator('#quality').selectOption('0'); await page.locator('#trim-end').fill('3'); await page.getByRole('button', { name: 'Make tracing frames' }).click(); await expect(page.locator('#work-status')).toHaveText('6 frames ready', { timeout: 30_000 });
-  download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PNG pack' }).click();
+  download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export numbered PNG pack' }).click();
   expect(pngDimensionsInZip(await readFile((await (await download).path())!))).toEqual({ width: 320, height: 200 });
   download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export PDF trace sheet' }).click();
   expectRenderedCells(await readFile((await (await download).path())!), 6, 6);
@@ -420,7 +420,7 @@ test('@claim:studio-license-check sends a pasted license only to Sociobot verifi
   await settleShell(page);
   const requests: CapturedRequest[] = [];
   page.on('request', (request) => requests.push({ body: request.postData(), headers: request.headers(), method: request.method(), url: request.url() }));
-  await page.getByText('Have a license?').click();
+  await page.getByText('Verify a Studio license').click();
   await page.getByLabel('Paste your license').fill(token);
   await page.getByRole('button', { name: 'Verify license' }).click();
   await expect(page.getByText('Studio is active on this device.')).toBeVisible();
@@ -437,7 +437,7 @@ test('@claim:studio-license-cache restores valid, invalid, and revoked verdicts 
     return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: false, reason: 'invalid' }) });
   });
   await invalidPage.goto('/');
-  await invalidPage.getByText('Have a license?').click();
+  await invalidPage.getByText('Verify a Studio license').click();
   await invalidPage.getByLabel('Paste your license').fill(invalidToken);
   await invalidPage.getByRole('button', { name: 'Verify license' }).click();
   await expect(invalidPage.locator('#license-status')).toContainText('not active');

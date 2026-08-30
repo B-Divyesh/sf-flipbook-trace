@@ -2,7 +2,7 @@ export type PageMeta = [title: string, description: string];
 
 export function pageMeta(path: string): PageMeta {
   const details: Record<string, PageMeta> = {
-    '/': ['Flipbook Trace — Turn video into tracing frames', 'Choose a local video, pick frames, and export numbered PNGs or a printable PDF trace sheet.'],
+    '/': ['Flipbook Trace — Turn video into tracing frames', 'Choose a local video, then export a numbered PNG pack or a printable PDF trace sheet.'],
     '/privacy': ['Privacy — Flipbook Trace', 'How Flipbook Trace handles local video, settings, and licenses.'],
     '/terms': ['Terms — Flipbook Trace', 'Terms for using Flipbook Trace and buying Studio.'],
   };
@@ -25,7 +25,7 @@ export function homeContent(workspace: string, paid: string): string {
           <ul class="fact-list" aria-label="Product facts">
             <li>Video stays in this browser.</li>
             <li>Works offline after the first visit.</li>
-            <li>Free: PNG pack and PDF trace sheet.</li>
+            <li>Free: numbered PNG pack and PDF trace sheet.</li>
           </ul>
         </div>
         <figure class="hero-art">
@@ -39,17 +39,17 @@ export function homeContent(workspace: string, paid: string): string {
       </section>
       ${workspace}
       <section id="how" class="steps" aria-labelledby="how-heading">
-        <div class="section-kicker">02 / Method</div>
+        <div class="section-kicker">2 / Make a trace sheet</div>
         <h2 id="how-heading">How to make a trace sheet</h2>
         <ol>
-          <li><span>1</span><div><h3>Choose and trim</h3><p>Pick a 1–5 second section from a video you own.</p></div></li>
-          <li><span>2</span><div><h3>Set the lines</h3><p>Choose the frame rate and adjust the trace preview.</p></div></li>
-          <li><span>3</span><div><h3>Print or draw</h3><p>Export numbered PNGs or one PDF trace sheet.</p></div></li>
+          <li><span>1</span><div><h3>Choose and trim your video</h3><p>Pick a 1–5 second section from a video you own.</p></div></li>
+          <li><span>2</span><div><h3>Choose the tracing lines</h3><p>Choose how many frames to make each second, then adjust the trace preview.</p></div></li>
+          <li><span>3</span><div><h3>Export frames to print or trace</h3><p>Export a numbered PNG pack or one PDF trace sheet.</p></div></li>
         </ol>
       </section>
       <section class="privacy-panel" aria-labelledby="limits-heading">
         <div class="torn-note"><span aria-hidden="true">NO CLOUD</span></div>
-        <div><div class="section-kicker">03 / Boundaries</div><h2 id="limits-heading">A preparation tool, not a video editor</h2><p>Flipbook Trace does not publish, host, or generate video. It does not retain your video. Use a video you own or have permission to trace.</p><p>Large or long videos may use more memory. Trim the video before loading it if your device slows down.</p></div>
+        <div><div class="section-kicker">3 / Video privacy</div><h2 id="limits-heading">A preparation tool, not a video editor</h2><p>Flipbook Trace does not publish, host, or generate video. It does not retain your video. Use a video you own or have permission to trace.</p><p>Large or long videos may use more memory. Trim the video before loading it if your device slows down.</p></div>
       </section>
       ${paid}
     </main>`;
@@ -57,12 +57,12 @@ export function homeContent(workspace: string, paid: string): string {
 
 export function paidContent(billingBase: string, product: string, licenseStatus: string, inactive: boolean): string {
   return `<section class="paid" aria-labelledby="paid-heading">
-    <div class="paid-mark" aria-hidden="true">STUDIO<br />PASS</div>
-    <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF trace sheet exports. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo opens the checkout for Sociobot.</p></div>
+    <div class="paid-mark" aria-hidden="true">STUDIO</div>
+    <div><div class="section-kicker">4 / Studio export sizes</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free numbered PNG pack and PDF trace sheet. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo opens the checkout for Sociobot.</p></div>
     <div class="license-actions">
       <a class="button button-red" href="${billingBase}/api/v1/products/${product}/checkout">Buy Studio for $9</a>
       <p id="license-status" class="license-status${inactive ? ' is-inactive' : ''}" aria-live="polite">${licenseStatus}</p>
-      <details><summary>Have a license?</summary><label for="license-input">Paste your license</label><input id="license-input" type="text" autocomplete="off" /><button id="verify-license" class="button button-paper" type="button" aria-label="Verify license">Verify license</button></details>
+      <details><summary>Verify a Studio license</summary><label for="license-input">Paste your license</label><input id="license-input" type="text" autocomplete="off" /><button id="verify-license" class="button button-paper" type="button" aria-label="Verify license">Verify license</button></details>
       <p><a href="/privacy" data-route>Privacy</a> · <a href="/terms" data-route>Terms</a></p>
     </div>
   </section>`;

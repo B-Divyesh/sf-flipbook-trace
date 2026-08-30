@@ -9,7 +9,7 @@ type PageDetails = { description: string; title: string; url: string };
 const pageDetails: Record<string, PageDetails> = {
   '/': {
     title: 'Flipbook Trace — Turn video into tracing frames',
-    description: 'Choose a local video, pick frames, and export numbered PNGs or a printable PDF trace sheet.',
+    description: 'Choose a local video, then export a numbered PNG pack or a printable PDF trace sheet.',
     url: '/',
   },
   '/privacy': {

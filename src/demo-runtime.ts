@@ -13,7 +13,7 @@ const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) throw new Error('App root is missing.');
 const app: HTMLDivElement = appRoot;
 
-const BUILD_ID = 'v1.0.17';
+const BUILD_ID = 'v1.0.18';
 const SOURCE_WIDTH = 120;
 const SOURCE_HEIGHT = 75;
 const OVERVIEW_WIDTH = 64;
@@ -70,15 +70,15 @@ function controlsTemplate(): string {
 }
 
 function previewTemplate(): string {
-  return `<div class="preview-zone"><div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div><div id="export-bar" class="export-bar"><div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div><button class="button button-blue" id="export-png" type="button" disabled>Export PNG pack</button><button class="button button-paper" id="export-pdf" type="button" disabled>Export PDF trace sheet</button></div></div>`;
+  return `<div class="preview-zone"><div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div><div id="export-bar" class="export-bar"><div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div><button class="button button-blue" id="export-png" type="button" disabled>Export numbered PNG pack</button><button class="button button-paper" id="export-pdf" type="button" disabled>Export PDF trace sheet</button></div></div>`;
 }
 
 function workspaceHeading(): string {
-  return `<div class="section-kicker">01 / Prepare</div><div class="workspace-heading-row"><div><h2 id="workspace-heading">Make the tracing frames</h2><p>The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.</p></div><output id="work-status" class="status-stamp" aria-live="polite">Preparing sample frames…</output></div>`;
+  return `<div class="section-kicker">1 / Choose a video</div><div class="workspace-heading-row"><div><h2 id="workspace-heading">Make the tracing frames</h2><p>The paper-bird sample is ready. Set a 1–5 second section, choose how many frames to make each second, then make frames.</p></div><output id="work-status" class="status-stamp" aria-live="polite">Preparing sample frames…</output></div>`;
 }
 
 function initialPage(): string {
-  return `${header()}<aside class="demo-banner" aria-label="Demo mode"><strong>Demo — sample data, nothing is saved</strong><div><button id="reset-demo" type="button">Reset demo</button><a href="/">Start for real</a></div></aside><main id="main" class="demo-main"><section id="demo-intro" class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div></section><div id="demo-workspace" aria-busy="true"></div></main><div id="route-status" class="sr-only" aria-live="polite"></div>${footer()}`;
+  return `${header()}<aside class="demo-banner" aria-label="Demo mode"><strong>Demo — sample data, nothing is saved</strong><div><button id="reset-demo" type="button">Reset demo</button><a href="/">Start for real</a></div></aside><main id="main" class="demo-main"><section id="demo-intro" class="demo-intro"><p class="eyebrow">Paper-bird sample</p><h1 tabindex="-1">Trace a paper bird in twelve frames</h1><p>The sample is built into the app and works without a network.</p><div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and frames each second below</p></div></section><div id="demo-workspace" aria-busy="true"></div></main><div id="route-status" class="sr-only" aria-live="polite"></div>${footer()}`;
 }
 
 function element<T extends HTMLElement>(id: string): T {
@@ -286,7 +286,7 @@ async function exportPng(): Promise<void> {
   const count = outputFrames.length;
   const button = element<HTMLButtonElement>('export-png');
   button.disabled = true;
-  setStatus('Packing numbered PNGs…');
+  setStatus('Packing the numbered PNG pack…');
   try {
     const run = generation;
     if (!await ensureSourceFrames(run)) return;
@@ -301,9 +301,9 @@ async function exportPng(): Promise<void> {
       }
     })();
     download(await makePngZip(stream), 'flipbook-trace-frames.zip');
-    setStatus(`${count} PNGs exported`);
+    setStatus(`Numbered PNG pack exported (${count} files)`);
   } catch {
-    showError('The PNG pack could not be made. Try fewer frames.');
+    showError('The numbered PNG pack could not be made. Try fewer frames.');
   } finally {
     if (button.isConnected) button.disabled = false;
   }

@@ -2,7 +2,7 @@
 
 Turn your video into printable tracing frames.
 
-Flipbook Trace is a local browser tool for short-form video creators. Choose a 1–5 second section, set the frame rate and trace style, then export numbered PNGs or a PDF trace sheet.
+Flipbook Trace is a local browser tool for short-form video creators. Choose a 1–5 second section. Set how many frames to make each second and choose a trace style. Export a numbered PNG pack or PDF trace sheet.
 
 The app decodes and processes video in the browser. The video and frames disappear on reload. After the first visit, the app and its built-in demo work offline.
 
@@ -21,7 +21,7 @@ Demo: <https://flipbook-trace.sociobot.in/?demo=1>
 - Install the app and reopen the demo offline
 - Settings export and import
 
-The free version exports 960 px PNGs and a PDF trace sheet. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens the checkout for Sociobot.
+The free version exports a numbered PNG pack at 960 px and a PDF trace sheet. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens the checkout for Sociobot.
 
 ## Who it is for
 

@@ -13,7 +13,7 @@ describe('normalizeSettings', () => {
   });
 
   test('rejects malformed settings instead of storing them', () => {
-    expect(() => normalizeSettings({ ...defaultSettings, fps: 7 }, false)).toThrow('Invalid frame rate');
+    expect(() => normalizeSettings({ ...defaultSettings, fps: 7 }, false)).toThrow('Choose 2, 4, 6, 8, or 12 frames each second');
     expect(() => normalizeSettings({ ...defaultSettings, threshold: 900 }, false)).toThrow('Invalid threshold');
   });
 });

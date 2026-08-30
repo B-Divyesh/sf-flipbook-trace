@@ -117,7 +117,10 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
   test(`${route} keeps every visible action at least 44 by 44 px at 390 px`, async ({ browser }) => {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
     await page.goto(route);
-    if (route === '/demo') await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+    if (route === '/demo') {
+      await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+      await expect(page.locator('#controls')).toBeVisible();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
     await page.keyboard.press('Tab');
     await expect(page.locator('.skip-link')).toBeFocused();
@@ -130,7 +133,7 @@ for (const route of ['/', '/demo', '/privacy', '/terms', '/missing-page']) {
       expect(box.height, `${route} ${box.tag} (${box.label}) height`).toBeGreaterThanOrEqual(44);
     }
     const routeName = route === '/' ? 'home' : route.slice(1);
-    await page.screenshot({ path: `test-results/polish-5-targets-${routeName}.png`, fullPage: true });
+    await page.screenshot({ path: `test-results/polish-7-targets-${routeName}.png`, fullPage: true });
     await page.close();
   });
 }
@@ -148,7 +151,7 @@ test('the static 404 keeps every visible action at least 44 by 44 px at 390 px',
     expect(target.width, `static 404 ${target.tag} (${target.label}) width`).toBeGreaterThanOrEqual(44);
     expect(target.height, `static 404 ${target.tag} (${target.label}) height`).toBeGreaterThanOrEqual(44);
   }
-  await page.screenshot({ path: 'test-results/polish-5-targets-static-404.png', fullPage: true });
+  await page.screenshot({ path: 'test-results/polish-7-targets-static-404.png', fullPage: true });
   await page.close();
 });
 
@@ -159,6 +162,73 @@ test('the 390 px landing screen keeps all three facts above the fold', async ({ 
   expect(facts).toBeTruthy();
   expect(facts!.y + facts!.height).toBeLessThanOrEqual(844);
   await page.close();
+});
+
+test('published copy names the ZIP download a numbered PNG pack everywhere', async ({ page }) => {
+  const readme = await readFile('README.md', 'utf8');
+  const claims = JSON.parse(await readFile('.factory/claims.json', 'utf8')) as Array<{ claim: string; id: string }>;
+  const index = await readFile('index.html', 'utf8');
+  await page.goto('/');
+  await expect(page.locator('.fact-list')).toContainText('Free: numbered PNG pack and PDF trace sheet.');
+  await expect(page.getByText('Export a numbered PNG pack or one PDF trace sheet.')).toBeVisible();
+  await expect(page.locator('#export-png')).toHaveText('Export numbered PNG pack');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /numbered PNG pack/);
+  await page.goto('/?demo=1');
+  await expect(page.getByRole('button', { name: 'Export numbered PNG pack' })).toBeVisible();
+  expect(readme).toContain('The free version exports a numbered PNG pack at 960 px and a PDF trace sheet.');
+  expect(claims.find(({ id }) => id === 'png-export')?.claim).toBe('Exports a numbered PNG pack.');
+  expect(index).toContain('export a numbered PNG pack or a printable PDF trace sheet');
+  for (const retired of ['Export PNG pack', 'Export numbered PNGs', 'Free: PNG pack', 'Keep the free PNG and PDF']) {
+    expect(`${readme}\n${index}`, retired).not.toContain(retired);
+  }
+});
+
+test('published copy uses frames each second for the frequency setting', async ({ page }) => {
+  const readme = await readFile('README.md', 'utf8');
+  const claims = await readFile('.factory/claims.json', 'utf8');
+  const demoContract = await readFile('.factory/demo.md', 'utf8');
+  await page.goto('/');
+  await expect(page.getByLabel('Frames each second')).toBeVisible();
+  await expect(page.getByText('Choose how many frames to make each second, then adjust the trace preview.')).toBeVisible();
+  await page.goto('/?demo=1');
+  await expect(page.getByText(/choose how many frames to make each second, then make frames/i)).toBeVisible();
+  const published = `${readme}\n${claims}\n${demoContract}`;
+  expect(published).toContain('frames each second');
+  expect(published.toLowerCase()).not.toContain('frame rate');
+  expect(published).not.toContain('choose a rate');
+});
+
+test('method headings name the video, tracing lines, and export', async ({ page }) => {
+  await page.goto('/');
+  const headings = await page.locator('#how h3').allTextContents();
+  expect(headings).toEqual([
+    'Choose and trim your video',
+    'Choose the tracing lines',
+    'Export frames to print or trace',
+  ]);
+});
+
+test('section labels describe Flipbook Trace tasks and the paid tier is Studio', async ({ page }) => {
+  await page.goto('/');
+  const labels = page.locator('.section-kicker');
+  await expect(labels).toHaveCount(4);
+  expect(await labels.allTextContents()).toEqual([
+    '1 / Choose a video',
+    '2 / Make a trace sheet',
+    '3 / Video privacy',
+    '4 / Studio export sizes',
+  ]);
+  await expect(page.locator('.paid-mark')).toHaveText('STUDIO');
+  await expect(page.getByText('STUDIO PASS')).toHaveCount(0);
+});
+
+test('Studio license disclosure names the verification form', async ({ page }) => {
+  await page.goto('/');
+  const disclosure = page.locator('.license-actions details');
+  await expect(disclosure.locator('summary')).toHaveText('Verify a Studio license');
+  await disclosure.locator('summary').click();
+  await expect(page.getByLabel('Paste your license')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Verify license' })).toBeVisible();
 });
 
 for (const viewport of [{ width: 1366, height: 768 }, { width: 1440, height: 900 }]) {
@@ -181,14 +251,14 @@ test('keyboard controls reach exports and operate a range', async ({ page }) => 
   await page.keyboard.press('ArrowRight');
   expect(Number(await page.locator('#threshold').inputValue())).toBe(before + 1);
   const downloadEvent = page.waitForEvent('download');
-  const exportButton = page.getByRole('button', { name: 'Export PNG pack' });
+  const exportButton = page.getByRole('button', { name: 'Export numbered PNG pack' });
   await expect(exportButton).toBeEnabled();
   await exportButton.focus();
   await page.keyboard.press('Enter');
   await downloadEvent;
 });
 
-test('PNG export packs all twelve frames in browser-sized chunks', async ({ browser }) => {
+test('the numbered PNG pack processes all twelve frames in browser-sized chunks', async ({ browser }) => {
   test.setTimeout(90_000);
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -215,12 +285,12 @@ test('PNG export packs all twelve frames in browser-sized chunks', async ({ brow
       (window as unknown as { __pngStatusUpdates: string[] }).__pngStatusUpdates = updates;
     });
     const download = page.waitForEvent('download', { timeout: 60_000 });
-    await page.getByRole('button', { name: 'Export PNG pack' }).click();
+    await page.getByRole('button', { name: 'Export numbered PNG pack' }).click();
     await download;
     const updates = await page.evaluate(() => (window as unknown as { __pngStatusUpdates: string[] }).__pngStatusUpdates);
     expect(updates).toContain('Packing PNG 1 of 12…');
     expect(updates).toContain('Packing PNG 12 of 12…');
-    expect(updates.at(-1)).toBe('12 PNGs exported');
+    expect(updates.at(-1)).toBe('Numbered PNG pack exported (12 files)');
   } finally {
     await context.close();
   }
@@ -519,7 +589,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.17 · Original generated artwork');
+  expect(page404).toContain('v1.0.18 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {
@@ -559,7 +629,7 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 
     const frame = await page.locator('#demo-strip canvas').first().boundingBox();
     expect(frame).toBeTruthy();
     expect(frame!.y + frame!.height).toBeLessThanOrEqual(viewport.height);
-    await page.screenshot({ path: `test-results/polish-5-demo-first-${viewport.width}.png` });
+    await page.screenshot({ path: `test-results/polish-7-demo-first-${viewport.width}.png` });
     await page.close();
   });
 }

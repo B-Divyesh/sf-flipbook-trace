@@ -1,1 +1,1 @@
-Turn local videos into printable tracing frames without uploads.
+Turn a video into a numbered PNG pack and printable PDF trace sheet.

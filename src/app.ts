@@ -17,7 +17,7 @@ const BILLING_BASE = import.meta.env.VITE_BILLING_BASE || 'https://api.sociobot.
 const LICENSE_KEY = `sb_license:${PRODUCT}`;
 const LICENSE_CACHE_KEY = `${LICENSE_KEY}:verdict`;
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
-const BUILD_ID = 'v1.0.17';
+const BUILD_ID = 'v1.0.18';
 const PREVIEW_WIDTH = 320;
 const PREVIEW_INPUT_DELAY_MS = 120;
 const PREVIEW_CHUNK_SIZE = 1;
@@ -99,11 +99,11 @@ function shell(content: string): string {
 
 function workspaceHeadingTemplate(demo: boolean): string {
   return `
-    <div class="section-kicker">01 / Prepare</div>
+    <div class="section-kicker">1 / Choose a video</div>
     <div class="workspace-heading-row">
       <div>
         <h2 id="workspace-heading">Make the tracing frames</h2>
-        <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose a rate, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
+        <p>${demo ? 'The paper-bird sample is ready. Set a 1–5 second section, choose how many frames to make each second, then make frames.' : 'Choose a video you own. The video and frames disappear on reload.'}</p>
       </div>
       <output id="work-status" class="status-stamp" aria-live="polite">${demo ? 'Preparing sample frames…' : 'Waiting for a video'}</output>
     </div>`;
@@ -164,7 +164,7 @@ function workspacePreviewTemplate(demo: boolean): string {
       <div id="frame-strip" class="frame-strip" aria-label="Tracing frame preview"></div>
       <div id="export-bar" class="export-bar" ${demo ? '' : 'hidden'}>
         <div><strong id="export-count">12 frames</strong><span>Numbered and ready to trace</span></div>
-        <button class="button button-blue" id="export-png" type="button" disabled>Export PNG pack</button>
+        <button class="button button-blue" id="export-png" type="button" disabled>Export numbered PNG pack</button>
         <button class="button button-paper" id="export-pdf" type="button" disabled>Export PDF trace sheet</button>
       </div>
     </div>`;
@@ -259,7 +259,7 @@ async function mountDemoPage(): Promise<void> {
   // The frame overview and workspace have independent layout. Keep both out
   // of the initial viewport task, then give this small page extension its own
   // paint before mounting the controls.
-  intro.insertAdjacentHTML('beforeend', '<div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and rate below</p></div>');
+  intro.insertAdjacentHTML('beforeend', '<div class="demo-peek" aria-label="Twelve sample tracing frames"><div id="demo-strip" class="demo-strip"></div><p>12 ready frames · set the section and frames each second below</p></div>');
   main.insertAdjacentHTML('beforeend', '<div id="demo-workspace" aria-busy="true"></div>');
   app.insertAdjacentHTML('beforeend', siteFooter());
   bindNavigation();
@@ -697,15 +697,15 @@ async function exportPng(): Promise<void> {
   const exportButton = value<HTMLButtonElement>('export-png');
   const frameCount = sourceFrames.length || outputFrames.length;
   exportButton.disabled = true;
-  setStatus('Packing numbered PNGs…');
+  setStatus('Packing the numbered PNG pack…');
   try {
     await yieldAfterInteraction();
     const frames = buildExportFrameStream((index, total) => setStatus(`Packing PNG ${index} of ${total}…`));
     const { makePngZip } = await loadExportProcessor();
     downloadBlob(await makePngZip(frames), 'flipbook-trace-frames.zip');
-    setStatus(`${frameCount} PNGs exported`);
+    setStatus(`Numbered PNG pack exported (${frameCount} files)`);
   } catch {
-    showError('The PNG pack could not be made. Try fewer frames.');
+    showError('The numbered PNG pack could not be made. Try fewer frames.');
   } finally {
     if (exportButton.isConnected) exportButton.disabled = false;
   }
