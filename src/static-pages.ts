@@ -58,7 +58,7 @@ export function homeContent(workspace: string, paid: string): string {
 export function paidContent(billingBase: string, product: string, licenseStatus: string, inactive: boolean): string {
   return `<section class="paid" aria-labelledby="paid-heading">
     <div class="paid-mark" aria-hidden="true">STUDIO<br />PASS</div>
-    <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF trace sheet exports. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo opens checkout for Sociobot.</p></div>
+    <div><div class="section-kicker">04 / Optional</div><h2 id="paid-heading">Print larger with Studio</h2><p><strong>$9 once.</strong> Keep the free PNG and PDF trace sheet exports. Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet.</p><p class="legal-note">Dodo is the merchant of record for Sociobot. Dodo handles refunds. A refund automatically revokes the Studio license.</p></div>
     <div class="license-actions">
       <a class="button button-red" href="${billingBase}/api/v1/products/${product}/checkout">Buy Studio for $9</a>
       <p id="license-status" class="license-status${inactive ? ' is-inactive' : ''}" aria-live="polite">${licenseStatus}</p>
@@ -73,7 +73,7 @@ export function privacyContent(): string {
 }
 
 export function termsContent(): string {
-  return `<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with a video you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy a video without permission.</p><h2>The service</h2><p>The app is provided as-is. Video support varies by browser. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Studio enables the larger export choices. Dodo opens checkout for Sociobot.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`;
+  return `<main id="main" class="prose-page"><p class="eyebrow">Use terms</p><h1 tabindex="-1">Terms for making trace sheets</h1><p class="lede">Use Flipbook Trace with a video you own or can lawfully use.</p><h2>Your responsibility</h2><p>You are responsible for the videos you open and the files you create. Do not use the app to copy a video without permission.</p><h2>The service</h2><p>The app is provided as-is. Video support varies by browser. We may change the app to fix problems or improve compatibility.</p><h2>Studio purchase</h2><p>Studio costs $9 as a one-time purchase. Studio enables the larger export choices. Dodo is the merchant of record for Sociobot. Dodo handles refunds. A refund automatically revokes the Studio license.</p><h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a> for purchase help.</p></main>`;
 }
 
 export function notFoundContent(): string {

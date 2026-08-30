@@ -21,7 +21,7 @@ Demo: <https://flipbook-trace.sociobot.in/?demo=1>
 - Install the app and reopen the demo offline
 - Settings export and import
 
-The free version exports 960 px PNGs and a PDF trace sheet. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo opens checkout for Sociobot.
+The free version exports 960 px PNGs and a PDF trace sheet. Studio costs $9 once and adds 1920 px, exports at your video's original width, and six-column PDF trace sheets. Dodo is the merchant of record for Sociobot. Dodo handles refunds. A refund automatically revokes the Studio license.
 
 ## Who it is for
 

@@ -1,0 +1,12 @@
+{
+  "viewport": "390x844",
+  "deviceScaleFactor": 1.75,
+  "cpuThrottle": 4,
+  "coldLoads": 5,
+  "longestTaskMs": [132, 106, 123, 108, 92],
+  "medianMs": 108,
+  "maxMs": 132,
+  "hardLimitMs": 200,
+  "medianLimitMs": 150,
+  "result": "pass"
+}

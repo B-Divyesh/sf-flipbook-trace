@@ -197,6 +197,9 @@ test('PNG export packs all twelve frames in browser-sized chunks', async ({ brow
     await session.send('Emulation.setCPUThrottlingRate', { rate: 4 });
     await page.goto('/?demo=1', { waitUntil: 'domcontentloaded', timeout: 30_000 });
     await expect(page.locator('#work-status')).toHaveText('12 frames ready', { timeout: 30_000 });
+    // The sample shell paints first; observe the status owned by the
+    // interactive runtime once its export control is available.
+    await expect(page.locator('#controls')).toBeVisible({ timeout: 30_000 });
     await page.evaluate(() => {
       const status = document.querySelector<HTMLOutputElement>('#work-status')!;
       const descriptor = Object.getOwnPropertyDescriptor(HTMLOutputElement.prototype, 'value')!;
@@ -279,20 +282,37 @@ test('build output uses hashed immutable assets and a revalidated service worker
   expect(config.routes.find((route) => route.route === '/sw.js')?.headers['Cache-Control']).toContain('no-cache');
 });
 
-test('the production entry keeps export code out of the demo frame processor', async () => {
+test('the production entry keeps the sample shell separate from editor and export code', async () => {
   // The demo's cold mobile startup is protected both by the five-load timing
-  // check below and by this build contract. The startup entry must request
-  // canvas/PDF code dynamically, so demo paint can schedule its parsing and
-  // frame work across browser turns instead of one startup task.
+  // check below and by this build contract. A useful twelve-frame sample is
+  // painted by its own small entry before the editor, canvas filter, ZIP, and
+  // PDF paths are parsed. This keeps a cold phone from joining all work into
+  // one task.
   const assets = await readdir('dist/assets');
   const entryName = assets.find((asset) => /^index-[A-Za-z0-9_-]+\.js$/.test(asset));
   expect(entryName).toBeTruthy();
   if (!entryName) throw new Error('The production entry asset is missing.');
   const entry = await readFile(`dist/assets/${entryName}`, 'utf8');
-  expect(Buffer.byteLength(entry)).toBeLessThan(30_000);
+  expect(Buffer.byteLength(entry)).toBeLessThan(5_000);
   expect(entry).not.toMatch(/from"\.\/core-[A-Za-z0-9_-]+\.js"/);
-  expect(entry).toMatch(/import\("\.\/core-[A-Za-z0-9_-]+\.js"\)/);
-  const coreName = entry.match(/\.\/(core-[A-Za-z0-9_-]+\.js)/)?.[1];
+  expect(entry).toMatch(/import\("\.\/demo-[A-Za-z0-9_-]+\.js"\)/);
+  const demoName = entry.match(/\.\/(demo-[A-Za-z0-9_-]+\.js)/)?.[1];
+  expect(demoName).toBeTruthy();
+  if (!demoName) throw new Error('The lightweight demo shell is missing.');
+  const demo = await readFile(`dist/assets/${demoName}`, 'utf8');
+  expect(Buffer.byteLength(demo)).toBeLessThan(6_000);
+  expect(demo).not.toContain('drawDemoFrame');
+  expect(demo).not.toContain('PDF-1.4');
+  expect(demo).not.toMatch(/import\("\.\/frame-processor-[A-Za-z0-9_-]+\.js"\)/);
+  expect(demo).toMatch(/import\("\.\/demo-runtime-[A-Za-z0-9_-]+\.js"\)/);
+  const runtimeName = demo.match(/\.\/(demo-runtime-[A-Za-z0-9_-]+\.js)/)?.[1];
+  expect(runtimeName).toBeTruthy();
+  if (!runtimeName) throw new Error('The interactive demo runtime is missing.');
+  const runtime = await readFile(`dist/assets/${runtimeName}`, 'utf8');
+  expect(Buffer.byteLength(runtime)).toBeLessThan(15_000);
+  expect(runtime).toMatch(/import\("\.\/core-[A-Za-z0-9_-]+\.js"\)/);
+  expect(runtime).toMatch(/import\("\.\/frame-processor-[A-Za-z0-9_-]+\.js"\)/);
+  const coreName = runtime.match(/\.\/(core-[A-Za-z0-9_-]+\.js)/)?.[1];
   expect(coreName).toBeTruthy();
   if (!coreName) throw new Error('The core canvas module is missing.');
   const core = await readFile(`dist/assets/${coreName}`, 'utf8');
@@ -310,20 +330,23 @@ test('the production entry keeps export code out of the demo frame processor', a
   expect(worker).toContain(`/assets/${frameProcessorName}`);
 });
 
-test('demo startup fetches the light frame processor but not the export module', async ({ browser }) => {
+test('demo startup fetches only the lightweight sample shell before it is ready', async ({ browser }) => {
   const assets = await readdir('dist/assets');
   const coreName = assets.find((asset) => /^core-[A-Za-z0-9_-]+\.js$/.test(asset));
   const frameProcessorName = assets.find((asset) => /^frame-processor-[A-Za-z0-9_-]+\.js$/.test(asset));
+  const demoName = assets.find((asset) => /^demo-[A-Za-z0-9_-]+\.js$/.test(asset));
   expect(coreName).toBeTruthy();
   expect(frameProcessorName).toBeTruthy();
-  if (!coreName || !frameProcessorName) throw new Error('Expected production chunks are missing.');
+  expect(demoName).toBeTruthy();
+  if (!coreName || !frameProcessorName || !demoName) throw new Error('Expected production chunks are missing.');
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1.75 });
   const page = await context.newPage();
   try {
     await page.goto('/?demo=1');
     await expect(page.locator('#work-status')).toHaveText('12 frames ready');
     const resources = await page.evaluate(() => performance.getEntriesByType('resource').map((entry) => entry.name));
-    expect(resources.some((resource) => resource.endsWith(`/assets/${frameProcessorName}`))).toBe(true);
+    expect(resources.some((resource) => resource.endsWith(`/assets/${demoName}`))).toBe(true);
+    expect(resources.some((resource) => resource.endsWith(`/assets/${frameProcessorName}`))).toBe(false);
     expect(resources.some((resource) => resource.endsWith(`/assets/${coreName}`))).toBe(false);
   } finally {
     await context.close();
@@ -356,6 +379,9 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
   // 382–514 ms on a 390 px, 4x-throttled phone. Keep five independent cold
   // starts in the normal suite so a single lucky scheduler run cannot hide it.
   const startupTaskLimitMs = 200;
+  // The release promise is that every cold start stays below 200 ms. Keeping
+  // the median below 150 ms leaves a substantial safety margin and catches
+  // gradual startup regressions before one cold load reaches the hard limit.
   const medianTargetMs = 150;
   const longestTasks: number[] = [];
   for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -394,6 +420,22 @@ test('demo startup chunks the initial layout and canvas preparation below the mo
   // a noisy single run reaches that hard user-facing limit.
   expect(Math.max(...longestTasks), `all startup tasks ${JSON.stringify(longestTasks)}`).toBeLessThan(startupTaskLimitMs);
   expect(medianTask, `median startup task ${JSON.stringify(longestTasks)}`).toBeLessThan(medianTargetMs);
+});
+
+test('demo frame entry preserves frame-caption contrast while cards are arriving', async ({ page }) => {
+  await page.goto('/demo');
+  await expect(page.locator('#frame-strip figure')).toHaveCount(12);
+  const cardStyles = await page.locator('#frame-strip figure').evaluateAll((cards) => cards.map((card) => ({
+    captionColor: getComputedStyle(card.querySelector('figcaption')!).color,
+    opacity: getComputedStyle(card).opacity,
+    paper: getComputedStyle(card).backgroundColor,
+  })));
+  expect(cardStyles).toHaveLength(12);
+  expect(cardStyles.every(({ opacity }) => opacity === '1'), JSON.stringify(cardStyles)).toBe(true);
+  expect(cardStyles.every(({ captionColor, paper }) => captionColor === 'rgb(24, 23, 19)' && paper === 'rgb(255, 250, 240)')).toBe(true);
+  const results = await new AxeBuilder({ page }).analyze();
+  const serious = results.violations.filter((violation) => ['serious', 'critical'].includes(violation.impact || ''));
+  expect(serious, JSON.stringify(serious, null, 2)).toEqual([]);
 });
 
 test('@claim:app-update-check a new service worker activates, replaces its cache, and announces the update', async ({ browser }) => {
@@ -476,7 +518,7 @@ test('the deployment configuration returns the designed 404 artifact for unknown
   expect(page404).toContain('rel="canonical" href="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('property="og:url" content="https://flipbook-trace.sociobot.in/404.html"');
   expect(page404).toContain('rel="apple-touch-icon" href="/icons/apple-touch-icon.png"');
-  expect(page404).toContain('v1.0.14 · Original generated artwork');
+  expect(page404).toContain('v1.0.15 · Original generated artwork');
 });
 
 test('the SPA not-found route names the error and its destination in plain words', async ({ page }) => {

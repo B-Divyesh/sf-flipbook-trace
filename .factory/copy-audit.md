@@ -36,7 +36,9 @@ Audited 2026-08-29 for repair round 8. Counts treat hyphenated ranges and contra
 | Trim the video before loading it if your device slows down. | 11 | Limitation |
 | $9 once. | 2 | Registered: `studio-purchase` |
 | Studio adds 1920 px, exports at your video's original width, and a six-column PDF trace sheet. | 16 | Registered: `studio-quality` |
-| Dodo opens checkout for Sociobot. | 5 | Registered: `studio-purchase` |
+| Dodo is the merchant of record for Sociobot. | 8 | Registered: `studio-purchase` |
+| Dodo handles refunds. | 3 | Registered: `studio-purchase` |
+| A refund automatically revokes the Studio license. | 7 | Registered: `studio-purchase` |
 | This license is not active. | 5 | Persistent license state |
 | This Studio license was revoked. | 5 | Persistent license state |
 

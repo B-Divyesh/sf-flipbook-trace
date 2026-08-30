@@ -186,6 +186,11 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
 .settings-tools input[type="file"] { min-height: 44px; width: 100%; }
 
 .preview-zone { min-width: 0; }
+/* The full mobile preview sits below the controls. Let the browser defer its
+   layout until it nears the viewport so generating the ready sample cannot
+   monopolise the first interaction on a throttled phone. The compact,
+   visible overview above the workspace remains the immediate demo proof. */
+.demo-main .preview-zone { content-visibility: auto; contain-intrinsic-size: 1160px; }
 .empty-preview { min-height: 520px; padding: 40px; display: grid; place-items: center; align-content: center; text-align: center; color: var(--ink); background-color: var(--paper-high); background-image: linear-gradient(rgba(11,95,113,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(11,95,113,.1) 1px, transparent 1px); background-size: 32px 32px; border: 2px solid var(--ink); clip-path: polygon(0 1%, 99% 0, 100% 98%, 1% 100%); }
 .empty-preview h3 { font-size: 2rem; margin-bottom: 0; }
 .empty-preview p { margin: 6px 0 24px; }
@@ -312,7 +317,10 @@ fieldset { margin: 0; padding: 14px; display: grid; gap: 10px; border: 2px solid
   .frame-strip figure:nth-child(2n) { animation-delay: 35ms; }
   .frame-strip figure:nth-child(3n) { animation-delay: 70ms; }
   @keyframes register { from { opacity: 0; transform: translate(28px, 16px) rotate(3.5deg); } to { opacity: 1; transform: rotate(1.3deg); } }
-  @keyframes lay-frame { from { opacity: 0; transform: translateX(-10px) rotate(var(--tilt)); } to { opacity: 1; transform: rotate(var(--tilt)); } }
+  /* Keep the paper and its ink caption fully opaque throughout entry. Fading
+     the whole card briefly put dark frame numbers over the blue work surface,
+     which failed contrast checks while frames were arriving. */
+  @keyframes lay-frame { from { transform: translateX(-10px) rotate(var(--tilt)); } to { transform: rotate(var(--tilt)); } }
 }
 
 @media (prefers-reduced-motion: reduce) {
