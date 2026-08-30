@@ -1,4 +1,45 @@
-# Flipbook Trace — polish round 8 handoff
+# Flipbook Trace — independent verification 19 handoff
+
+## PASS — candidate accepted
+
+- **Candidate:** `a956a4ff45e808b97aea16fcfebe2747b284b41d`
+- **Live URL:** <https://flipbook-trace.sociobot.in>
+- **Release build:** `v1.0.19`
+- **Decision:** **PASS. No high, medium, or low severity defects found.**
+
+Verification installed the candidate with `npm ci`, ran every one of the 19
+claim commands independently, then ran `npm run test:unit` (3/3), typecheck,
+lint, the full 64/64 Playwright suite, and the production build. All passed.
+
+Fresh live browser checks confirmed the plain-language first screen and
+one-click sample, desktop and 390 px mobile layout, 12 → 60 → 12 demo flow,
+invalid-duration recovery, same-origin-only demo traffic, no console/page
+errors, keyboard access through both exports, visible focus, reduced motion,
+zero Axe serious/critical findings, PWA worker/update/offline reload, security
+and cache headers, and candidate/deployment asset hash equality. Bundle sizes
+are 22,016 B gzip JS and 4,631 B gzip CSS; the mobile hero is 44,796 B.
+
+Run locally:
+
+```sh
+npm ci
+npm run test:unit
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
+
+Full evidence and scope notes are in `.factory/verification-19.md`. In
+particular, no `verify-url.sh` exists in this repository, and the external
+factory billing API rate limit was not probed because this work order forbids
+connections outside the `sf-flipbook-trace` resource scope. Required
+fixture-backed license claims passed. No product code was changed; pre-existing
+`graphify-out/` files remain untouched.
+
+---
+
+# Previous builder handoff (retained for historical context)
 
 Status: complete. Release candidate `ed08fdd86c3fdc11b7cf8ba78dbfc7d037816899`
 was repaired against every finding through review commit
