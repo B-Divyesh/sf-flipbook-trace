@@ -6,62 +6,49 @@
       "src_app_approot",
       "src_app_bindlicense",
       "src_app_bindnavigation",
-      "src_app_bindworkspace",
       "src_app_buildexportframes",
       "src_app_buildexportframestream",
-      "src_app_cancelpreviewrender",
-      "src_app_cleanupvideo",
-      "src_app_clearerror",
       "src_app_demobanner",
       "src_app_demoinitialpage",
       "src_app_ensuredemosourceframes",
-      "src_app_exportpdf",
-      "src_app_exportpng",
-      "src_app_hasstudioaccess",
-      "src_app_importsettings",
       "src_app_initlicense",
       "src_app_licensestatustext",
       "src_app_licenseverdict",
-      "src_app_loaddemoframes",
-      "src_app_loadexportprocessor",
       "src_app_loadframeprocessor",
-      "src_app_loadvideo",
-      "src_app_makedemoframes",
-      "src_app_makeframesfromvideo",
       "src_app_mountdemopage",
       "src_app_mountdemoworkspace",
       "src_app_navlink",
       "src_app_outputframes",
       "src_app_paintdemopeek",
-      "src_app_paintframes",
       "src_app_readlicenseverdict",
       "src_app_rebuildoutputframes",
       "src_app_render",
       "src_app_routepath",
-      "src_app_schedulepreviewrender",
-      "src_app_seek",
-      "src_app_setexportbuttonsdisabled",
-      "src_app_setstatus",
       "src_app_settings",
       "src_app_shell",
-      "src_app_showerror",
       "src_app_sitefooter",
       "src_app_siteheader",
       "src_app_sourceframes",
-      "src_app_start",
       "src_app_traceframe",
       "src_app_updatemeta",
-      "src_app_updatesettings",
-      "src_app_value",
       "src_app_verifylicense",
       "src_app_workspacecontrolstemplate",
       "src_app_workspaceheadingtemplate",
       "src_app_workspacepreviewtemplate",
       "src_app_workspacetemplate",
-      "src_app_yieldafterinteraction",
       "src_app_yieldforpaint",
       "src_app_yieldtobrowser",
-      "src_settings_downloadblob",
+      "src_core_test",
+      "src_frame_processor",
+      "src_frame_processor_applytracefilter",
+      "src_frame_processor_drawdemoframe",
+      "src_frame_processor_drawdemotraceframe",
+      "src_settings",
+      "src_settings_defaultsettings",
+      "src_settings_filtermode",
+      "src_settings_framesettings",
+      "src_settings_loadpreferences",
+      "src_settings_normalizesettings",
       "src_settings_savepreferences"
     ],
     "1": [
@@ -143,6 +130,32 @@
       "vitest"
     ],
     "3": [
+      "src_app_bindworkspace",
+      "src_app_cancelpreviewrender",
+      "src_app_cleanupvideo",
+      "src_app_clearerror",
+      "src_app_exportpdf",
+      "src_app_exportpng",
+      "src_app_hasstudioaccess",
+      "src_app_importsettings",
+      "src_app_loaddemoframes",
+      "src_app_loadexportprocessor",
+      "src_app_loadvideo",
+      "src_app_makedemoframes",
+      "src_app_makeframesfromvideo",
+      "src_app_paintframes",
+      "src_app_schedulepreviewrender",
+      "src_app_seek",
+      "src_app_setexportbuttonsdisabled",
+      "src_app_setstatus",
+      "src_app_showerror",
+      "src_app_start",
+      "src_app_updatesettings",
+      "src_app_value",
+      "src_app_yieldafterinteraction",
+      "src_settings_downloadblob"
+    ],
+    "4": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -166,7 +179,7 @@
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
     ],
-    "4": [
+    "5": [
       "tests_claims_spec",
       "tests_claims_spec_assertnoworkflowrequests",
       "tests_claims_spec_assertonlylicenseverification",
@@ -181,7 +194,7 @@
       "tests_claims_spec_sourcefingerprint",
       "tests_claims_spec_storage_getitem"
     ],
-    "5": [
+    "6": [
       "src_core",
       "src_core_ascii",
       "src_core_canvasblob",
@@ -194,19 +207,6 @@
       "src_core_makepngzip",
       "src_core_u16",
       "src_core_u32"
-    ],
-    "6": [
-      "src_core_test",
-      "src_frame_processor",
-      "src_frame_processor_applytracefilter",
-      "src_frame_processor_drawdemoframe",
-      "src_frame_processor_drawdemotraceframe",
-      "src_settings",
-      "src_settings_defaultsettings",
-      "src_settings_filtermode",
-      "src_settings_framesettings",
-      "src_settings_loadpreferences",
-      "src_settings_normalizesettings"
     ],
     "7": [
       "src_demo",
@@ -222,16 +222,6 @@
       "src_main_url"
     ],
     "8": [
-      "test",
-      "tests_site_spec",
-      "tests_site_spec_expectinteractionswithinbudget",
-      "tests_site_spec_installinteractionobserver",
-      "tests_site_spec_interactiontiming",
-      "tests_site_spec_measuredinteraction",
-      "tests_site_spec_targetbox",
-      "tests_site_spec_visibleactiontargets"
-    ],
-    "9": [
       "scripts_finalize_build",
       "scripts_finalize_build_appmodules",
       "scripts_finalize_build_assetdirectory",
@@ -240,7 +230,7 @@
       "scripts_finalize_build_indexpath",
       "scripts_finalize_build_workerpath"
     ],
-    "10": [
+    "9": [
       "src_static_pages",
       "src_static_pages_homecontent",
       "src_static_pages_notfoundcontent",
@@ -248,6 +238,15 @@
       "src_static_pages_paidcontent",
       "src_static_pages_privacycontent",
       "src_static_pages_termscontent"
+    ],
+    "10": [
+      "tests_site_spec",
+      "tests_site_spec_expectinteractionswithinbudget",
+      "tests_site_spec_installinteractionobserver",
+      "tests_site_spec_interactiontiming",
+      "tests_site_spec_measuredinteraction",
+      "tests_site_spec_targetbox",
+      "tests_site_spec_visibleactiontargets"
     ],
     "11": [
       "factory_evidence_repair_3_interaction_audit",
@@ -264,70 +263,76 @@
       "factory_qa_artifacts_live_qa_watch"
     ],
     "13": [
+      "factory_verification_artifacts_15_live_audit",
+      "factory_verification_artifacts_15_live_audit_listenforerrors",
+      "factory_verification_artifacts_15_live_audit_result",
+      "factory_verification_artifacts_15_live_audit_visibletargets"
+    ],
+    "14": [
       "factory_evidence_verify_3_live_audit",
       "factory_evidence_verify_3_live_audit_loadrecordedvideo",
       "factory_evidence_verify_3_live_audit_result"
     ],
-    "14": [
+    "15": [
       "factory_evidence_repair_2_live_audit",
       "factory_evidence_repair_2_live_audit_evidence"
     ],
-    "15": [
+    "16": [
       "factory_evidence_repair_3_live_audit",
       "factory_evidence_repair_3_live_audit_result"
     ],
-    "16": [
+    "17": [
       "factory_evidence_repair_7_live_audit",
       "factory_evidence_repair_7_live_audit_result"
     ],
-    "17": [
+    "18": [
       "factory_evidence_repair_8_live_audit",
       "factory_evidence_repair_8_live_audit_result"
     ],
-    "18": [
+    "19": [
       "factory_evidence_repair_9_live_audit",
       "factory_evidence_repair_9_live_audit_result"
     ],
-    "19": [
+    "20": [
       "factory_evidence_verify_10_live_audit",
       "factory_evidence_verify_10_live_audit_result"
     ],
-    "20": [
+    "21": [
       "public_sw",
       "public_sw_precache"
     ],
-    "21": [
+    "22": [
       "eslint_config"
     ],
-    "22": [
+    "23": [
       "playwright_config"
     ],
-    "23": [
+    "24": [
       "src_vite_env_d"
     ],
-    "24": [
+    "25": [
       "vite_config"
     ],
-    "25": [
+    "26": [
       "vitest_config"
     ]
   },
   "cohesion": {
-    "0": 0.10312004230565838,
+    "0": 0.09523809523809523,
     "1": 0.14169570267131243,
     "2": 0.0625,
-    "3": 0.09090909090909091,
-    "4": 0.16666666666666666,
-    "5": 0.3181818181818182,
-    "6": 0.23636363636363636,
+    "3": 0.2210144927536232,
+    "4": 0.09090909090909091,
+    "5": 0.16666666666666666,
+    "6": 0.3181818181818182,
     "7": 0.2545454545454545,
-    "8": 0.25,
+    "8": 0.2857142857142857,
     "9": 0.2857142857142857,
     "10": 0.2857142857142857,
     "11": 0.4,
     "12": 0.4,
-    "13": 0.6666666666666666,
-    "14": 1.0,
+    "13": 0.5,
+    "14": 0.6666666666666666,
     "15": 1.0,
     "16": 1.0,
     "17": 1.0,
@@ -338,7 +343,8 @@
     "22": 1.0,
     "23": 1.0,
     "24": 1.0,
-    "25": 1.0
+    "25": 1.0,
+    "26": 1.0
   },
   "gods": [
     {
@@ -377,13 +383,13 @@
       "degree": 11
     },
     {
-      "id": "src_demo_runtime_loaddemoframes",
-      "label": "loadDemoFrames()",
+      "id": "src_demo_runtime_exportpng",
+      "label": "exportPng()",
       "degree": 11
     },
     {
-      "id": "src_demo_runtime_exportpng",
-      "label": "exportPng()",
+      "id": "src_demo_runtime_loaddemoframes",
+      "label": "loadDemoFrames()",
       "degree": 11
     },
     {
@@ -393,17 +399,6 @@
     }
   ],
   "surprises": [
-    {
-      "source": "render()",
-      "target": "loadPreferences()",
-      "source_files": [
-        "src/app.ts",
-        "src/settings.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "bridges separate communities"
-    },
     {
       "source": "importSettings()",
       "target": "normalizeSettings()",
@@ -416,8 +411,19 @@
       "why": "bridges separate communities"
     },
     {
-      "source": "render()",
-      "target": "normalizeSettings()",
+      "source": "importSettings()",
+      "target": "savePreferences()",
+      "source_files": [
+        "src/app.ts",
+        "src/settings.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "updateSettings()",
+      "target": "savePreferences()",
       "source_files": [
         "src/app.ts",
         "src/settings.ts"
@@ -438,8 +444,8 @@
       "why": "cross-file semantic connection"
     },
     {
-      "source": "importSettings()",
-      "target": "savePreferences()",
+      "source": "bindWorkspace()",
+      "target": "downloadBlob()",
       "source_files": [
         "src/app.ts",
         "src/settings.ts"
