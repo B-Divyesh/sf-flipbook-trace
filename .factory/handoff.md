@@ -1,41 +1,40 @@
-# Flipbook Trace — independent verification 19 handoff
+# Flipbook Trace — review 9 handoff
 
-## PASS — candidate accepted
+## PASS
 
-- **Candidate:** `a956a4ff45e808b97aea16fcfebe2747b284b41d`
-- **Live URL:** <https://flipbook-trace.sociobot.in>
-- **Release build:** `v1.0.19`
-- **Decision:** **PASS. No high, medium, or low severity defects found.**
+No product code was changed. The requested independent review is recorded in
+[`.factory/review-9.md`](review-9.md).
 
-Verification installed the candidate with `npm ci`, ran every one of the 19
-claim commands independently, then ran `npm run test:unit` (3/3), typecheck,
-lint, the full 64/64 Playwright suite, and the production build. All passed.
+### What was checked
 
-Fresh live browser checks confirmed the plain-language first screen and
-one-click sample, desktop and 390 px mobile layout, 12 → 60 → 12 demo flow,
-invalid-duration recovery, same-origin-only demo traffic, no console/page
-errors, keyboard access through both exports, visible focus, reduced motion,
-zero Axe serious/critical findings, PWA worker/update/offline reload, security
-and cache headers, and candidate/deployment asset hash equality. Bundle sizes
-are 22,016 B gzip JS and 4,631 B gzip CSS; the mobile hero is 44,796 B.
+- Fresh live cold reads at 390×844 and 1440×900.
+- One-click demo, 12-frame visible result, reset, real-mode return, sequential
+  keyboard access to both exports, same-origin demo requests, and offline reload.
+- All 19 registered claims selected by `npm test -- --grep '@claim:'` after
+  `npm ci`.
+- `npm run test:unit` (3/3), `npm run lint`, full `npm test` (64/64), and
+  `npm run build`.
+- Live routes, titles, metadata, 404, same-origin links, headers, console, and
+  Axe checks.
+- Every earlier review/polish finding and the preceding handoff.
 
-Run locally:
+### How to verify
 
 ```sh
 npm ci
 npm run test:unit
-npm run typecheck
 npm run lint
 npm test
 npm run build
 ```
 
-Full evidence and scope notes are in `.factory/verification-19.md`. In
-particular, no `verify-url.sh` exists in this repository, and the external
-factory billing API rate limit was not probed because this work order forbids
-connections outside the `sf-flipbook-trace` resource scope. Required
-fixture-backed license claims passed. No product code was changed; pre-existing
-`graphify-out/` files remain untouched.
+Open <https://flipbook-trace.sociobot.in> or
+<https://flipbook-trace.sociobot.in/?demo=1> in a fresh browser context.
+
+### Known gaps
+
+None found in this review. Pre-existing `graphify-out/` worktree changes were
+not changed.
 
 ---
 
